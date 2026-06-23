@@ -1,5 +1,13 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    # Endpoints like register, profile, and roles go here later
-]
+from .views import (
+    UserViewSet,
+    RoleViewSet
+)
+
+router = DefaultRouter()
+
+router.register(r'users', UserViewSet)
+router.register(r'roles', RoleViewSet)
+
+urlpatterns = router.urls

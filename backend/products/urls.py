@@ -1,5 +1,15 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    # Endpoints like register, profile, and roles go here later
-]
+from .views import (
+    CategoryViewSet,
+    SupplierViewSet,
+    ProductViewSet,
+)
+
+router = DefaultRouter()
+
+router.register(r'categories', CategoryViewSet)
+router.register(r'suppliers', SupplierViewSet)
+router.register(r'products', ProductViewSet)
+
+urlpatterns = router.urls

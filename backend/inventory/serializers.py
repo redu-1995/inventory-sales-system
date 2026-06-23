@@ -1,24 +1,76 @@
-# inventory/serializers.py
 from rest_framework import serializers
-from .models import Inventory
-from products.serializers import ProductSerializer
+from .models import (
+    Inventory,
+    StockMovement,
+    PurchaseOrder,
+    PurchaseOrderItem
+)
+
 
 class InventorySerializer(serializers.ModelSerializer):
-    # Dynamic field to check if item drops below critical thresholds
-    stock_status = serializers.SerializerMethodField()
-    # Pull in comprehensive child details if required on certain requests
-    product_details = ProductSerializer(source='product', read_only=True)
+    product_name = serializers.ReadOnlyField(source='product.name')
 
     class Meta:
         model = Inventory
         fields = [
-            'id', 'product', 'product_details', 'quantity', 
-            'minimum_stock_level', 'stock_status', 'last_restocked'
+            'id',
+            'product',
+            'product_name',
+            'quantity',
+            'reorder_level',
+            'updated_at'
+        ]
+        read_only_fields = ['updated_at']
+
+
+class StockMovementSerializer(serializers.ModelSerializer):
+    product_name = serializers.ReadOnlyField(source='product.name')
+    user_name = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = StockMovement
+        fields = [
+            'id',
+            'product',
+            'product_name',
+            'movement_type',
+            'quantity',
+            'user',
+            'user_name',
+            'created_at'
+        ]
+        read_only_fields = ['created_at']
+
+
+class PurchaseOrderItemSerializer(serializers.ModelSerializer):
+    product_name = serializers.ReadOnlyField(source='product.name')
+
+    class Meta:
+        model = PurchaseOrderItem
+        fields = [
+            'id',
+            'purchase_order',
+            'product',
+            'product_name',
+            'quantity',
+            'cost_price'
         ]
 
-    def get_stock_status(self, obj):
-        if obj.quantity <= 0:
-            return "Out of Stock"
-        elif obj.quantity <= obj.minimum_stock_level:
-            return "Low Stock"
-        return "In Stock"
+
+class PurchaseOrderSerializer(serializers.ModelSerializer):
+    supplier_name = serializers.ReadOnlyField(source='supplier.name')
+    items = PurchaseOrderItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = PurchaseOrder
+        fields = [
+            'id',
+            'supplier',
+            'supplier_name',
+            'user',
+            'total_amount',
+            'status',
+            'order_date',
+            'items'
+        ]
+        read_only_fields = ['order_date']
