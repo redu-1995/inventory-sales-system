@@ -8,8 +8,8 @@ from .views import (
 
 router = DefaultRouter()
 
-router.register(r'categories', CategoryViewSet)
-router.register(r'suppliers', SupplierViewSet)
-router.register(r'products', ProductViewSet)
+router.register(r'categories', CategoryViewSet, basename='category')
+router.register(r'suppliers', SupplierViewSet, basename='supplier')
+router.register(r'products', ProductViewSet, basename='product')
 
 urlpatterns = router.urls

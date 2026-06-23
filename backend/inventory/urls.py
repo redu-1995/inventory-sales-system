@@ -9,9 +9,27 @@ from .views import (
 
 router = DefaultRouter()
 
-router.register(r'inventory', InventoryViewSet)
-router.register(r'stock-movements', StockMovementViewSet)
-router.register(r'purchase-orders', PurchaseOrderViewSet)
-router.register(r'purchase-order-items', PurchaseOrderItemViewSet)
+router.register(
+    r'inventory',
+    InventoryViewSet,
+    basename='inventory'
+)
 
+router.register(
+    r'stock-movements',
+    StockMovementViewSet,
+    basename='stock-movement'
+)
+
+router.register(
+    r'purchase-orders',
+    PurchaseOrderViewSet,
+    basename='purchase-order'
+)
+
+router.register(
+    r'purchase-order-items',
+    PurchaseOrderItemViewSet,
+    basename='purchase-order-item'
+)
 urlpatterns = router.urls

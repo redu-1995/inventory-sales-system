@@ -7,7 +7,7 @@ from .views import (
 
 router = DefaultRouter()
 
-router.register(r'users', UserViewSet)
-router.register(r'roles', RoleViewSet)
+router.register(r'users', UserViewSet, basename='user')
+router.register(r'roles', RoleViewSet, basename='role')
 
 urlpatterns = router.urls
