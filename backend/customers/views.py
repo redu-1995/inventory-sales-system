@@ -11,4 +11,4 @@ class CustomerViewSet(ModelViewSet):
     """
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [IsAuthenticated]
+    

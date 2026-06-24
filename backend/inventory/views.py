@@ -1,5 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import IsAuthenticated
+
+
 
 from .models import (
     Inventory,
@@ -19,13 +20,13 @@ from .serializers import (
 class InventoryViewSet(ModelViewSet):
     queryset = Inventory.objects.all()
     serializer_class = InventorySerializer
-    permission_classes = [IsAuthenticated]
+   
 
 
 class StockMovementViewSet(ModelViewSet):
     queryset = StockMovement.objects.all()
     serializer_class = StockMovementSerializer
-    permission_classes = [IsAuthenticated]
+  
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -34,7 +35,7 @@ class StockMovementViewSet(ModelViewSet):
 class PurchaseOrderViewSet(ModelViewSet):
     queryset = PurchaseOrder.objects.all()
     serializer_class = PurchaseOrderSerializer
-    permission_classes = [IsAuthenticated]
+  
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -43,4 +44,4 @@ class PurchaseOrderViewSet(ModelViewSet):
 class PurchaseOrderItemViewSet(ModelViewSet):
     queryset = PurchaseOrderItem.objects.all()
     serializer_class = PurchaseOrderItemSerializer
-    permission_classes = [IsAuthenticated]
+  

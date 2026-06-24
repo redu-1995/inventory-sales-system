@@ -22,7 +22,7 @@ class SaleViewSet(ModelViewSet):
     )
 
     serializer_class = SaleSerializer
-    permission_classes = [IsAuthenticated]
+   
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -38,7 +38,7 @@ class SaleItemViewSet(ModelViewSet):
     )
 
     serializer_class = SaleItemSerializer
-    permission_classes = [IsAuthenticated]
+    
 
 
 class PaymentViewSet(ModelViewSet):
@@ -48,4 +48,4 @@ class PaymentViewSet(ModelViewSet):
     queryset = Payment.objects.select_related('sale')
 
     serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated]
+   
