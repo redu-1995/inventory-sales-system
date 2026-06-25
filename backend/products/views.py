@@ -15,7 +15,7 @@ class CategoryViewSet(ModelViewSet):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+
 
 
 class SupplierViewSet(ModelViewSet):
@@ -24,7 +24,7 @@ class SupplierViewSet(ModelViewSet):
     """
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
-    permission_classes = [IsAuthenticated]
+    
 
 
 class ProductViewSet(ModelViewSet):
@@ -37,4 +37,4 @@ class ProductViewSet(ModelViewSet):
     ).all()
 
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+  
