@@ -1,27 +1,45 @@
-# users/serializers.py
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from .models import User, Role
 
-User = get_user_model()
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = [
+            'id',
+            'name',
+            'description',
+            'created_at',
+        ]
+        read_only_fields = ['id', 'created_at']
+
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(
+        write_only=True,
+        required=True
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'password', 'role', 'first_name', 'last_name']
-        extra_kwargs = {
-            'email': {'required': True}
-        }
+        fields = [
+            'id',
+            'username',
+            'password',
+            'first_name',
+            'last_name',
+            'email',
+            'phone',
+            'role',
+            'status',
+            'created_at',
+        ]
 
     def create(self, validated_data):
-        # Securely hash user password using create_user
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            role=validated_data.get('role', 'Cashier'), # Default role
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
-        )
+        password = validated_data.pop('password')
+
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+
         return user
