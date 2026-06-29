@@ -6,13 +6,18 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from users.views import MyTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     # Global Authentication APIs
-    path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    
+     path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    # Keep your token refresh route exactly the same:
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     # App Specific Routers
     path('api/users/', include('users.urls')),

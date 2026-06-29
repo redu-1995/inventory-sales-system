@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .models import User, Role
-from .serializers import UserSerializer, RoleSerializer
+from .serializers import MyTokenObtainPairSerializer, UserSerializer, RoleSerializer
 
 
 class RoleViewSet(ModelViewSet):
@@ -36,3 +36,6 @@ class CustomTokenRefreshView(TokenRefreshView):
     Public endpoint allowing clients to refresh expired JWT access tokens.
     """
     permission_classes = [AllowAny]
+class MyTokenObtainPairView(TokenObtainPairView):
+    # Tell this view to use your custom role-injecting serializer
+    serializer_class = MyTokenObtainPairSerializer
