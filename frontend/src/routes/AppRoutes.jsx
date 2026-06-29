@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Login from '../pages/auth/Login';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '../components/layout/DashboardLayout';
+import Dashboard from '../pages/dashboard/Dashboard';
 
 // Layout HOC to cleanly frame inner route matching targets
 const AuthenticatedAppLayout = () => (
@@ -30,7 +31,7 @@ export default function AppRoutes() {
           <AuthenticatedAppLayout />
         </ProtectedRoute>
       }>
-        <Route path="/dashboard" element={<OverviewModule />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/products" element={<ProductsModule />} />
         <Route path="/inventory" element={<InventoryModule />} />
         <Route path="/customers" element={<CustomersModule />} />

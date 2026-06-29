@@ -4,19 +4,17 @@ import Header from './Header';
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="flex bg-slate-50 min-h-screen text-slate-800 antialiased">
-      {/* Sidebar - Stays fixed on the left */}
+    <div className="bg-slate-50 min-h-screen text-slate-800 antialiased">
+      {/* Sidebar - Fixed on the left */}
       <Sidebar />
 
-      {/* Main Structural View Panel Container Frame */}
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Main Content Area with left margin for fixed sidebar */}
+      <div className="ml-64 h-screen flex flex-col">
         <Header />
         
-        {/* Dynamic Inner Component Content Target Mount viewport */}
-        <main className="flex-1 overflow-y-auto p-8 animate-fadeIn">
-          <div className="max-w-[1600px] mx-auto">
-            {children}
-          </div>
+        {/* Content Area - Scrollable */}
+        <main className="flex-1 overflow-y-auto min-w-0">
+          {children}
         </main>
       </div>
     </div>

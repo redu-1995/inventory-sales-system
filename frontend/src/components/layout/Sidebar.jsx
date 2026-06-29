@@ -67,10 +67,10 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 h-screen bg-[#111827] flex flex-col justify-between shadow-lg">
+    <aside className="w-64 h-screen bg-[#111827] flex flex-col shadow-lg fixed left-0 top-0 overflow-hidden">
 
-      {/* Logo */}
-      <div>
+      {/* Logo & Menu */}
+      <div className="flex-1 flex flex-col overflow-hidden">
 
         <div className="h-16 flex items-center px-6 border-b border-slate-700">
 
@@ -94,7 +94,7 @@ export default function Sidebar() {
 
         {/* Navigation */}
 
-        <nav className="px-3 space-y-1">
+        <nav className="px-3 space-y-0.5 overflow-y-auto flex-1">
 
           {menuItems.map((item) => {
 
@@ -106,7 +106,7 @@ export default function Sidebar() {
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
-                className={`group flex items-center w-full px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium
+                className={`group flex items-center w-full px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium
 
                 ${
                   isActive
@@ -115,32 +115,32 @@ export default function Sidebar() {
                 }`}
               >
                 <Icon
-                  size={18}
-                  className={`mr-3 ${
+                  size={16}
+                  className={`mr-2 shrink-0 ${
                     isActive
                       ? "text-white"
                       : "text-slate-400 group-hover:text-white"
                   }`}
                 />
 
-                <span className="flex-1 text-left">{item.name}</span>
+                <span className="flex-1 text-left truncate">{item.name}</span>
               </button>
             );
           })}
         </nav>
       </div>
 
-      {/* Logout */}
+      {/* Logout - Sticky at bottom */}
 
-      <div className="p-4 border-t border-slate-700">
+      <div className="p-4 border-t border-slate-700 shrink-0">
 
         <button
           onClick={logout}
-          className="group flex items-center w-full px-4 py-3 rounded-xl text-red-400 hover:bg-red-500 hover:text-white transition-all duration-200"
+          className="group flex items-center w-full px-3 py-2 rounded-lg text-xs font-medium text-red-400 hover:bg-red-500 hover:text-white transition-all duration-200"
         >
-          <LogOut size={18} className="mr-3" />
+          <LogOut size={16} className="mr-2 shrink-0" />
 
-          <span>Logout</span>
+          <span className="truncate">Logout</span>
         </button>
 
       </div>
