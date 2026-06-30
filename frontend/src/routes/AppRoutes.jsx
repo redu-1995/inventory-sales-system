@@ -4,6 +4,7 @@ import Login from '../pages/auth/Login';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Dashboard from '../pages/dashboard/Dashboard';
+import Products from '../pages/products/Products';
 
 // Layout HOC to cleanly frame inner route matching targets
 const AuthenticatedAppLayout = () => (
@@ -32,7 +33,7 @@ export default function AppRoutes() {
         </ProtectedRoute>
       }>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/products" element={<ProductsModule />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/inventory" element={<InventoryModule />} />
         <Route path="/customers" element={<CustomersModule />} />
         <Route path="/sales" element={<SalesModule />} />
