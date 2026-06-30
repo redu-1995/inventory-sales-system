@@ -10,6 +10,9 @@ import BulkActions from '../../components/products/BulkActions';
 import ProductTable from '../../components/products/ProductTable';
 import Pagination from '../../components/products/Pagination';
 
+// Import Right Side Insight Component
+import ProductInsights from '../../components/products/ProductInsights';
+
 export default function Products() {
   // Destructure state handlers out of our hook engine
   const {
@@ -92,27 +95,37 @@ export default function Products() {
           products={products}
         />
 
-        {/* ================= CONTEXT BULK ACTIONS TRYS ================= */}
-        <BulkActions 
-          selectedCount={selectedRowIds.length} 
-          onDelete={deleteSelectedProducts} 
-        />
+        {/* ================= TWO-COLUMN EQUAL HEIGHT SPLIT CONTAINER ================= */}
+        <div className="flex flex-col lg:flex-row items-stretch gap-6">
+          
+          {/* LEFT COLUMN: CONTEXT ACTIONS, TABLE & PAGINATION */}
+          <div className="flex-1 min-w-0 flex flex-col justify-between space-y-4">
+            <div className="space-y-4">
+              <BulkActions 
+                selectedCount={selectedRowIds.length} 
+                onDelete={deleteSelectedProducts} 
+              />
 
-        {/* ================= MAIN DATA GRID GRID ================= */}
-        <ProductTable 
-          products={paginatedProducts} 
-          selectedRowIds={selectedRowIds}
-          onToggleSelectRow={toggleSelectRow}
-          onToggleSelectAll={toggleSelectAllRows}
-        />
+              <ProductTable 
+                products={paginatedProducts} 
+                selectedRowIds={selectedRowIds}
+                onToggleSelectRow={toggleSelectRow}
+                onToggleSelectAll={toggleSelectAllRows}
+              />
+            </div>
 
-        {/* ================= PAGINATION CONTROLS CONTROLS ================= */}
-        <Pagination 
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setCurrentPage={setCurrentPage}
-          filteredCount={filteredCount}
-        />
+            <Pagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setCurrentPage={setCurrentPage}
+              filteredCount={filteredCount}
+            />
+          </div>
+
+          {/* RIGHT COLUMN: REAL-TIME ANALYTICS INSIGHTS SIDEBAR */}
+          <ProductInsights products={products} />
+
+        </div>
 
       </div>
     </div>
