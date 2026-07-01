@@ -17,26 +17,27 @@ export default function Products() {
   const {
     products,
     paginatedProducts,
-    statistics,
-    searchQuery,
-    setSearchQuery,
-    categoryFilter,
-    setCategoryFilter,
-    brandFilter,
-    setBrandFilter,
-    stockStatusFilter,
-    setStockStatusFilter,
-    sortBy,
-    setSortBy,
-    selectedRowIds,
-    toggleSelectRow,
-    toggleSelectAllRows,
-    deleteSelectedProducts,
-    resetAllFilters,
-    currentPage,
-    setCurrentPage,
-    totalPages,
-    filteredCount
+    // statistics,
+    // searchQuery,
+    // setSearchQuery,
+    // categoryFilter,
+    // setCategoryFilter,
+    // brandFilter,
+    // setBrandFilter,
+    // stockStatusFilter,
+    // setStockStatusFilter,
+    // sortBy,
+    // setSortBy,
+    // selectedRowIds,
+    // toggleSelectRow,
+    // toggleSelectAllRows,
+    // deleteSelectedProducts,
+    // resetAllFilters,
+    // currentPage,
+    // setCurrentPage,
+    // totalPages,
+    // filteredCount,
+    error,
   } = useProducts();
 
   return (
@@ -51,6 +52,11 @@ export default function Products() {
               Manage your inventory products and stock information.
             </p>
           </div>
+                  {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-xs">
+            ⚠️ Connection Error: {error}. Please verify your backend server status.
+          </div>
+        )}
           
           {/* Compact Action Trigger Controls */}
           <div className="flex items-center gap-1.5 self-start sm:self-center">
@@ -80,13 +86,13 @@ export default function Products() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start w-full">
           
           {/* LEFT OPERATIONAL WRAPPER: Takes up 9/12ths of the horizontal spacing */}
-          <div className="lg:col-span-9 space-y-4 min-w-0 w-full overflow-hidden">
+          {/* <div className="lg:col-span-9 space-y-4 min-w-0 w-full overflow-hidden"> */}
             
             {/* A. Statistics Cards Grid */}
-            <ProductStats statistics={statistics} />
+            {/* <ProductStats statistics={statistics} /> */}
 
             {/* B. Search & Filtering Toolbar */}
-            <ProductFilters
+            {/* <ProductFilters
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               categoryFilter={categoryFilter}
@@ -99,16 +105,16 @@ export default function Products() {
               setSortBy={setSortBy}
               resetAllFilters={resetAllFilters}
               products={products}
-            />
+            /> */}
 
             {/* C. Batch Processing Area */}
-            <BulkActions 
+            {/* <BulkActions 
               selectedCount={selectedRowIds.length} 
               onDelete={deleteSelectedProducts} 
-            />
+            /> */}
 
             {/* D. Table Frame with Overflow Constraints */}
-            <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden w-full">
+            {/* <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden w-full">
               <div className="overflow-x-auto w-full">
                 <ProductTable 
                   products={paginatedProducts} 
@@ -125,7 +131,7 @@ export default function Products() {
               />
             </div>
 
-          </div>
+          </div> */}
 
           {/* RIGHT SIDEBAR WRAPPER: Takes up 3/12ths space with responsive wrapping */}
           <div className="lg:col-span-3 min-w-0 w-full">
