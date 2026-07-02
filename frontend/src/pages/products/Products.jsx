@@ -1,8 +1,9 @@
 import React from 'react';
-
+import { useState } from 'react';
 // Import our custom state engine
 import { useProducts } from '../../hooks/useProducts';
 
+import ProductModal from '../../components/products/ProductModal';
 // Import UI presentation layouts
 import ProductStats from '../../components/products/ProductStats';
 import ProductFilters from '../../components/products/ProductFilters';
@@ -39,6 +40,8 @@ export default function Products() {
     // filteredCount,
     error,
   } = useProducts();
+  const [showModal, setShowModal] = useState(false);
+  const { loading, refreshProducts } = useProducts();
 
   return (
     <div className="min-h-screen bg-gray-50/50 p-3 sm:p-5 lg:p-6 font-sans antialiased overflow-x-hidden">
@@ -72,13 +75,18 @@ export default function Products() {
             >
               &uarr; Export
             </button>
-            <button 
-              onClick={() => alert('Add Product modal form opener triggered')}
-              className="inline-flex items-center px-3 py-1.5 border border-transparent bg-blue-600 text-white rounded-md text-xs font-medium hover:bg-blue-700 active:bg-blue-800 transition-all shadow-sm"
-            >
-              + Add Product
-            </button>
+          <button 
+          onClick={() => setShowModal(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors"
+        >
+          Add Product
+        </button>
           </div>
+          <ProductModal 
+        isOpen={showModal} 
+        onClose={() => setShowModal(false)} 
+        onRefresh={refreshProducts} 
+      />
         </div>
 
         {/* ================= 2. TWO-COLUMN RESPONSIVE LAYOUT GRID ================= */}
