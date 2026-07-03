@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   status: true,
   image: null
 };
-F
+
 export function useProductForm(onSuccess) {
   const [formData, setFormData] = useState(INITIAL_STATE);
   const [errors, setErrors] = useState({});

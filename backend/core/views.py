@@ -24,7 +24,7 @@ class DashboardView(APIView):
         # 1. Multi-app foundational database entry counts
         total_products = Product.objects.count()
         total_customers = Customer.objects.count()
-        
+        total_categories = Product.objects.values('category').distinct().count()
         # 2. Extract completed checkout transaction historical values
         total_sales_count = Sale.objects.filter(status='PAID').count()
 
@@ -48,6 +48,7 @@ class DashboardView(APIView):
 
         return Response({
             "total_products": total_products,
+            "total_categories": total_categories,
             "total_customers": total_customers,
             "total_sales": total_sales_count,
             "revenue_today": float(revenue_today),

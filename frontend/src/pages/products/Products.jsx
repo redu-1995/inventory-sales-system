@@ -1,47 +1,59 @@
 import React from 'react';
 import { useState } from 'react';
-// Import our custom state engine
-import { useProducts } from '../../hooks/useProducts';
 
-import ProductModal from '../../components/products/ProductModal';
+// Import custom hook layers
+import { useProducts } from '../../hooks/useProducts';
+import {useDashboard} from '../../hooks/useDashboard';
+
 // Import UI presentation layouts
 import ProductStats from '../../components/products/ProductStats';
+import ProductModal from '../../components/products/ProductModal';
 import ProductFilters from '../../components/products/ProductFilters';
 import BulkActions from '../../components/products/BulkActions';
 import ProductTable from '../../components/products/ProductTable';
 import Pagination from '../../components/products/Pagination';
-
-// Import Right Side Insight Component
 import ProductInsights from '../../components/products/ProductInsights';
 
 export default function Products() {
+  const [showModal, setShowModal] = useState(false);
+
+  // 1. Pull core data structure & state metrics from useProducts
   const {
     products,
     paginatedProducts,
-    // statistics,
-    // searchQuery,
-    // setSearchQuery,
-    // categoryFilter,
-    // setCategoryFilter,
-    // brandFilter,
-    // setBrandFilter,
-    // stockStatusFilter,
-    // setStockStatusFilter,
-    // sortBy,
-    // setSortBy,
-    // selectedRowIds,
-    // toggleSelectRow,
-    // toggleSelectAllRows,
-    // deleteSelectedProducts,
-    // resetAllFilters,
-    // currentPage,
-    // setCurrentPage,
-    // totalPages,
-    // filteredCount,
-    error,
+    searchQuery,
+    setSearchQuery,
+    categoryFilter,
+    setCategoryFilter,
+    brandFilter,
+    setBrandFilter,
+    stockStatusFilter,
+    setStockStatusFilter,
+    sortBy,
+    setSortBy,
+    selectedRowIds = [], // Fallback array safely set
+    toggleSelectRow,
+    toggleSelectAllRows,
+    deleteSelectedProducts,
+    resetAllFilters,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    filteredCount,
+    error: productError,
+    loading: productLoading,
+    refreshProducts
   } = useProducts();
-  const [showModal, setShowModal] = useState(false);
-  const { loading, refreshProducts } = useProducts();
+
+  // 2. Fetch cross-module statistics safely from useDashboard using unique aliases
+const { 
+  summary, 
+  loading: dashboardLoading, 
+  error: dashboardError 
+} = useDashboard();
+
+  // Aggregate errors safely to display inside the warning template
+  const combinedError = productError || dashboardError;
 
   return (
     <div className="min-h-screen bg-gray-50/50 p-3 sm:p-5 lg:p-6 font-sans antialiased overflow-x-hidden">
@@ -55,11 +67,12 @@ export default function Products() {
               Manage your inventory products and stock information.
             </p>
           </div>
-                  {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-xs">
-            ⚠️ Connection Error: {error}. Please verify your backend server status.
-          </div>
-        )}
+          
+          {combinedError && (
+            <div className="bg-red-50 border border-red-200 text-red-700 p-2.5 rounded-lg text-xs flex items-center max-w-md">
+              ⚠️ Connection Notice: {combinedError}
+            </div>
+          )}
           
           {/* Compact Action Trigger Controls */}
           <div className="flex items-center gap-1.5 self-start sm:self-center">
@@ -75,32 +88,36 @@ export default function Products() {
             >
               &uarr; Export
             </button>
-          <button 
-          onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors"
-        >
-          Add Product
-        </button>
+            <button 
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-700 transition-colors"
+            >
+              Add Product
+            </button>
           </div>
-          <ProductModal 
-        isOpen={showModal} 
-        onClose={() => setShowModal(false)} 
-        onRefresh={refreshProducts} 
-      />
         </div>
 
+        {/* Modal Controller */}
+        <ProductModal 
+          isOpen={showModal} 
+          onClose={() => setShowModal(false)} 
+          onRefresh={refreshProducts} 
+        />
+
         {/* ================= 2. TWO-COLUMN RESPONSIVE LAYOUT GRID ================= */}
-        {/* Changed to grid-cols-12 layout to give left column more room and reduce right sidebar width */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start w-full">
           
-          {/* LEFT OPERATIONAL WRAPPER: Takes up 9/12ths of the horizontal spacing */}
-          {/* <div className="lg:col-span-9 space-y-4 min-w-0 w-full overflow-hidden"> */}
+          {/* LEFT OPERATIONAL WRAPPER: Takes up 9 out of 12 grid spaces layout */}
+          <div className="lg:col-span-9 space-y-4 min-w-0 w-full overflow-hidden">
             
-            {/* A. Statistics Cards Grid */}
-            {/* <ProductStats statistics={statistics} /> */}
+            {/* A. Statistics Cards Row using the core dashboard hook slice */}
+           <ProductStats 
+              statistics={summary} 
+              loading={dashboardLoading} 
+            />
 
             {/* B. Search & Filtering Toolbar */}
-            {/* <ProductFilters
+            <ProductFilters
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               categoryFilter={categoryFilter}
@@ -113,22 +130,23 @@ export default function Products() {
               setSortBy={setSortBy}
               resetAllFilters={resetAllFilters}
               products={products}
-            /> */}
+            />
 
             {/* C. Batch Processing Area */}
-            {/* <BulkActions 
-              selectedCount={selectedRowIds.length} 
+            <BulkActions 
+              selectedCount={selectedRowIds?.length || 0} 
               onDelete={deleteSelectedProducts} 
-            /> */}
+            />
 
             {/* D. Table Frame with Overflow Constraints */}
-            {/* <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden w-full">
+            <div className="bg-white rounded-lg border border-gray-100 shadow-sm overflow-hidden w-full">
               <div className="overflow-x-auto w-full">
                 <ProductTable 
                   products={paginatedProducts} 
                   selectedRowIds={selectedRowIds}
                   onToggleSelectRow={toggleSelectRow}
                   onToggleSelectAll={toggleSelectAllRows}
+                  loading={productLoading}
                 />
               </div>
               <Pagination 
@@ -139,9 +157,9 @@ export default function Products() {
               />
             </div>
 
-          </div> */}
+          </div>
 
-          {/* RIGHT SIDEBAR WRAPPER: Takes up 3/12ths space with responsive wrapping */}
+          {/* RIGHT SIDEBAR WRAPPER: Takes up 3 out of 12 grid spaces */}
           <div className="lg:col-span-3 min-w-0 w-full">
             <ProductInsights products={products} />
           </div>
