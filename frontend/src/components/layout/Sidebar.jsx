@@ -67,7 +67,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 h-screen bg-[#111827] flex flex-col shadow-lg fixed left-0 top-0 overflow-hidden">
+    <aside className="w-56 h-screen bg-[#111827] flex flex-col shadow-lg fixed left-0 top-0 overflow-hidden">
 
       {/* Logo & Menu */}
       <div className="flex-1 flex flex-col overflow-hidden">

@@ -32,6 +32,7 @@ class SupplierSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     category_name = serializers.ReadOnlyField(source="category.name")
     supplier_name = serializers.ReadOnlyField(source="supplier.company_name")
+    quantity = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -49,6 +50,13 @@ class ProductSerializer(serializers.ModelSerializer):
             "selling_price",
             "image",
             "status",
+            "quantity",
             "created_at",
         ]
         read_only_fields = ["id", "created_at"]
+
+    def get_quantity(self, obj):
+        try:
+            return obj.inventory.quantity
+        except:
+            return 0

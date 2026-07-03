@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from "react";
 
 export default function ProductFilters({
   searchQuery,
@@ -7,98 +7,184 @@ export default function ProductFilters({
   setCategoryFilter,
   brandFilter,
   setBrandFilter,
+  statusFilter,
+  setStatusFilter,
   stockStatusFilter,
   setStockStatusFilter,
   sortBy,
   setSortBy,
   resetAllFilters,
-  products
+  products = [],
+  itemsPerPage = 10,
+  setItemsPerPage,
+  selectedCount = 0,
+  onDeleteSelected = null,
+  onUpdateCategory = null,
+  categories = []
 }) {
-  // Extract unique categories and brands from our sample data array for the dropdown options
-  const categories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
-  const brands = Array.from(new Set(products.map(p => p.brand))).filter(Boolean);
+  const [showEntries, setShowEntries] = useState(itemsPerPage);
+  const [updateCategoryValue, setUpdateCategoryValue] = useState("");
+
+  const handleShowEntriesChange = (value) => {
+    setShowEntries(value);
+    if (setItemsPerPage) setItemsPerPage(value);
+  };
+
+  const isFiltered = searchQuery || categoryFilter || brandFilter || statusFilter || stockStatusFilter;
 
   return (
-    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-6 space-y-4 lg:space-y-0 lg:flex lg:items-center lg:space-x-3">
-      
-      {/* 1. Search Inputs Bar */}
-      <div className="flex-1 relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search products by name or SKU..."
-          className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-        />
-      </div>
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm w-full">
+      {/* Filter Row */}
+      <div className="p-4 border-b border-gray-200">
+        <div className="flex flex-wrap items-center gap-3 w-full">
+          
+          {/* Search Input */}
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+              🔍
+            </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search products..."
+              className="pl-9 pr-3 py-2 bg-white border border-gray-300 rounded-md text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder-gray-400"
+            />
+          </div>
 
-      {/* 2. Responsive Filters Options Tray */}
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:items-center sm:space-x-2 lg:grid-cols-none">
-        
-        {/* Category Dropdown */}
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="block w-full sm:w-44 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">All Categories</option>
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
-        </select>
-
-        {/* Brand Dropdown */}
-        <select
-          value={brandFilter}
-          onChange={(e) => setBrandFilter(e.target.value)}
-          className="block w-full sm:w-40 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">All Brands</option>
-          {brands.map(brand => (
-            <option key={brand} value={brand}>{brand}</option>
-          ))}
-        </select>
-
-        {/* Stock Status Dropdown */}
-        <select
-          value={stockStatusFilter}
-          onChange={(e) => setStockStatusFilter(e.target.value)}
-          className="block w-full sm:w-40 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">All Stock Status</option>
-          <option value="In Stock">In Stock</option>
-          <option value="Low Stock">Low Stock</option>
-          <option value="Out of Stock">Out of Stock</option>
-        </select>
-
-        {/* Sorting Dropdown */}
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="block w-full sm:w-44 px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="newest">Sort: Newest First</option>
-          <option value="oldest">Sort: Oldest First</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-          <option value="best-selling">Best Selling</option>
-        </select>
-
-        {/* Reset Button Widget */}
-        {(searchQuery || categoryFilter || brandFilter || stockStatusFilter || sortBy !== 'newest') && (
-          <button
-            onClick={resetAllFilters}
-            className="col-span-2 sm:col-span-1 px-4 py-2 border border-dashed border-rose-300 text-rose-600 rounded-lg text-sm font-medium hover:bg-rose-50 transition-colors duration-150 flex items-center justify-center space-x-1"
+          {/* Category Filter */}
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
           >
-            <span>Reset</span>
-          </button>
-        )}
+            <option value="">Category</option>
+            {Array.from(new Set(products.map(p => p.category_name).filter(Boolean))).map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+
+
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
+          >
+            <option value="">Status</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+
+          {/* Stock Status Filter */}
+          <select
+            value={stockStatusFilter}
+            onChange={(e) => setStockStatusFilter(e.target.value)}
+            className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
+          >
+            <option value="">Stock Status</option>
+            <option value="In Stock">In Stock</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Out of Stock">Out of Stock</option>
+          </select>
+
+          {/* Sort By */}
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
+          >
+            <option value="">Sort</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+
+          {/* Reset Filters Button */}
+          {isFiltered && (
+            <button
+              onClick={resetAllFilters}
+              className="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-md hover:bg-red-100 hover:text-red-700 transition-colors whitespace-nowrap"
+            >
+              Reset Filters
+            </button>
+          )}
+
+          {/* Show Entries Dropdown */}
+          <div className="flex items-center gap-2 ml-auto">
+            <span className="text-sm text-gray-600">Show</span>
+            <select
+              value={showEntries}
+              onChange={(e) => handleShowEntriesChange(Number(e.target.value))}
+              className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+            <span className="text-sm text-gray-600">entries</span>
+          </div>
+        </div>
       </div>
+
+      {/* Bulk Actions Section - Delete Selected & Update Category */}
+      {selectedCount > 0 && (
+        <div className="p-4 bg-blue-50 border-t border-blue-200">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="text-sm font-medium text-blue-900">
+              {selectedCount} item{selectedCount !== 1 ? 's' : ''} selected
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Update Category Section */}
+              {onUpdateCategory && (
+                <div className="flex items-center gap-2">
+                  <select
+                    value={updateCategoryValue}
+                    onChange={(e) => setUpdateCategoryValue(e.target.value)}
+                    className="bg-white border border-blue-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-blue-400 transition-colors"
+                  >
+                    <option value="">Update Category</option>
+                    {(categories || []).map(cat => (
+                      <option key={cat.id || cat.name} value={cat.id || cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => {
+                      if (updateCategoryValue) {
+                        onUpdateCategory(updateCategoryValue);
+                        setUpdateCategoryValue("");
+                      }
+                    }}
+                    disabled={!updateCategoryValue}
+                    className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Update
+                  </button>
+                </div>
+              )}
+
+              {/* Delete Selected Button */}
+              {onDeleteSelected && (
+                <button
+                  onClick={() => {
+                    if (window.confirm(`Delete ${selectedCount} item${selectedCount !== 1 ? 's' : ''}?`)) {
+                      onDeleteSelected();
+                    }
+                  }}
+                  className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Delete Selected
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

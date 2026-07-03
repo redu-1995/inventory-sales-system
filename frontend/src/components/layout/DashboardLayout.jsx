@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }) {
       <Sidebar />
 
       {/* Main Content Area with left margin for fixed sidebar */}
-      <div className="ml-64 h-screen flex flex-col">
+      <div className="ml-56 h-screen flex flex-col">
         <Header />
         
         {/* Content Area - Scrollable */}
