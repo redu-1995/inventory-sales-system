@@ -64,18 +64,6 @@ export default function ProductFilters({
             ))}
           </select>
 
-
-          {/* Status Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
-          >
-            <option value="">Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-
           {/* Stock Status Filter */}
           <select
             value={stockStatusFilter}

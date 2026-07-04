@@ -112,8 +112,6 @@ export default function Products() {
             setCategoryFilter={setCategoryFilter}
             brandFilter={brandFilter}
             setBrandFilter={setBrandFilter}
-            statusFilter={statusFilter}
-            setStatusFilter={setStatusFilter}
             stockStatusFilter={stockStatusFilter}
             setStockStatusFilter={setStockStatusFilter}
             sortBy={sortBy}

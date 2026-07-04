@@ -25,7 +25,7 @@ export default function ProductModal({ isOpen, onClose, onRefresh }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full flex flex-col overflow-hidden max-h-[90vh]">
         
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50 flex-shrink-0">
           <div>
             <h3 className="text-base font-bold text-gray-900">Add New Product</h3>
             <p className="text-xs text-gray-500">Insert database entry for live batch metrics processing.</p>
@@ -35,8 +35,8 @@ export default function ProductModal({ isOpen, onClose, onRefresh }) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="p-6">
+        <form onSubmit={handleSubmit} className="flex flex-col min-h-0 flex-1">
+          <div className="p-6 overflow-y-auto flex-1">
             <ProductForm 
               formData={formData} 
               errors={errors} 
@@ -47,7 +47,7 @@ export default function ProductModal({ isOpen, onClose, onRefresh }) {
             />
           </div>
 
-          <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-end space-x-3">
+          <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-end space-x-3 flex-shrink-0">
             <button type="button" onClick={onClose} disabled={isSubmitting} className="px-4 py-2 border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-100 disabled:opacity-50">
               Cancel
             </button>
