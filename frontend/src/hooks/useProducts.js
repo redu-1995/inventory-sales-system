@@ -74,9 +74,16 @@ export function useProducts() {
 
   const deleteSelectedProducts = useCallback(async () => {
     try {
-      // If your API supports multi-delete pass selection lists down:
-      // await productAPI.bulkDeleteProducts(selectedRowIds);
-      alert(`Bulk deletion triggered for ${selectedRowIds.length} items`);
+      if (!selectedRowIds || selectedRowIds.length === 0) return;
+
+      // Delete each selected product in parallel and wait for completion
+      await Promise.all(
+        selectedRowIds.map((id) => productAPI.deleteProduct(id).catch(err => {
+          console.error(`Failed to delete product ${id}:`, err);
+        }))
+      );
+
+      // Refresh after deletions and clear selection
       await fetchProducts(); // Force a fresh state reconciliation loop
       setSelectedRowIds([]);
     } catch (err) {

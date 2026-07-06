@@ -26,7 +26,7 @@ export default function ProductTable({
               <input 
                 type="checkbox" 
                 checked={allSelected} 
-                onChange={() => onToggleSelectAll(products.map(p => p.id))} 
+                onChange={() => onToggleSelectAll()} 
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" 
               />
             </th>
@@ -62,7 +62,7 @@ export default function ProductTable({
                   {product.category_name || 'Unassigned'}
                 </td>
                 <td className="p-3 text-gray-500 text-right font-medium text-xs">
-                  ${Number(product.cost_price || 0).toFixed(2)}
+                  {Number(product.cost_price || 0).toFixed(2)} ETB
                 </td>
                 <td className="p-3 text-center font-medium text-gray-900 text-xs">
                   {product.quantity || product.inventory?.quantity || 0}
@@ -87,7 +87,7 @@ export default function ProductTable({
                       <button
                         onClick={() => {
                           if (window.confirm(`Delete "${product.name}"?`)) {
-                            onDelete(product.id);
+                            onDelete(product.id, product.name);
                           }
                         }}
                         className="px-2 py-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-md hover:bg-red-100 transition-colors"
