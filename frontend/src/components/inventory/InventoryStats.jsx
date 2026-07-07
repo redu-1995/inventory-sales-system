@@ -7,7 +7,7 @@ export default function InventoryStats({ summary }) {
     { title: "Out of Stock", value: summary?.out_of_stock || 0, bg: "bg-red-50 text-red-600", border: "border-red-100" },
     { title: "Total Valuation", value: `$${(summary?.inventory_value || 0).toLocaleString()}`, bg: "bg-green-50 text-green-600", border: "border-green-100" }
   ];
-
+console.log("Current summary data:", summary);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card, idx) => (

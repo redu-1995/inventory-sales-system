@@ -1,6 +1,27 @@
 import React from 'react';
 
-export default function InventoryFilters({ search, setSearch, category, setCategory, status, setStatus }) {
+const statusLabels = {
+  IN_STOCK: 'In Stock',
+  LOW_STOCK: 'Low Stock',
+  OUT_OF_STOCK: 'Out of Stock'
+};
+
+export default function InventoryFilters({
+  search,
+  setSearch,
+  category,
+  setCategory,
+  status,
+  setStatus,
+  categories = [],
+  statuses = []
+}) {
+  const renderedStatuses = statuses.length > 0 ? statuses : [
+    { value: 'IN_STOCK', label: statusLabels.IN_STOCK },
+    { value: 'LOW_STOCK', label: statusLabels.LOW_STOCK },
+    { value: 'OUT_OF_STOCK', label: statusLabels.OUT_OF_STOCK }
+  ];
+
   return (
     <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
       <input
@@ -17,8 +38,11 @@ export default function InventoryFilters({ search, setSearch, category, setCateg
           className="px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none"
         >
           <option value="">All Categories</option>
-          <option value="Cosmetics">Cosmetics</option>
-          <option value="Supplements">Supplements</option>
+          {categories.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
         </select>
         <select
           value={status}
@@ -26,9 +50,11 @@ export default function InventoryFilters({ search, setSearch, category, setCateg
           className="px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none"
         >
           <option value="">All Statuses</option>
-          <option value="IN_STOCK">In Stock</option>
-          <option value="LOW_STOCK">Low Stock</option>
-          <option value="OUT_OF_STOCK">Out of Stock</option>
+          {renderedStatuses.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
         </select>
       </div>
     </div>

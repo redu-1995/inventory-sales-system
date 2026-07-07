@@ -4,10 +4,12 @@ from .models import Inventory, StockMovement, PurchaseOrder, PurchaseOrderItem
 
 class InventorySerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product.name')
+    sku = serializers.ReadOnlyField(source='product.sku')
+    category_name = serializers.ReadOnlyField(source='product.category.name')
 
     class Meta:
         model = Inventory
-        fields = ['id', 'product', 'product_name', 'quantity', 'reorder_level', 'updated_at']
+        fields = ['id', 'product', 'product_name', 'sku', 'category_name', 'quantity', 'reorder_level', 'updated_at']
         read_only_fields = ['updated_at']
 
 

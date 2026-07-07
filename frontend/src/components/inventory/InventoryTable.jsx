@@ -2,6 +2,8 @@ import React from 'react';
 import StatusBadge from './StatusBadge';
 
 export default function InventoryTable({ data, onAdjustClick }) {
+  const formatValue = (value) => (value ?? 0).toLocaleString();
+
   if (!data || data.length === 0) {
     return (
       <div className="text-center py-16 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
@@ -28,25 +30,25 @@ export default function InventoryTable({ data, onAdjustClick }) {
           <tr key={item.id} className="hover:bg-slate-50/60 transition-colors group">
             <td className="p-3.5">
               <span className="font-bold text-slate-900 block group-hover:text-blue-600 transition-colors">
-                {item.product_name || `Product Key ID: ${item.product}`}
+                {item.product_name || item.product?.name || `Product Key ID: ${item.product}`}
               </span>
             </td>
             <td className="p-3.5">
               <span className="font-mono text-xs text-slate-500 bg-slate-100/80 px-1.5 py-0.5 rounded">
-                {item.sku || 'N/A'}
+                {item.sku || item.product?.sku || 'N/A'}
               </span>
             </td>
             <td className="p-3.5 text-right font-bold text-slate-800">
-              {item.quantity?.toLocaleString()}
+              {formatValue(item.quantity)}
             </td>
             <td className="p-3.5 text-right text-slate-400 font-medium">
-              {item.minimum_stock_level?.toLocaleString()}
+              {formatValue(item.reorder_level ?? item.minimum_stock_level)}
             </td>
             <td className="p-3.5 text-center">
-              <StatusBadge quantity={item.quantity} minimumLevel={item.minimum_stock_level} />
+              <StatusBadge quantity={item.quantity} minimumLevel={item.reorder_level ?? item.minimum_stock_level ?? 0} />
             </td>
             <td className="p-3.5 text-slate-400 text-xs">
-              {item.last_updated ? new Date(item.last_updated).toLocaleString() : 'No timestamp logged'}
+              {item.updated_at || item.last_updated ? new Date(item.updated_at || item.last_updated).toLocaleString() : 'No timestamp logged'}
             </td>
             <td className="p-3.5 text-center">
               <button

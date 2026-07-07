@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from 'react';
+
+const getInventoryStatus = (item) => {
+  if (item.quantity === 0) return 'OUT_OF_STOCK';
+  if (item.quantity <= (item.reorder_level ?? item.minimum_stock_level ?? 0)) return 'LOW_STOCK';
+  return 'IN_STOCK';
+};
 import { inventoryService } from '../../services/inventoryService';
 
 // Layout & Analytical Data Presenters
@@ -36,6 +42,8 @@ export default function Inventory() {
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [statusOptions, setStatusOptions] = useState([]);
 
   // --- Modal Visibility & Targeted Selection States ---
   const [activeModal, setActiveModal] = useState(null); // 'STOCK_IN' | 'STOCK_OUT' | 'PURCHASE' | 'ADJUST' | null
@@ -66,7 +74,22 @@ export default function Inventory() {
 
       // Map incoming payload array values safely to components
       if (inventoryData) {
-        setInventoryList(inventoryData.results || inventoryData);
+        const items = inventoryData.results || inventoryData;
+        setInventoryList(items);
+
+        const uniqueCategories = Array.from(
+          new Set((items || []).map((item) => item.category_name || item.product?.category?.name).filter(Boolean))
+        ).sort();
+        setCategories(uniqueCategories);
+
+        const uniqueStatuses = Array.from(
+          new Set((items || []).map((item) => getInventoryStatus(item)).filter(Boolean))
+        ).map((value) => ({
+          value,
+          label: value === 'OUT_OF_STOCK' ? 'Out of Stock' : value === 'LOW_STOCK' ? 'Low Stock' : 'In Stock'
+        }));
+        setStatusOptions(uniqueStatuses);
+
         if (inventoryData.count) {
           setTotalPages(Math.ceil(inventoryData.count / 10)); // Assuming default backend limit size = 10
         }
@@ -160,6 +183,8 @@ export default function Inventory() {
               search={search} setSearch={setSearch}
               category={category} setCategory={setCategory}
               status={status} setStatus={setStatus}
+              categories={categories}
+              statuses={statusOptions}
             />
             
             {loading ? (
