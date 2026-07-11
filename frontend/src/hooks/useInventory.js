@@ -119,18 +119,24 @@ export const useInventory = () => {
   /**
    * Action Handler: Adjust/Patch explicit stock properties manually
    */
-  const adjustStock = async (inventoryId, payload) => {
-    setLoading(true);
-    try {
-      const result = await inventoryService.adjustStock(inventoryId, payload);
-      await refreshInventory();
-      return result;
-    } catch (err) {
-      throw err.response?.data || err;
-    } finally {
-      setLoading(false);
-    }
-  };
+  const adjustStock = async (payload) => {
+  setLoading(true);
+  try {
+    // The fixed backend handles IN, OUT, and ADJUST uniformly via POST to /api/stock-movements/
+    // payload shape expects: { product: productId, quantity: value, movement_type: 'ADJUST'|'IN'|'OUT' }
+    const result = await inventoryService.adjustStock(payload);
+    
+    // Refresh your data tables and top navbar KPI summary blocks uniformly
+    await refreshInventory();
+    
+    return result;
+  } catch (err) {
+    // Gracefully bubbling up parsed Django REST Framework structural field errors
+    throw err.response?.data || err;
+  } finally {
+    setLoading(false);
+  }
+};
 
   /**
    * Action Handler: Process automated supplier procurement order

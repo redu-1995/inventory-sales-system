@@ -66,8 +66,20 @@ export const inventoryService = {
    * @param {number} inventoryId - DB Primary Key identifier
    * @param {Object} payload - { quantity: number, minimum_stock_level: number }
    */
-  async adjustStock(inventoryId, payload) {
-    const response = await api.patch(`inventory/inventory/${inventoryId}/`, payload);
+/**
+   * 6. Adjust Stock settings or safety thresholds directly
+   * POST inventory/stock-movements/
+   * Maps straight into StockMovementViewSet using the configured api instance.
+   * @param {Object} payload - { product: number, quantity: number, movement_type: string }
+   */
+  async adjustStock(payload) {
+    // We use the exact same 'api' instance and endpoint pattern as stockIn/stockOut
+    const response = await api.post("inventory/stock-movements/", {
+      product: payload.product,           // Expects integer Product ID
+      quantity: payload.quantity,         // Count value input from forms
+      movement_type: payload.movement_type // 'ADJUST'
+    });
+    
     return response.data;
   },
 

@@ -13,9 +13,14 @@ class InventorySerializer(serializers.ModelSerializer):
         read_only_fields = ['updated_at']
 
 
+
 class StockMovementSerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product.name')
     user_name = serializers.ReadOnlyField(source='user.username')
+    
+    # OVERRIDE: Change the field validation to allow 0 or any integer temporarily 
+    # so DRF does not reject the initial payload before running our custom logic.
+    quantity = serializers.IntegerField()
 
     class Meta:
         model = StockMovement
@@ -25,61 +30,84 @@ class StockMovementSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_at', 'user']
 
-    def validate_quantity(self, value):
-        """Enforce that all recorded movement steps pass positive counts."""
-        if value <= 0:
-            raise serializers.ValidationError("Quantity must be a positive integer greater than zero.")
-        return value
+    def validate(self, data):
+        """
+        Validates the user payload input BEFORE doing any database math.
+        """
+        movement_type = data.get('movement_type')
+        qty = data.get('quantity')
+
+        # 1. Standard actions (IN / OUT) must use a positive payload quantity
+        if movement_type in ['IN', 'OUT']:
+            if qty <= 0:
+                raise serializers.ValidationError(
+                    {"quantity": "Operational quantity must be a positive number greater than zero."}
+                )
+
+        # 2. Reconcile / Audit actions (ADJUST) must be a non-negative absolute target balance
+        elif movement_type == 'ADJUST':
+            if qty < 0:
+                raise serializers.ValidationError(
+                    {"quantity": "Physical stock level cannot be negative."}
+                )
+        else:
+            raise serializers.ValidationError({"movement_type": "Invalid operational movement type."})
+
+        return data
 
     @transaction.atomic
     def create(self, validated_data):
         """
-        Processes stock alterations dynamically based on movement_type rules.
-        Wraps operations inside an atomic transaction block.
+        Executes database state adjustments safely for all three operations.
         """
         product = validated_data['product']
         movement_type = validated_data['movement_type']
         qty = validated_data['quantity']
-        
-        # Pull the authenticated user context from request parameters
         user = self.context['request'].user
 
-        # Fetch or initialize the target inventory row using select_for_update to lock it
+        # Fetch or safely initialize the inventory tracker
         inventory, created = Inventory.objects.select_for_update().get_or_create(
             product=product,
             defaults={'quantity': 0, 'reorder_level': 10}
         )
 
-        # Apply specific math actions based on system logic flows
+        # This will store the final positive integer written to the StockMovement table log
+        final_log_qty = qty
+
         if movement_type == 'IN':
             inventory.quantity += qty
+            final_log_qty = qty  # Keep the positive number for the log
 
         elif movement_type == 'OUT':
             if inventory.quantity < qty:
                 raise serializers.ValidationError(
-                    {"quantity": f"Insufficient stock for {product.name}. Available: {inventory.quantity}"}
+                    {"quantity": f"Insufficient warehouse stock for {product.name}. Available: {inventory.quantity}"}
                 )
             inventory.quantity -= qty
+            final_log_qty = qty  # Keep the positive number for the log
 
         elif movement_type == 'ADJUST':
-            # For manual corrections, the quantity field represents the *new exact balance*
+            # Compute difference: [New Count] - [Current DB stock]
+            discrepancy = qty - inventory.quantity
+            
+            # The log entry must capture the absolute variation value as a positive integer 
+            # to accommodate database model properties safely.
+            final_log_qty = abs(discrepancy)
+            
+            # Override the current inventory with the absolute physical target level
             inventory.quantity = qty
 
-        else:
-            raise serializers.ValidationError({"movement_type": "Invalid movement type requested."})
-
-        # Commit stock balance adjustment to database
+        # 1. Update the master inventory balance row
         inventory.save()
 
-        # Save and return the stock movement log entry
+        # 2. Write the transaction history row using a clean positive count
         movement = StockMovement.objects.create(
             product=product,
             movement_type=movement_type,
-            quantity=qty,
+            quantity=final_log_qty,  # Always a positive integer >= 0
             user=user
         )
         return movement
-
 
 # Purchase Order mappings remain clean as they are handled during state updates
 class PurchaseOrderItemSerializer(serializers.ModelSerializer):

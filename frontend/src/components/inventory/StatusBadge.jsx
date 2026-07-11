@@ -16,7 +16,7 @@ export default function StatusBadge({ quantity, minimumLevel }) {
   }
 
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeClasses}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold border ${badgeClasses}`}>
       <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${isOut ? 'bg-red-500' : isLow ? 'bg-amber-500' : 'bg-green-500'}`} />
       {statusText}
     </span>

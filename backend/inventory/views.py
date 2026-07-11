@@ -70,14 +70,25 @@ class InventoryViewSet(ModelViewSet):
         return super().list(request, *args, **kwargs)
 
 
+
+
 class StockMovementViewSet(ModelViewSet):
-    queryset = StockMovement.objects.all()
+    """
+    A viewset that provides default handling for logging and reviewing stock changes.
+    All business logic for IN, OUT, and ADJUST operations runs securely within 
+    the overridden StockMovementSerializer pipeline.
+    """
+    # Order by newest changes first so logs display correctly on dashboard UI
+    queryset = StockMovement.objects.all().order_by('-created_at')
     serializer_class = StockMovementSerializer
   
 
     def perform_create(self, serializer):
+        """
+        Binds the currently authenticated user to the history row 
+        automatically when a standard POST action is made.
+        """
         serializer.save(user=self.request.user)
-
 
 class PurchaseOrderViewSet(ModelViewSet):
     queryset = PurchaseOrder.objects.all()

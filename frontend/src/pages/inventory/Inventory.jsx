@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
-
-const getInventoryStatus = (item) => {
-  if (item.quantity === 0) return 'OUT_OF_STOCK';
-  if (item.quantity <= (item.reorder_level ?? item.minimum_stock_level ?? 0)) return 'LOW_STOCK';
-  return 'IN_STOCK';
-};
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  Calendar,
+  ChevronDown,
+  Download,
+  FileSpreadsheet,
+  FileText,
+  RefreshCw,
+  SlidersHorizontal,
+  Upload
+} from 'lucide-react';
 import { inventoryService } from '../../services/inventoryService';
+import { productAPI } from '../../services/productService';
 
-// Layout & Analytical Data Presenters
 import InventoryStats from '../../components/inventory/InventoryStats';
 import InventoryFilters from '../../components/inventory/InventoryFilters';
 import InventoryTable from '../../components/inventory/InventoryTable';
@@ -17,14 +21,18 @@ import LowStockPanel from '../../components/inventory/LowStockPanel';
 import RecommendedRestocking from '../../components/inventory/RecommendedRestocking';
 import Pagination from '../../components/inventory/Pagination';
 
-// Workflow State Modification Overlays
 import StockInModal from '../../components/inventory/StockInModal';
 import StockOutModal from '../../components/inventory/StockOutModal';
 import StockAdjustmentModal from '../../components/inventory/StockAdjustmentModal';
 import CreatePurchaseRequestModal from '../../components/inventory/CreatePurchaseRequestModal';
 
+const getInventoryStatus = (item) => {
+  if (item.quantity === 0) return 'OUT_OF_STOCK';
+  if (item.quantity <= (item.reorder_level ?? item.minimum_stock_level ?? 0)) return 'LOW_STOCK';
+  return 'IN_STOCK';
+};
+
 export default function Inventory() {
-  // --- Core Reactive Data States ---
   const [inventoryList, setInventoryList] = useState([]);
   const [summaryMetrics, setSummaryMetrics] = useState({
     total_stock_units: 0,
@@ -35,8 +43,8 @@ export default function Inventory() {
   const [lowStockAlerts, setLowStockAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [exportOpen, setExportOpen] = useState(false);
 
-  // --- Search, Filter & Pagination States ---
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState('');
@@ -45,20 +53,54 @@ export default function Inventory() {
   const [categories, setCategories] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
 
-  // --- Modal Visibility & Targeted Selection States ---
-  const [activeModal, setActiveModal] = useState(null); // 'STOCK_IN' | 'STOCK_OUT' | 'PURCHASE' | 'ADJUST' | null
+  const [activeModal, setActiveModal] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [stockInProducts, setStockInProducts] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [stockInOptionsLoading, setStockInOptionsLoading] = useState(false);
+  const [stockOutItems, setStockOutItems] = useState([]);
+  const [stockOutOptionsLoading, setStockOutOptionsLoading] = useState(false);
 
-  // --- Lifecycle Hook: Query Matrix Synchronizer ---
-  useEffect(() => {
-    fetchInventoryData();
-  }, [search, category, status, page]);
+  const loadStockInOptions = async () => {
+    setStockInOptionsLoading(true);
+    try {
+      const [productsData, suppliersData] = await Promise.all([
+        productAPI.getProducts(),
+        productAPI.getSuppliers()
+      ]);
 
-  // Combined parallel API invocation dispatcher
-  const fetchInventoryData = async () => {
+      setStockInProducts(productsData.results || productsData || []);
+      setSuppliers(suppliersData.results || suppliersData || []);
+    } catch (err) {
+      console.error('Unable to load stock-in options:', err);
+      setError('Unable to load products and suppliers for stock in. Please try again.');
+    } finally {
+      setStockInOptionsLoading(false);
+    }
+  };
+
+  const openStockInModal = () => {
+    setActiveModal('STOCK_IN');
+    loadStockInOptions();
+  };
+
+  const openStockOutModal = async () => {
+    setActiveModal('STOCK_OUT');
+    setStockOutOptionsLoading(true);
+    try {
+      const inventoryData = await inventoryService.getInventory({ page_size: 1000 });
+      setStockOutItems(inventoryData.results || inventoryData || []);
+    } catch (err) {
+      console.error('Unable to load stock-out options:', err);
+      setError('Unable to load inventory for stock out. Please try again.');
+    } finally {
+      setStockOutOptionsLoading(false);
+    }
+  };
+
+  const fetchInventoryData = useCallback(async () => {
     setLoading(true);
     try {
-      // Build filters according to Django backend validation architecture
       const filters = {
         page,
         search: search || undefined,
@@ -72,44 +114,42 @@ export default function Inventory() {
         inventoryService.getLowStock()
       ]);
 
-      // Map incoming payload array values safely to components
       if (inventoryData) {
         const items = inventoryData.results || inventoryData;
         setInventoryList(items);
-
-        const uniqueCategories = Array.from(
-          new Set((items || []).map((item) => item.category_name || item.product?.category?.name).filter(Boolean))
-        ).sort();
-        setCategories(uniqueCategories);
-
-        const uniqueStatuses = Array.from(
-          new Set((items || []).map((item) => getInventoryStatus(item)).filter(Boolean))
-        ).map((value) => ({
-          value,
-          label: value === 'OUT_OF_STOCK' ? 'Out of Stock' : value === 'LOW_STOCK' ? 'Low Stock' : 'In Stock'
-        }));
-        setStatusOptions(uniqueStatuses);
+        setCategories(
+          Array.from(new Set((items || []).map((item) => item.category_name || item.product?.category?.name).filter(Boolean))).sort()
+        );
+        setStatusOptions(
+          Array.from(new Set((items || []).map((item) => getInventoryStatus(item)).filter(Boolean))).map((value) => ({
+            value,
+            label: value === 'OUT_OF_STOCK' ? 'Out of Stock' : value === 'LOW_STOCK' ? 'Low Stock' : 'In Stock'
+          }))
+        );
 
         if (inventoryData.count) {
-          setTotalPages(Math.ceil(inventoryData.count / 10)); // Assuming default backend limit size = 10
+          setTotalPages(Math.ceil(inventoryData.count / 10));
         }
       }
+
       if (summaryData) setSummaryMetrics(summaryData);
-      if (lowStockData) setLowStockAlerts(lowStockData);
-      
+      if (lowStockData) setLowStockAlerts(lowStockData.results || lowStockData);
       setError(null);
     } catch (err) {
-      console.error("Data pipeline synchronization failure:", err);
-      setError("Unable to sync view states with the server database. Verify gateway runtime links.");
+      console.error('Unable to load inventory data:', err);
+      setError('Unable to refresh inventory data. Check the API connection and try again.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [category, page, search, status]);
 
-  // --- Operation Workflow Handlers ---
+  useEffect(() => {
+    fetchInventoryData();
+  }, [fetchInventoryData]);
+
   const handleStockInSubmit = async (payload) => {
     await inventoryService.stockIn(payload);
-    fetchInventoryData(); // Re-trigger reactive fetch cycle to cascade metric updates
+    fetchInventoryData();
   };
 
   const handleStockOutSubmit = async (payload) => {
@@ -117,14 +157,21 @@ export default function Inventory() {
     fetchInventoryData();
   };
 
-  const handleAdjustmentSubmit = async (id, payload) => {
-    await inventoryService.adjustStock(id, payload);
-    fetchInventoryData();
-  };
+ const handleAdjustmentSubmit = async (payload) => {
+  try {
+    setError(null);
+    await inventoryService.adjustStock(payload); // Single parameter pass-through
+    setActiveModal(null);                       // Automatically dismiss modal on success
+    setSelectedItem(null);                      // Clean up selected memory
+    fetchInventoryData();                       // Refresh master listings
+  } catch (err) {
+    console.error('Adjustment failed:', err);
+    setError(err.response?.data?.message || 'Failed to complete physical audit adjustment.');
+  }
+};
 
   const handleCreatePurchaseSubmit = async (payload) => {
-    // Intended hook location for your separate procurement/supplier service layer
-    console.log("Mocking purchase order payload pipeline initialization:", payload);
+    console.log('Purchase request payload:', payload);
     return Promise.resolve();
   };
 
@@ -133,115 +180,184 @@ export default function Inventory() {
     setActiveModal('ADJUST');
   };
 
+  const actionButtonClass = 'h-10 inline-flex items-center justify-center gap-2 px-4 rounded-md text-sm font-bold text-white shadow-sm transition-colors';
+
   return (
-    <div className="p-6 bg-slate-50/50 min-h-screen space-y-6 font-sans">
-      
-      {/* 1. View Header Actions Ribbon */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-5">
+    <div className="min-h-screen bg-slate-50 p-5 lg:p-7 space-y-5 font-sans">
+      <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight">Master Inventory Operations</h1>
-          <p className="text-xs text-slate-500 mt-0.5">Control live tracking, parameters reconciliation, and stock buffers.</p>
+          <h1 className="text-3xl font-black text-slate-950 tracking-tight">Inventory Management</h1>
+          <p className="text-sm text-slate-600 mt-2">Monitor stock levels, inventory movements, and restocking activities.</p>
         </div>
-        <div className="flex flex-wrap gap-2 shrink-0">
-          <button 
-            onClick={() => setActiveModal('STOCK_IN')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm transition"
+
+        <div className="flex flex-col items-stretch lg:items-end gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+
+            <span className="text-sm text-slate-600">
+              Last updated: 2 minutes ago <span className="ml-1 inline-block w-2 h-2 rounded-full bg-emerald-500" />
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-3 justify-start lg:justify-end">
+            <button 
+            type="button" // CRITICAL: Stops any parent form from processing a layout reset
+            onClick={openStockInModal}
+            className={`${actionButtonClass} bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium`}
           >
-            📥 Log Stock In
+            <Upload size={16} />
+            Stock In
           </button>
-          <button 
-            onClick={() => setActiveModal('STOCK_OUT')}
-            className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-sm transition"
+                        
+                          <button onClick={openStockOutModal} className={`${actionButtonClass} bg-red-600 hover:bg-red-700`}>
+              <Download size={16} />
+              Stock Out
+            </button>
+                <button 
+            type="button"
+            onClick={() => {
+              console.log('--- DIAGNOSTIC: Adjustment Button Clicked ---');
+              console.log('Current activeModal state before change:', activeModal);
+              console.log('Setting activeModal to: "ADJUST"');
+              
+              setActiveModal('ADJUST');
+              setSelectedItem(null);
+              
+              if (typeof loadStockInOptions === 'function') {
+                console.log('Triggering loadStockInOptions()...');
+                loadStockInOptions();
+              } else {
+                console.warn('WARNING: loadStockInOptions function is not defined in this scope!');
+              }
+            }}
+            className={`${actionButtonClass} bg-orange-500 hover:bg-orange-600`}
           >
-            📤 Log Stock Out
+            <SlidersHorizontal size={16} />
+            Inventory Adjustment
           </button>
-          <button 
-            onClick={() => setActiveModal('PURCHASE')}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg shadow-sm transition"
-          >
-            📝 Procure Reorder
-          </button>
+                      <div className="relative">
+              <button onClick={() => setExportOpen((open) => !open)} className={`${actionButtonClass} bg-blue-700 hover:bg-blue-800`}>
+                <FileText size={16} />
+                Export
+                <ChevronDown size={14} />
+              </button>
+              {exportOpen && (
+                <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border border-slate-200 bg-white shadow-lg py-2">
+                  <button className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2">
+                    <FileText size={15} className="text-red-600" />
+                    Export PDF
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2">
+                    <FileSpreadsheet size={15} className="text-emerald-600" />
+                    Export Excel
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2">
+                    <FileText size={15} className="text-blue-600" />
+                    Export CSV
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 2. Global Error Indicators Banner */}
       {error && (
-        <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-medium flex items-center gap-2">
-          <span>⚠️</span> {error}
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm font-medium">
+          {error}
         </div>
       )}
 
-      {/* 3. Primary Analytical Dashboard Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* KPI Analytics Cards */}
-          <InventoryStats summary={summaryMetrics} />
+      <InventoryStats summary={summaryMetrics} />
 
-          {/* Filtering Engine & Live Main Data Table */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-            <InventoryFilters 
-              search={search} setSearch={setSearch}
-              category={category} setCategory={setCategory}
-              status={status} setStatus={setStatus}
+      <div className="grid grid-cols-1 2xl:grid-cols-12 gap-4">
+        <div className="2xl:col-span-2">
+          <InventoryStatusChart summary={summaryMetrics} />
+        </div>
+
+        <div className="2xl:col-span-7 bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-slate-200">
+            <InventoryFilters
+              search={search}
+              setSearch={setSearch}
+              category={category}
+              setCategory={setCategory}
+              status={status}
+              setStatus={setStatus}
               categories={categories}
               statuses={statusOptions}
             />
-            
-            {loading ? (
-              <div className="py-20 text-center text-xs font-medium text-slate-400 space-y-2">
-                <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"/>
-                <p>Streaming master node ledger records...</p>
-              </div>
-            ) : (
-              <>
-                <div className="overflow-x-auto rounded-lg border border-slate-100">
-                  <InventoryTable data={inventoryList} onAdjustClick={openAdjustmentModal} />
-                </div>
-                <Pagination page={page} setPage={setPage} totalPages={totalPages} />
-              </>
-            )}
           </div>
+
+          {loading ? (
+            <div className="py-20 text-center text-sm font-medium text-slate-500 space-y-3">
+              <div className="w-7 h-7 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
+              <p>Loading inventory records...</p>
+            </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <InventoryTable data={inventoryList} onAdjustClick={openAdjustmentModal} />
+              </div>
+              <div className="px-4 pb-4">
+                <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+              </div>
+            </>
+          )}
         </div>
 
-        {/* Side-Dock Widgets Panel Column */}
-        <div className="space-y-6">
-          {/* Working Capital Component Card */}
-          <InventoryValueCard 
-            totalValuation={summaryMetrics?.inventory_value} 
-            outOfStockCount={summaryMetrics?.out_of_stock}
-          />
-
-          {/* Spread Visualization Chart Block */}
-          <InventoryStatusChart summary={summaryMetrics} />
-
-          {/* Critical Risk Alert Blocks */}
-          <LowStockPanel 
-            lowStockProducts={lowStockAlerts} 
-            onCreatePurchaseClick={() => setActiveModal('PURCHASE')}
-          />
-
-          {/* Automated Reorder Wizard Metrics */}
-          <RecommendedRestocking lowStock={lowStockAlerts} />
+        <div className="2xl:col-span-3 space-y-4">
+          <LowStockPanel lowStockProducts={lowStockAlerts} onCreatePurchaseClick={() => setActiveModal('PURCHASE')} />
+          <RecommendedRestocking lowStock={lowStockAlerts} onReorderTrigger={() => setActiveModal('PURCHASE')} />
         </div>
       </div>
 
-      {/* --- Dynamic Workflow Modal Render Switches --- */}
+      <InventoryValueCard totalValuation={summaryMetrics?.inventory_value} />
+
       {activeModal === 'STOCK_IN' && (
-        <StockInModal onSubmit={handleStockInSubmit} onClose={() => setActiveModal(null)} />
+        <StockInModal
+          products={stockInProducts}
+          suppliers={suppliers}
+          optionsLoading={stockInOptionsLoading}
+          onSubmit={handleStockInSubmit}
+          onClose={() => setActiveModal(null)}
+        />
       )}
       {activeModal === 'STOCK_OUT' && (
-        <StockOutModal onSubmit={handleStockOutSubmit} onClose={() => setActiveModal(null)} />
+        <StockOutModal
+          inventoryItems={stockOutItems}
+          optionsLoading={stockOutOptionsLoading}
+          onSubmit={handleStockOutSubmit}
+          onClose={() => setActiveModal(null)}
+        />
       )}
       {activeModal === 'PURCHASE' && (
         <CreatePurchaseRequestModal onSubmit={handleCreatePurchaseSubmit} onClose={() => setActiveModal(null)} />
       )}
-      {activeModal === 'ADJUST' && selectedItem && (
-        <StockAdjustmentModal 
-          item={selectedItem} 
-          onSubmit={handleAdjustmentSubmit} 
-          onClose={() => { setActiveModal(null); setSelectedItem(null); }} 
-        />
-      )}
+       {activeModal === 'ADJUST' && (
+  <StockAdjustmentModal 
+    item={selectedItem} 
+    // Safeguard: Fallback to an empty array if products aren't fetched yet
+    products={stockInProducts || []} 
+    onSubmit={async (payload) => {
+      try {
+        const completePayload = {
+          ...payload,
+          inventory_id: selectedItem ? selectedItem.id : payload.inventory_id
+        };
+        await inventoryService.adjustStock(completePayload); 
+        setActiveModal(null);
+        setSelectedItem(null);
+        fetchInventoryData(); 
+      } catch (err) {
+        console.error(err);
+      }
+    }}
+    onClose={() => {
+      setActiveModal(null);
+      setSelectedItem(null);
+    }} 
+  />
+)}
     </div>
   );
 }
