@@ -4,7 +4,8 @@ from .views import (
     InventoryViewSet,
     StockMovementViewSet,
     PurchaseOrderViewSet,
-    PurchaseOrderItemViewSet
+    PurchaseOrderItemViewSet,
+    InventoryExportViewSet
 )
 
 router = DefaultRouter()
@@ -32,4 +33,5 @@ router.register(
     PurchaseOrderItemViewSet,
     basename='purchase-order-item'
 )
+router.register(r'exports', InventoryExportViewSet, basename='inventory-export')
 urlpatterns = router.urls

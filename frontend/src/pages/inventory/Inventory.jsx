@@ -44,7 +44,7 @@ export default function Inventory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [exportOpen, setExportOpen] = useState(false);
-
+  const [exporting, setExporting] = useState(false);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState('');
@@ -179,6 +179,20 @@ export default function Inventory() {
     setSelectedItem(item);
     setActiveModal('ADJUST');
   };
+  const handleExport = async (format) => {
+  try {
+    setExporting(true);
+    setExportOpen(false); // Instantly close the dropdown menu for a clean UX
+    
+    // Call our service (which handles raw binary response conversions into physical downloads)
+    await inventoryService.exportData(format);
+  } catch (err) {
+    console.error(`Error exporting to ${format.toUpperCase()}:`, err);
+    alert(`Failed to compile and download ${format.toUpperCase()} report.`);
+  } finally {
+    setExporting(false);
+  }
+};
 
   const actionButtonClass = 'h-10 inline-flex items-center justify-center gap-2 px-4 rounded-md text-sm font-bold text-white shadow-sm transition-colors';
 
@@ -234,29 +248,48 @@ export default function Inventory() {
             <SlidersHorizontal size={16} />
             Inventory Adjustment
           </button>
-                      <div className="relative">
-              <button onClick={() => setExportOpen((open) => !open)} className={`${actionButtonClass} bg-blue-700 hover:bg-blue-800`}>
-                <FileText size={16} />
-                Export
-                <ChevronDown size={14} />
-              </button>
-              {exportOpen && (
-                <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border border-slate-200 bg-white shadow-lg py-2">
-                  <button className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2">
-                    <FileText size={15} className="text-red-600" />
-                    Export PDF
-                  </button>
-                  <button className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2">
-                    <FileSpreadsheet size={15} className="text-emerald-600" />
-                    Export Excel
-                  </button>
-                  <button className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2">
-                    <FileText size={15} className="text-blue-600" />
-                    Export CSV
-                  </button>
-                </div>
-              )}
-            </div>
+             <div className="relative">
+                <button 
+                  onClick={() => !exporting && setExportOpen((open) => !open)} 
+                  disabled={exporting}
+                  className={`${actionButtonClass} bg-blue-700 hover:bg-blue-800 disabled:opacity-50 inline-flex items-center gap-2`}
+                >
+                  <FileText size={16} />
+                  {exporting ? 'Exporting...' : 'Export'}
+                  <ChevronDown size={14} />
+                </button>
+                
+                {exportOpen && (
+                  <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border border-slate-200 bg-white shadow-lg py-2">
+                    <button 
+                      type="button"
+                      onClick={() => handleExport('pdf')}
+                      className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer"
+                    >
+                      <FileText size={15} className="text-red-600" />
+                      Export PDF
+                    </button>
+                    
+                    <button 
+                      type="button"
+                      onClick={() => handleExport('excel')}
+                      className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer"
+                    >
+                      <FileSpreadsheet size={15} className="text-emerald-600" />
+                      Export Excel
+                    </button>
+                    
+                    <button 
+                      type="button"
+                      onClick={() => handleExport('csv')}
+                      className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer"
+                    >
+                      <FileText size={15} className="text-blue-600" />
+                      Export CSV
+                    </button>
+                  </div>
+                )}
+              </div>
           </div>
         </div>
       </div>

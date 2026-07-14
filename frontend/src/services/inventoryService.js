@@ -118,12 +118,26 @@ export const inventoryService = {
    * 10. Streaming report data generation downloads
    * GET /api/inventory/inventory/export/ or calculated client-side
    */
-  async exportInventory(filters = {}) {
-    const response = await api.get("inventory/inventory/", {
-      params: { ...filters, export: "excel" },
-      responseType: "blob", 
+ exportData: async (format) => {
+    // format accepts 'csv', 'excel', or 'pdf'
+    const response = await api.get(`inventory/exports/export-${format}/`, {
+    responseType: 'blob' 
+  });
+    
+    // Create an invisible virtual anchor tag and simulate a physical click to prompt saving
+    const blob = new Blob([response.data], { 
+      type: format === 'pdf' 
+        ? 'application/pdf' 
+        : (format === 'excel' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'text/csv') 
     });
-    return response.data;
+    
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `inventory_export_${new Date().toISOString().slice(0,10)}.${format === 'excel' ? 'xlsx' : format}`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
   }
 };
 

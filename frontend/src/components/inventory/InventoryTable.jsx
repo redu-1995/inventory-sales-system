@@ -71,13 +71,7 @@ export default function InventoryTable({ data, onAdjustClick }) {
                 >
                   <Edit3 size={15} />
                 </button>
-                <button
-                  type="button"
-                  className="w-8 h-8 inline-flex items-center justify-center rounded-md text-slate-500 hover:text-red-600 hover:bg-red-50"
-                  aria-label={`Delete ${getProductName(item)}`}
-                >
-                  <Trash2 size={15} />
-                </button>
+                
               </div>
             </td>
           </tr>
