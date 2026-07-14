@@ -11,13 +11,13 @@ import {
 } from 'lucide-react';
 import { inventoryService } from '../../services/inventoryService';
 import { productAPI } from '../../services/productService';
-
+import { useInventory } from '../../hooks/useInventory';
 import InventoryStats from '../../components/inventory/InventoryStats';
 import InventoryFilters from '../../components/inventory/InventoryFilters';
 import InventoryTable from '../../components/inventory/InventoryTable';
 import InventoryValueCard from '../../components/inventory/InventoryValueCard';
 import InventoryStatusChart from '../../components/inventory/InventoryStatusChart';
-import LowStockPanel from '../../components/inventory/LowStockPanel';
+import LowStockAlerts from '../../components/inventory/LowStockAlerts';
 import RecommendedRestocking from '../../components/inventory/RecommendedRestocking';
 import Pagination from '../../components/inventory/Pagination';
 
@@ -339,7 +339,19 @@ export default function Inventory() {
         </div>
 
         <div className="2xl:col-span-3 space-y-4">
-          <LowStockPanel lowStockProducts={lowStockAlerts} onCreatePurchaseClick={() => setActiveModal('PURCHASE')} />
+         <div className="space-y-6">
+      {/* KPI Stats Widgets up here */}
+      
+      {/* Urgent Alerts section */}
+      <LowStockAlerts 
+          lowStockList={lowStockAlerts}  // Fixed: Uses your locally fetched state variable
+          loading={loading}              // Fixed: Tied to your local loading state
+          error={error}                  // Fixed: Tied to your local error state
+          onRefresh={fetchInventoryData} // Fixed: Re-runs the component's main fetch block
+        />
+      
+      {/* Standard Complete Inventory Grid Tables down here */}
+    </div>
           <RecommendedRestocking lowStock={lowStockAlerts} onReorderTrigger={() => setActiveModal('PURCHASE')} />
         </div>
       </div>

@@ -136,8 +136,14 @@ export const inventoryService = {
     link.href = url;
     link.setAttribute('download', `inventory_export_${new Date().toISOString().slice(0,10)}.${format === 'excel' ? 'xlsx' : format}`);
     document.body.appendChild(link);
-    link.click();
+    link.click();                           
     link.parentNode.removeChild(link);
+  },
+  
+  async getLowStockAlerts() {
+   
+    const response = await api.get("inventory/low-stock-alerts/");
+    return response.data;
   }
 };
 

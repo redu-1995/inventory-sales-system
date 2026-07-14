@@ -169,6 +169,7 @@ export const useInventory = () => {
       console.error("Excel Report streaming generation failure:", err);
     }
   };
+  
 
   return {
     inventory,
@@ -197,5 +198,34 @@ export const useInventory = () => {
     adjustStock,
     createPurchaseOrder,
     exportReport
+  };
+  const [lowStockList, setLowStockList] = useState([]);
+  const [loadingAlerts, setLoadingAlerts] = useState(false);
+  const [alertsError, setAlertsError] = useState(null);
+
+  const fetchLowStockAlerts = useCallback(async () => {
+    try {
+      setLoadingAlerts(true);
+      const data = await inventoryService.getLowStockAlerts();
+      setLowStockList(data);
+      setAlertsError(null);
+    } catch (err) {
+      console.error("Error fetching stock alert records:", err);
+      setAlertsError("Failed to fetch urgent stock alerts.");
+    } finally {
+      setLoadingAlerts(false);
+    }
+  }, []);
+
+  // Fetch automatically on mount
+  useEffect(() => {
+    fetchLowStockAlerts();
+  }, [fetchLowStockAlerts]);
+
+  return {
+    lowStockList,
+    loadingAlerts,
+    alertsError,
+    refreshAlerts: fetchLowStockAlerts 
   };
 };

@@ -303,3 +303,55 @@ class InventoryExportViewSet(ReadOnlyModelViewSet):
 
         doc.build(story)
         return response
+    
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.db.models import F
+from .models import Inventory
+
+class LowStockAlertViewSet(ViewSet):
+    """
+    ViewSet to handle low stock reports and alerts.
+    Accessible via standard list action on the router.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        """
+        GET /api/inventory/low-stock-alerts/
+        Returns only the products requiring immediate attention (Quantity <= Reorder Level).
+        """
+        # Fetch items where quantity is less than or equal to reorder level or minimum stock level
+        alert_items = Inventory.objects.filter(quantity__lte=F('reorder_level')) | Inventory.objects.filter(quantity__lte=F('minimum_stock_level'))
+        
+        results = []
+        for item in alert_items.select_related('product', 'product__category'):
+            qty = item.quantity
+            limit = getattr(item, 'reorder_level', None) or getattr(item, 'minimum_stock_level', None) or 0
+            
+            # Avoid division by zero if limit is misconfigured as 0
+            if limit > 0:
+                percentage = (qty / limit) * 100
+            else:
+                percentage = 0
+
+            # Prioritization rules
+            if qty == 0 or percentage <= 50:
+                priority = "Critical"  # 🔴 Critical
+            else:
+                priority = "Low"       # 🟡 Low
+
+            results.append({
+                "id": item.id,
+                "product_name": item.product.name,
+                "sku": item.product.sku,
+                "quantity": qty,
+                "reorder_level": limit,
+                "priority": priority
+            })
+
+        # Sort results so Critical priorities bubble to the very top
+        results.sort(key=lambda x: (0 if x['priority'] == 'Critical' else 1, x['quantity']))
+
+        return Response(results)

@@ -2,10 +2,13 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     InventoryViewSet,
+    LowStockAlertViewSet,
     StockMovementViewSet,
     PurchaseOrderViewSet,
     PurchaseOrderItemViewSet,
-    InventoryExportViewSet
+    InventoryExportViewSet,
+
+    
 )
 
 router = DefaultRouter()
@@ -34,4 +37,10 @@ router.register(
     basename='purchase-order-item'
 )
 router.register(r'exports', InventoryExportViewSet, basename='inventory-export')
+
+router.register(
+    r'low-stock-alerts', 
+    LowStockAlertViewSet,
+    basename='low-stock-alerts'
+)
 urlpatterns = router.urls
