@@ -7,7 +7,7 @@ export const useInventory = () => {
   const [stockMovements, setStockMovements] = useState([]);
   const [recentActivities, setRecentActivities] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
-  const [lowStockList, setLowStockList] = useState([]); // Moved up
+  const [lowStockList, setLowStockList] = useState([]); 
   
   // KPI Metrics Calculation States
   const [summary, setSummary] = useState({
@@ -19,10 +19,11 @@ export const useInventory = () => {
 
   // UX Lifecycle Hooks
   const [loading, setLoading] = useState(false);
-  const [loadingAlerts, setLoadingAlerts] = useState(false); // Moved up
+  const [loadingAlerts, setLoadingAlerts] = useState(false); 
   const [error, setError] = useState(null);
-  const [alertsError, setAlertsError] = useState(null); // Moved up
+  const [alertsError, setAlertsError] = useState(null); 
   const [success, setSuccess] = useState(false);
+  const [analytics, setAnalytics] = useState(null);
 
   // Search & Filtration Control Parameters
   const [search, setSearch] = useState('');
@@ -94,6 +95,22 @@ export const useInventory = () => {
       setAlertsError("Failed to fetch urgent stock alerts.");
     } finally {
       setLoadingAlerts(false);
+    }
+  }, []);
+
+  /**
+   * Fetch System Analytics Data
+   */
+  const fetchAnalytics = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await inventoryService.getInventoryAnalytics();
+      setAnalytics(data);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to retrieve analytics data.');
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -200,7 +217,7 @@ export const useInventory = () => {
   };
 
   /**
-   * Resets the status states of the hook (useful when closing modals or changing forms)
+   * Resets the status states of the hook
    */
   const resetStatus = useCallback(() => {
     setError(null);
@@ -220,6 +237,11 @@ export const useInventory = () => {
     fetchLowStockAlerts();
   }, [fetchLowStockAlerts]);
 
+  // Fetch analytics automatically on mount
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
+
 
   // --- 4. SINGLE UNIFIED EXPORT RETURN ---
   return {
@@ -229,12 +251,14 @@ export const useInventory = () => {
     recentActivities,
     lowStockProducts,
     summary,
+    analytics, // <-- Added safely here
     
     // Alerts states
     lowStockList,
     loadingAlerts,
     alertsError,
     refreshAlerts: fetchLowStockAlerts,
+    refreshAnalytics: fetchAnalytics, // <-- Added safely here
 
     // UX States
     loading,
@@ -262,8 +286,8 @@ export const useInventory = () => {
     stockOut,
     adjustStock,
     createPurchaseOrder,
-    createPurchaseRequest, // Now visible!
+    createPurchaseRequest, 
     exportReport,
-    resetStatus           // Now visible!
+    resetStatus           
   };
 };

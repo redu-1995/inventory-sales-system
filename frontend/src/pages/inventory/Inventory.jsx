@@ -15,7 +15,7 @@ import { useInventory } from '../../hooks/useInventory';
 import InventoryStats from '../../components/inventory/InventoryStats';
 import InventoryFilters from '../../components/inventory/InventoryFilters';
 import InventoryTable from '../../components/inventory/InventoryTable';
-import InventoryValueCard from '../../components/inventory/InventoryValueCard';
+import InventoryAnalytics from '../../components/inventory/InventoryAnalytics'
 import InventoryStatusChart from '../../components/inventory/InventoryStatusChart';
 import LowStockAlerts from '../../components/inventory/LowStockAlerts';
 import RecommendedRestocking from '../../components/inventory/RecommendedRestocking';
@@ -53,7 +53,7 @@ export default function Inventory() {
   const [totalPages, setTotalPages] = useState(1);
   const [categories, setCategories] = useState([]);
   const [statusOptions, setStatusOptions] = useState([]);
-
+  const { analytics, refreshAnalytics } = useInventory();
   const [activeModal, setActiveModal] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [stockInProducts, setStockInProducts] = useState([]);
@@ -357,7 +357,11 @@ export default function Inventory() {
         </div>
       </div>
 
-      <InventoryValueCard totalValuation={summaryMetrics?.inventory_value} />
+      <InventoryAnalytics 
+        analytics={analytics} 
+        loading={loading} 
+        onRefresh={refreshAnalytics} 
+      />
 
       {activeModal === 'STOCK_IN' && (
         <StockInModal

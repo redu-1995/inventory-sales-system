@@ -5,7 +5,6 @@ export const inventoryService = {
   /**
    * 1. Fetch live inventory state tracking array
    * GET /api/inventory/inventory/
-   * Pass custom flags as query parameters so your backend filters or pagination hooks work seamlessly
    */
   async getInventory(filters = {}) {
     const response = await api.get("inventory/inventory/", { params: filters });
@@ -15,7 +14,6 @@ export const inventoryService = {
   /**
    * 2. Fetch aggregated metadata calculations for top KPI cards
    * GET /api/inventory/inventory/?summary=true
-   * Handled by appending a query flag, or calculated on the frontend from the list data
    */
   async getInventorySummary() {
     const response = await api.get("inventory/inventory/", { params: { summary: true } });
@@ -23,7 +21,7 @@ export const inventoryService = {
   },
 
   /**
-   * 3. Fetch entries where quantity <= minimum_stock_level
+   * 3. Fetch entries where quantity <= reorder_level
    * GET /api/inventory/inventory/?low_stock=true
    */
   async getLowStock() {
@@ -34,13 +32,11 @@ export const inventoryService = {
   /**
    * 4. Stock In operation
    * POST /api/inventory/stock-movements/
-   * Maps directly into your StockMovementViewSet. The view automatically hooks up self.request.user.
-   * @param {Object} payload - { product: number, quantity: number, movement_type: "IN", reference: string }
    */
   async stockIn(payload) {
     const response = await api.post("inventory/stock-movements/", {
       ...payload,
-      movement_type: "IN" // Forces type flag boundary
+      movement_type: "IN"
     });
     return response.data;
   },
@@ -48,45 +44,31 @@ export const inventoryService = {
   /**
    * 5. Stock Out operation
    * POST /api/inventory/stock-movements/
-   * Maps straight into StockMovementViewSet.
-   * @param {Object} payload - { product: number, quantity: number, movement_type: "OUT", reference: string }
    */
   async stockOut(payload) {
     const response = await api.post("inventory/stock-movements/", {
       ...payload,
-      movement_type: "OUT" // Forces type flag boundary
+      movement_type: "OUT"
     });
     return response.data;
   },
 
   /**
    * 6. Adjust Stock settings or safety thresholds directly
-   * PATCH /api/inventory/inventory/{id}/
-   * Updates an entry inside your baseline InventoryViewSet route loop.
-   * @param {number} inventoryId - DB Primary Key identifier
-   * @param {Object} payload - { quantity: number, minimum_stock_level: number }
-   */
-/**
-   * 6. Adjust Stock settings or safety thresholds directly
-   * POST inventory/stock-movements/
-   * Maps straight into StockMovementViewSet using the configured api instance.
-   * @param {Object} payload - { product: number, quantity: number, movement_type: string }
+   * POST /api/inventory/stock-movements/
    */
   async adjustStock(payload) {
-    // We use the exact same 'api' instance and endpoint pattern as stockIn/stockOut
     const response = await api.post("inventory/stock-movements/", {
-      product: payload.product,           // Expects integer Product ID
-      quantity: payload.quantity,         // Count value input from forms
+      product: payload.product,
+      quantity: payload.quantity,
       movement_type: payload.movement_type // 'ADJUST'
     });
-    
     return response.data;
   },
 
   /**
    * 7. Fetch active historical tracking timeline metrics of stock movements
    * GET /api/inventory/stock-movements/
-   * Maps cleanly to your StockMovementViewSet query listings.
    */
   async getStockMovements(filters = {}) {
     const response = await api.get("inventory/stock-movements/", { params: filters });
@@ -95,8 +77,7 @@ export const inventoryService = {
 
   /**
    * 8. Fetch audit activity trail 
-   * GET /api/inventory/stock-movements/?limit=10
-   * Reuses your StockMovementViewSet log records sorted by date descending.
+   * GET /api/inventory/stock-movements/?ordering=-created_at
    */
   async getRecentActivity() {
     const response = await api.get("inventory/stock-movements/", { params: { ordering: "-created_at" } });
@@ -106,8 +87,6 @@ export const inventoryService = {
   /**
    * 9. Post/Create a brand-new official procurement Purchase Order request
    * POST /api/inventory/purchase-orders/
-   * Maps straight into your PurchaseOrderViewSet container.
-   * @param {Object} payload - { supplier: number, status: string }
    */
   async createPurchaseOrder(payload) {
     const response = await api.post("inventory/purchase-orders/", payload);
@@ -116,15 +95,13 @@ export const inventoryService = {
 
   /**
    * 10. Streaming report data generation downloads
-   * GET /api/inventory/inventory/export/ or calculated client-side
+   * GET /api/inventory/exports/export-{format}/
    */
- exportData: async (format) => {
-    // format accepts 'csv', 'excel', or 'pdf'
+  async exportData(format) {
     const response = await api.get(`inventory/exports/export-${format}/`, {
-    responseType: 'blob' 
-  });
+      responseType: 'blob' 
+    });
     
-    // Create an invisible virtual anchor tag and simulate a physical click to prompt saving
     const blob = new Blob([response.data], { 
       type: format === 'pdf' 
         ? 'application/pdf' 
@@ -136,28 +113,24 @@ export const inventoryService = {
     link.href = url;
     link.setAttribute('download', `inventory_export_${new Date().toISOString().slice(0,10)}.${format === 'excel' ? 'xlsx' : format}`);
     document.body.appendChild(link);
-    link.click();                           
+    link.click();                  
     link.parentNode.removeChild(link);
   },
   
+  /**
+   * 11. Fetch low stock alert priorities
+   * GET /api/inventory/low-stock-alerts/
+   */
   async getLowStockAlerts() {
-   
     const response = await api.get("inventory/low-stock-alerts/");
     return response.data;
   },
+
   /**
-   * Creates a new Purchase Order with nested item lines.
-   * * @param {Object} purchaseData - The purchase request payload.
-   * @param {number} purchaseData.supplier - The ID of the Supplier.
-   * @param {Array<Object>} purchaseData.items - The list of order items.
-   * @param {number} purchaseData.items[].product - The ID of the Product.
-   * @param {number} purchaseData.items[].quantity - Quantity to purchase.
-   * @param {string|number} purchaseData.items[].cost_price - Cost price per unit.
-   * @returns {Promise<Object>} The saved purchase order from the backend.
+   * 12. Creates a new Purchase Order with nested item lines.
    */
-  createPurchaseRequest: async (purchaseData) => {
+  async createPurchaseRequest(purchaseData) {
     try {
-      // Local validation before sending the payload
       if (!purchaseData.supplier) {
         throw new Error("Supplier is required.");
       }
@@ -165,7 +138,6 @@ export const inventoryService = {
         throw new Error("At least one purchase item is required.");
       }
 
-      // Format payload to strictly align with your writable nested serializer expectations
       const payload = {
         supplier: purchaseData.supplier,
         status: purchaseData.status || 'PENDING', 
@@ -176,15 +148,23 @@ export const inventoryService = {
         })),
       };
 
-      // Uses your customized "api" client matching your registered router "purchase-orders"
       const response = await api.post('inventory/purchase-orders/', payload);
       return response.data;
     } catch (error) {
       console.error("Error in createPurchaseRequest:", error);
-      // Pass back the Django-rest-framework validation error object or a generic error
       throw error.response?.data || { detail: error.message || "An unexpected error occurred." };
     }
   },
+
+  /**
+   * 13. Fetch compiled system-wide analytics
+   * GET /api/inventory/analytics/
+   */
+  async getInventoryAnalytics() {
+    // Removed the leading slash to ensure correct baseURL resolution
+    const response = await api.get("inventory/analytics/");
+    return response.data;
+  }
 };
 
 export default inventoryService;
