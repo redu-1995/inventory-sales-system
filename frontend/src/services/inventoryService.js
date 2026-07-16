@@ -1,5 +1,5 @@
 // src/services/inventoryService.js
-import api from "./api"; // Your core custom Axios instance config
+import api from "./api"; // core custom Axios instance config
 
 export const inventoryService = {
   /**
@@ -144,7 +144,47 @@ export const inventoryService = {
    
     const response = await api.get("inventory/low-stock-alerts/");
     return response.data;
-  }
+  },
+  /**
+   * Creates a new Purchase Order with nested item lines.
+   * * @param {Object} purchaseData - The purchase request payload.
+   * @param {number} purchaseData.supplier - The ID of the Supplier.
+   * @param {Array<Object>} purchaseData.items - The list of order items.
+   * @param {number} purchaseData.items[].product - The ID of the Product.
+   * @param {number} purchaseData.items[].quantity - Quantity to purchase.
+   * @param {string|number} purchaseData.items[].cost_price - Cost price per unit.
+   * @returns {Promise<Object>} The saved purchase order from the backend.
+   */
+  createPurchaseRequest: async (purchaseData) => {
+    try {
+      // Local validation before sending the payload
+      if (!purchaseData.supplier) {
+        throw new Error("Supplier is required.");
+      }
+      if (!purchaseData.items || purchaseData.items.length === 0) {
+        throw new Error("At least one purchase item is required.");
+      }
+
+      // Format payload to strictly align with your writable nested serializer expectations
+      const payload = {
+        supplier: purchaseData.supplier,
+        status: purchaseData.status || 'PENDING', 
+        items: purchaseData.items.map(item => ({
+          product: item.product,
+          quantity: parseInt(item.quantity, 10),
+          cost_price: parseFloat(item.cost_price).toFixed(2),
+        })),
+      };
+
+      // Uses your customized "api" client matching your registered router "purchase-orders"
+      const response = await api.post('inventory/purchase-orders/', payload);
+      return response.data;
+    } catch (error) {
+      console.error("Error in createPurchaseRequest:", error);
+      // Pass back the Django-rest-framework validation error object or a generic error
+      throw error.response?.data || { detail: error.message || "An unexpected error occurred." };
+    }
+  },
 };
 
 export default inventoryService;

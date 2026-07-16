@@ -118,18 +118,65 @@ class PurchaseOrderItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'purchase_order', 'product', 'product_name', 'quantity', 'cost_price']
 
 
+from django.db import transaction
+
+
+class PurchaseOrderItemSerializer(serializers.ModelSerializer):
+    product_name = serializers.ReadOnlyField(source='product.name')
+
+    class Meta:
+        model = PurchaseOrderItem
+        # 'purchase_order' is removed from read_only/required fields during nested creation
+        # because the parent serializer will assign it automatically.
+        fields = ['id', 'product', 'product_name', 'quantity', 'cost_price']
+
+
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     supplier_name = serializers.ReadOnlyField(source='supplier.name')
-    items = PurchaseOrderItemSerializer(many=True, read_only=True)
+    # 1. Removed read_only=True to allow receiving items during POST requests
+    items = PurchaseOrderItemSerializer(many=True)
 
     class Meta:
         model = PurchaseOrder
         fields = ['id', 'supplier', 'supplier_name', 'user', 'total_amount', 'status', 'order_date', 'items']
-        read_only_fields = ['order_date', 'user']
+        read_only_fields = ['order_date', 'user', 'total_amount']
+
+    @transaction.atomic
+    def create(self, validated_data):
+        # Extract the nested items payload
+        items_data = validated_data.pop('items')
+        
+        # Pull current authenticated user from request context (if using authentication)
+        request = self.context.get('request')
+        user = request.user if request and request.user.is_authenticated else None
+
+        # 2. Create the parent Purchase Order instance
+        purchase_order = PurchaseOrder.objects.create(
+            user=user,
+            **validated_data
+        )
+
+        total = 0
+
+        # 3. Create nested Purchase Order Items & compute totals
+        for item_data in items_data:
+            PurchaseOrderItem.objects.create(
+                purchase_order=purchase_order,
+                **item_data
+            )
+            # Accumulate cost calculation
+            total += item_data['quantity'] * item_data['cost_price']
+
+        # 4. Save computed total
+        purchase_order.total_amount = total
+        purchase_order.save()
+
+        return purchase_order
+
     @transaction.atomic
     def update(self, instance, validated_data):
         """
-        Interceptors state updates. If status changes to 'RECEIVED',
+        Intercepts state updates. If status changes to 'RECEIVED',
         it triggers inventory increases and logs automated stock movements.
         """
         old_status = instance.status
@@ -137,9 +184,8 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
 
         # Execute our automation ONLY when shifting to RECEIVED from a non-received state
         if new_status == 'RECEIVED' and old_status != 'RECEIVED':
-            
             # Fetch all item lines associated with this Purchase Order
-            po_items = instance.items.all() # assumes related_name='items' on PurchaseOrderItem
+            po_items = instance.items.all() 
             
             for item in po_items:
                 product = item.product
@@ -156,11 +202,14 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
                 inventory.save()
 
                 # Step 2: Create automated StockMovement audit log (IN)
+                request = self.context.get('request')
+                user = request.user if request and request.user.is_authenticated else None
+                
                 StockMovement.objects.create(
                     product=product,
                     movement_type='IN',
                     quantity=quantity_received,
-                    user=self.context['request'].user
+                    user=user
                 )
 
         # Call the standard DRF super method to save all basic field updates

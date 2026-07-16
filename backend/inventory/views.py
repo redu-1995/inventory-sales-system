@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.db.models import DecimalField, ExpressionWrapper, F, Q, Sum
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 
 from .models import (
     Inventory,
@@ -90,13 +91,16 @@ class StockMovementViewSet(ModelViewSet):
         """
         serializer.save(user=self.request.user)
 
-class PurchaseOrderViewSet(ModelViewSet):
-    queryset = PurchaseOrder.objects.all()
-    serializer_class = PurchaseOrderSerializer
-  
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+class PurchaseOrderViewSet(viewsets.ModelViewSet):
+    queryset = PurchaseOrder.objects.all().order_by('-order_date')
+    serializer_class = PurchaseOrderSerializer
+
+    # Optional: ensure request is passed to serializer context for user allocation
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
 
 
 class PurchaseOrderItemViewSet(ModelViewSet):
@@ -306,7 +310,7 @@ class InventoryExportViewSet(ReadOnlyModelViewSet):
     
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+
 from django.db.models import F
 from .models import Inventory
 
@@ -315,7 +319,7 @@ class LowStockAlertViewSet(ViewSet):
     ViewSet to handle low stock reports and alerts.
     Accessible via standard list action on the router.
     """
-    permission_classes = [IsAuthenticated]
+
 
     def list(self, request):
         """
@@ -323,8 +327,10 @@ class LowStockAlertViewSet(ViewSet):
         Returns only the products requiring immediate attention (Quantity <= Reorder Level).
         """
         # Fetch items where quantity is less than or equal to reorder level or minimum stock level
-        alert_items = Inventory.objects.filter(quantity__lte=F('reorder_level')) | Inventory.objects.filter(quantity__lte=F('minimum_stock_level'))
+       
         
+        # Open backend/inventory/views.py and change line 332 to:
+        alert_items = Inventory.objects.filter(quantity__lte=F('reorder_level'))
         results = []
         for item in alert_items.select_related('product', 'product__category'):
             qty = item.quantity

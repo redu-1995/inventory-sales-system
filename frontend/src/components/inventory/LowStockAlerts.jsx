@@ -81,15 +81,7 @@ export default function LowStockAlerts({ lowStockList = [], loading, error, onRe
         )}
       </div>
 
-      {/* Restock Button */}
-      {lowStockList.length > 0 && (
-        <div className="p-3 bg-gray-50 border-t border-gray-100">
-          <button className="w-full flex items-center justify-center gap-1.5 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition-colors">
-            Restock Products
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      )}
+    
     </div>
   );
 }

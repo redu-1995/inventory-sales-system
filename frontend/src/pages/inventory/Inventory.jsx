@@ -24,7 +24,8 @@ import Pagination from '../../components/inventory/Pagination';
 import StockInModal from '../../components/inventory/StockInModal';
 import StockOutModal from '../../components/inventory/StockOutModal';
 import StockAdjustmentModal from '../../components/inventory/StockAdjustmentModal';
-import CreatePurchaseRequestModal from '../../components/inventory/CreatePurchaseRequestModal';
+
+import { PurchaseOrderModal } from '../../components/inventory/PurchaseOrderModal';
 
 const getInventoryStatus = (item) => {
   if (item.quantity === 0) return 'OUT_OF_STOCK';
@@ -375,9 +376,13 @@ export default function Inventory() {
           onClose={() => setActiveModal(null)}
         />
       )}
-      {activeModal === 'PURCHASE' && (
-        <CreatePurchaseRequestModal onSubmit={handleCreatePurchaseSubmit} onClose={() => setActiveModal(null)} />
-      )}
+  {activeModal === 'PURCHASE' && (
+  <PurchaseOrderModal 
+    isOpen={activeModal === 'PURCHASE'} 
+    onClose={() => setActiveModal(null)} 
+    createPurchaseRequest={handleCreatePurchaseSubmit} // <-- Match the name expected by the modal
+  />
+)}
        {activeModal === 'ADJUST' && (
   <StockAdjustmentModal 
     item={selectedItem} 

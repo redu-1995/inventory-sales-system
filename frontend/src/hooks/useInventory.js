@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import { inventoryService } from '../services/inventoryService';
 
 export const useInventory = () => {
-  // Core Inventory List and Metadata Arrays State
+  // --- 1. CORE STATE ---
   const [inventory, setInventory] = useState([]);
   const [stockMovements, setStockMovements] = useState([]);
   const [recentActivities, setRecentActivities] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [lowStockList, setLowStockList] = useState([]); // Moved up
   
   // KPI Metrics Calculation States
   const [summary, setSummary] = useState({
@@ -18,7 +19,10 @@ export const useInventory = () => {
 
   // UX Lifecycle Hooks
   const [loading, setLoading] = useState(false);
+  const [loadingAlerts, setLoadingAlerts] = useState(false); // Moved up
   const [error, setError] = useState(null);
+  const [alertsError, setAlertsError] = useState(null); // Moved up
+  const [success, setSuccess] = useState(false);
 
   // Search & Filtration Control Parameters
   const [search, setSearch] = useState('');
@@ -29,6 +33,8 @@ export const useInventory = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  // --- 2. CALLBACKS AND OPERATIONS ---
+
   /**
    * Master Refresh Handler - Fetches fresh inventory dataset matrix
    */
@@ -36,7 +42,6 @@ export const useInventory = () => {
     setLoading(true);
     setError(null);
     try {
-      // Build dynamic filters corresponding to query params expected by Django filter backends
       const activeFilters = {
         page,
         ordering,
@@ -46,18 +51,15 @@ export const useInventory = () => {
         warehouse: warehouse || undefined
       };
 
-      // 1. Fetch live list arrays
       const data = await inventoryService.getInventory(activeFilters);
       
-      // If backend returns a standardized DRF paginated structure:
       if (data && data.results) {
         setInventory(data.results);
-        setTotalPages(Math.ceil(data.count / 10)); // Assuming default page size of 10
+        setTotalPages(Math.ceil(data.count / 10));
       } else if (Array.isArray(data)) {
         setInventory(data);
       }
 
-      // 2. Fetch parallel contextual widget components data to fulfill dashboard requirements
       const [summaryData, lowStockData, movementsData, activitiesData] = await Promise.all([
         inventoryService.getInventorySummary().catch(() => null),
         inventoryService.getLowStock().catch(() => null),
@@ -65,7 +67,6 @@ export const useInventory = () => {
         inventoryService.getRecentActivity().catch(() => null)
       ]);
 
-      // Safely apply response metrics or fall back to mock calculations if backend signals empty arrays
       if (summaryData) setSummary(summaryData);
       if (lowStockData) setLowStockProducts(lowStockData.results || lowStockData);
       if (movementsData) setStockMovements(movementsData.results || movementsData);
@@ -79,10 +80,22 @@ export const useInventory = () => {
     }
   }, [page, search, category, status, warehouse, ordering]);
 
-  // Auto-refresh layout automatically when active filters or pages switch bounds
-  useEffect(() => {
-    refreshInventory();
-  }, [refreshInventory]);
+  /**
+   * Fetch Low Stock Alert Records
+   */
+  const fetchLowStockAlerts = useCallback(async () => {
+    try {
+      setLoadingAlerts(true);
+      const data = await inventoryService.getLowStockAlerts();
+      setLowStockList(data);
+      setAlertsError(null);
+    } catch (err) {
+      console.error("Error fetching stock alert records:", err);
+      setAlertsError("Failed to fetch urgent stock alerts.");
+    } finally {
+      setLoadingAlerts(false);
+    }
+  }, []);
 
   /**
    * Action Handler: Stock In Operation
@@ -91,7 +104,7 @@ export const useInventory = () => {
     setLoading(true);
     try {
       const result = await inventoryService.stockIn(payload);
-      await refreshInventory(); // Re-trigger update cascading
+      await refreshInventory();
       return result;
     } catch (err) {
       throw err.response?.data || err;
@@ -120,23 +133,17 @@ export const useInventory = () => {
    * Action Handler: Adjust/Patch explicit stock properties manually
    */
   const adjustStock = async (payload) => {
-  setLoading(true);
-  try {
-    // The fixed backend handles IN, OUT, and ADJUST uniformly via POST to /api/stock-movements/
-    // payload shape expects: { product: productId, quantity: value, movement_type: 'ADJUST'|'IN'|'OUT' }
-    const result = await inventoryService.adjustStock(payload);
-    
-    // Refresh your data tables and top navbar KPI summary blocks uniformly
-    await refreshInventory();
-    
-    return result;
-  } catch (err) {
-    // Gracefully bubbling up parsed Django REST Framework structural field errors
-    throw err.response?.data || err;
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      const result = await inventoryService.adjustStock(payload);
+      await refreshInventory();
+      return result;
+    } catch (err) {
+      throw err.response?.data || err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /**
    * Action Handler: Process automated supplier procurement order
@@ -151,6 +158,28 @@ export const useInventory = () => {
       setLoading(false);
     }
   };
+
+  /**
+   * Action Handler: Submits a purchase order request to the backend.
+   */
+  const createPurchaseRequest = useCallback(async (purchaseData) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const data = await inventoryService.createPurchaseRequest(purchaseData);
+      setSuccess(true);
+      return data;
+    } catch (err) {
+      const errorMsg = err.detail || err || "Failed to submit purchase request.";
+      setError(errorMsg);
+      setSuccess(false);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   /**
    * Action Handler: Handle streaming Excel downloads directly
@@ -169,16 +198,50 @@ export const useInventory = () => {
       console.error("Excel Report streaming generation failure:", err);
     }
   };
-  
 
+  /**
+   * Resets the status states of the hook (useful when closing modals or changing forms)
+   */
+  const resetStatus = useCallback(() => {
+    setError(null);
+    setSuccess(false);
+    setLoading(false);
+  }, []);
+
+  // --- 3. LIFECYCLE EFFECTS ---
+  
+  // Auto-refresh layout automatically when active filters or pages switch bounds
+  useEffect(() => {
+    refreshInventory();
+  }, [refreshInventory]);
+
+  // Fetch alerts automatically on mount
+  useEffect(() => {
+    fetchLowStockAlerts();
+  }, [fetchLowStockAlerts]);
+
+
+  // --- 4. SINGLE UNIFIED EXPORT RETURN ---
   return {
+    // Inventory Data & Summary States
     inventory,
     stockMovements,
     recentActivities,
     lowStockProducts,
     summary,
+    
+    // Alerts states
+    lowStockList,
+    loadingAlerts,
+    alertsError,
+    refreshAlerts: fetchLowStockAlerts,
+
+    // UX States
     loading,
     error,
+    success,
+
+    // Controls
     search,
     setSearch,
     category,
@@ -192,40 +255,15 @@ export const useInventory = () => {
     page,
     setPage,
     totalPages,
+
+    // Core Actions
     refreshInventory,
     stockIn,
     stockOut,
     adjustStock,
     createPurchaseOrder,
-    exportReport
-  };
-  const [lowStockList, setLowStockList] = useState([]);
-  const [loadingAlerts, setLoadingAlerts] = useState(false);
-  const [alertsError, setAlertsError] = useState(null);
-
-  const fetchLowStockAlerts = useCallback(async () => {
-    try {
-      setLoadingAlerts(true);
-      const data = await inventoryService.getLowStockAlerts();
-      setLowStockList(data);
-      setAlertsError(null);
-    } catch (err) {
-      console.error("Error fetching stock alert records:", err);
-      setAlertsError("Failed to fetch urgent stock alerts.");
-    } finally {
-      setLoadingAlerts(false);
-    }
-  }, []);
-
-  // Fetch automatically on mount
-  useEffect(() => {
-    fetchLowStockAlerts();
-  }, [fetchLowStockAlerts]);
-
-  return {
-    lowStockList,
-    loadingAlerts,
-    alertsError,
-    refreshAlerts: fetchLowStockAlerts 
+    createPurchaseRequest, // Now visible!
+    exportReport,
+    resetStatus           // Now visible!
   };
 };
