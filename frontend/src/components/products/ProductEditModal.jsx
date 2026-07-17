@@ -1,131 +1,241 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { X, Loader2 } from 'lucide-react';
-import  { productAPI }  from '../../services/productService';
+import { useProductForm } from '../../hooks/useProductForm';
 
-export default function ProductEditModal({ isOpen, onClose, productId, onProductUpdated }) {
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '', sku: '', category_name: '', brand: '',
-    cost_price: '', selling_price: '', quantity: '',
-    min_stock_level: '', status: 'ACTIVE', description: ''
-  });
+export default function ProductEditModal({ isOpen, onClose, product, onProductUpdated }) {
+  // Integrate the unified Custom Hook, passing the current product instance to edit
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    categories,
+    handleChange,
+    handleImageChange,
+    handleSubmit
+  } = useProductForm(() => {
+    if (onProductUpdated) onProductUpdated(); // Refresh parent table view list
+    if (onClose) onClose();                    // Close modal context view
+  }, product);
 
-  // Fetch product data when modal opens with a specific ID
- // Fetch product data when modal opens with a specific ID
-useEffect(() => {
-  if (isOpen && productId) {
-    setLoading(true);
-    productAPI.getProduct(productId)
-      .then((data) => { // <-- Changed 'res' to 'data' for clarity
-        setFormData(data); // <-- Removed '.data' because it is already unwrapped in the service
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching product details", err);
-        setLoading(false);
-        onClose();
-      });
-  }
-}, [isOpen, productId]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      await productAPI.updateProduct(productId, formData);
-      onProductUpdated(); // Trigger parent table refresh
-      onClose();
-    } catch (error) {
-      console.error("Failed to update product:", error);
-    } finally {
-      setSaving(false);
-    }
-  };
-
+  // Return empty layout if modal is toggled off
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-2xl rounded-xl bg-white shadow-xl flex flex-col max-h-[90vh]">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b px-6 py-4">
-          <h3 className="text-lg font-semibold text-gray-900">Edit Product</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-md transition-all duration-300"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div className="w-full max-w-2xl rounded-xl bg-white shadow-2xl flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200 border border-gray-100">
+        
+        {/* Modal Header Layout */}
+        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">Edit Product</h3>
+            <p className="text-xs text-gray-500 mt-0.5">Modify inventory details for item SKU: <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">{formData.sku || 'N/A'}</span></p>
+          </div>
+          <button 
+            onClick={onClose} 
+            className="text-gray-400 hover:text-gray-600 hover:bg-gray-50 p-1.5 rounded-lg transition"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-            <span className="text-sm text-gray-500">Loading product information...</span>
+        {/* Server Validation Constraints Display */}
+        {errors.server && (
+          <div className="mx-6 mt-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm font-medium">
+            {errors.server}
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="overflow-y-auto p-6 space-y-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" name="name" required value={formData.name} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
-                <input type="text" name="sku" required value={formData.sku} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm bg-gray-50 text-gray-500 cursor-not-allowed" disabled />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                <input type="text" name="category_name" required value={formData.category_name} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-                <input type="text" name="brand" value={formData.brand} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Cost Price ($)</label>
-                <input type="number" step="0.01" name="cost_price" required value={formData.cost_price} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Selling Price ($)</label>
-                <input type="number" step="0.01" name="selling_price" required value={formData.selling_price} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Current Quantity</label>
-                <input type="number" name="quantity" required value={formData.quantity} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Stock Level</label>
-                <input type="number" name="min_stock_level" required value={formData.min_stock_level} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select name="status" value={formData.status} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none">
-                  <option value="ACTIVE">In Stock / Active</option>
-                  <option value="INACTIVE">Out of Stock / Inactive</option>
-                </select>
-              </div>
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea name="description" rows="3" value={formData.description} onChange={handleChange} className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none" />
-              </div>
+        )}
+
+        {/* Main Entry Interactive Form Element */}
+        <form onSubmit={handleSubmit} className="overflow-y-auto p-6 space-y-5 flex-1">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            
+            {/* Product Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+              <input 
+                type="text" 
+                name="name" 
+                required 
+                value={formData.name ?? ''} 
+                onChange={handleChange} 
+                className={`w-full rounded-lg border p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition ${errors.name ? 'border-red-300' : 'border-gray-300'}`} 
+              />
+              {errors.name && <span className="text-xs text-red-500 mt-1 block">{errors.name}</span>}
             </div>
 
-            {/* Actions */}
-            <div className="flex justify-end gap-3 pt-4 border-t sticky bottom-0 bg-white">
-              <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-                Cancel
-              </button>
-              <button type="submit" disabled={saving} className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
-                {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Save Changes
-              </button>
+            {/* Read-Only Fixed SKU Definition */}
+            <div>
+              <label className="block text-sm font-medium text-gray-500 mb-1">SKU (Immutable Fields)</label>
+              <input 
+                type="text" 
+                name="sku" 
+                value={formData.sku ?? ''} 
+                className="w-full rounded-lg border border-gray-200 p-2 text-sm bg-gray-50 text-gray-400 font-mono cursor-not-allowed select-none" 
+                disabled 
+              />
             </div>
-          </form>
-        )}
+
+            {/* Dynamic Dropdown Category Selector managed by hook context */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select 
+                name="category" 
+                required 
+                value={formData.category ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition"
+              >
+                <option value="">Select a Category</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              {errors.category && <span className="text-xs text-red-500 mt-1 block">{errors.category}</span>}
+            </div>
+
+            {/* Brand Input Entry */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
+              <input 
+                type="text" 
+                name="brand" 
+                value={formData.brand ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+              />
+            </div>
+
+            {/* Cost Price Setup */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Cost Price ($)</label>
+              <input 
+                type="number" 
+                step="0.01" 
+                name="cost_price" 
+                required 
+                value={formData.cost_price ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+              />
+              {errors.cost_price && <span className="text-xs text-red-500 mt-1 block">{errors.cost_price}</span>}
+            </div>
+
+            {/* Selling Price Setup */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Selling Price ($)</label>
+              <input 
+                type="number" 
+                step="0.01" 
+                name="selling_price" 
+                required 
+                value={formData.selling_price ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+              />
+              {errors.selling_price && <span className="text-xs text-red-500 mt-1 block">{errors.selling_price}</span>}
+            </div>
+
+            {/* Physical Inventory Tracking Quantity */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Current Stock Quantity</label>
+              <input 
+                type="number" 
+                name="quantity" 
+                required 
+                value={formData.quantity ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+              />
+            </div>
+
+            {/* Reorder Threshold Value Parameters mapping */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Reorder Stock Threshold</label>
+            <input 
+              type="number" 
+              name="reorder_level" /* 🪛 Fixed: Changed from "cost_price" to match the hook state mapping */
+              required 
+              value={formData.reorder_level ?? formData.cost_price_level ?? ''} 
+              onChange={(e) => {
+                const val = e.target.value;
+                handleChange({ target: { name: 'reorder_level', value: val } });
+              }} 
+              className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+            />
+          </div>
+
+            {/* Image File Multi-Part Upload Handler Selection */}
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Update Product Asset Image (Optional)</label>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => handleImageChange(e.target.files[0])} 
+                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+              />
+            </div>
+
+            {/* Product Active State Status Parameter Mapping Box */}
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Lifecycle Tracking Status</label>
+              <select 
+                name="status" 
+                value={formData.status === true || formData.status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE'} 
+                onChange={(e) => {
+                  const val = e.target.value === 'ACTIVE';
+                  handleChange({ target: { name: 'status', value: val } });
+                }} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition"
+              >
+                <option value="ACTIVE">In Stock / Active / Visible</option>
+                <option value="INACTIVE">Archived / Out of Stock / Hidden</option>
+              </select>
+            </div>
+
+            {/* Description Area Parameters */}
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Product Description</label>
+              <textarea 
+                name="description" 
+                rows="3" 
+                value={formData.description ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+              />
+            </div>
+          </div>
+
+          {/* Sticky Lower Action Controls Block */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 sticky bottom-0 bg-white">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              disabled={isSubmitting} 
+              className="flex items-center justify-center px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 min-w-[120px]"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                'Save Changes'
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
