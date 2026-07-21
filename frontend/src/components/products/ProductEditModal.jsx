@@ -32,9 +32,15 @@ export default function ProductEditModal({ isOpen, onClose, product, onProductUp
         <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">Edit Product</h3>
-            <p className="text-xs text-gray-500 mt-0.5">Modify inventory details for item SKU: <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">{formData.sku || 'N/A'}</span></p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Modify inventory details for item SKU:{' '}
+              <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">
+                {formData.sku || 'N/A'}
+              </span>
+            </p>
           </div>
           <button 
+            type="button"
             onClick={onClose} 
             className="text-gray-400 hover:text-gray-600 hover:bg-gray-50 p-1.5 rounded-lg transition"
           >
@@ -62,14 +68,16 @@ export default function ProductEditModal({ isOpen, onClose, product, onProductUp
                 required 
                 value={formData.name ?? ''} 
                 onChange={handleChange} 
-                className={`w-full rounded-lg border p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition ${errors.name ? 'border-red-300' : 'border-gray-300'}`} 
+                className={`w-full rounded-lg border p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition ${
+                  errors.name ? 'border-red-300' : 'border-gray-300'
+                }`} 
               />
               {errors.name && <span className="text-xs text-red-500 mt-1 block">{errors.name}</span>}
             </div>
 
             {/* Read-Only Fixed SKU Definition */}
             <div>
-              <label className="block text-sm font-medium text-gray-500 mb-1">SKU (Immutable Fields)</label>
+              <label className="block text-sm font-medium text-gray-500 mb-1">SKU (Immutable Field)</label>
               <input 
                 type="text" 
                 name="sku" 
@@ -85,7 +93,7 @@ export default function ProductEditModal({ isOpen, onClose, product, onProductUp
               <select 
                 name="category" 
                 required 
-                value={formData.category ?? ''} 
+                value={formData.category?.id ?? formData.category ?? ''} 
                 onChange={handleChange} 
                 className="w-full rounded-lg border border-gray-300 p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition"
               >
@@ -155,20 +163,17 @@ export default function ProductEditModal({ isOpen, onClose, product, onProductUp
             </div>
 
             {/* Reorder Threshold Value Parameters mapping */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Reorder Stock Threshold</label>
-            <input 
-              type="number" 
-              name="reorder_level" /* 🪛 Fixed: Changed from "cost_price" to match the hook state mapping */
-              required 
-              value={formData.reorder_level ?? formData.cost_price_level ?? ''} 
-              onChange={(e) => {
-                const val = e.target.value;
-                handleChange({ target: { name: 'reorder_level', value: val } });
-              }} 
-              className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Minimum Reorder Stock Threshold</label>
+              <input 
+                type="number" 
+                name="reorder_level" 
+                required 
+                value={formData.reorder_level ?? ''} 
+                onChange={handleChange} 
+                className="w-full rounded-lg border border-gray-300 p-2 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:outline-none transition" 
+              />
+            </div>
 
             {/* Image File Multi-Part Upload Handler Selection */}
             <div className="sm:col-span-2">

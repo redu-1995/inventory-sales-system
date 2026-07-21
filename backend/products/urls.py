@@ -17,7 +17,7 @@ router.register(r'products', ProductViewSet, basename='product')
 
 # Put the custom list FIRST, then append router.urls at the end
 urlpatterns = [
-    path('products/export/', ProductExportView.as_view(), name='product-export'),
-    path('products/import/', ProductImportView.as_view(), name='product-import'),
+    path('export/', ProductExportView.as_view(), name='product-export'),
+    path('import/', ProductImportView.as_view(), name='product-import'),
 
 ] + router.urls
