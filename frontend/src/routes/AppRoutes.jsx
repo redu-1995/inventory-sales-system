@@ -5,7 +5,7 @@ import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Products from '../pages/products/Products';
-
+import Inventory from '../pages/inventory/Inventory';
 // Layout HOC to cleanly frame inner route matching targets
 const AuthenticatedAppLayout = () => (
   <DashboardLayout>
@@ -34,7 +34,7 @@ export default function AppRoutes() {
       }>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/inventory" element={<InventoryModule />} />
+        <Route path="/inventory" element={<Inventory />} />
         <Route path="/customers" element={<CustomersModule />} />
         <Route path="/sales" element={<SalesModule />} />
       </Route>

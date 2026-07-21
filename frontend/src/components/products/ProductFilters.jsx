@@ -20,8 +20,10 @@ export default function ProductFilters({
   selectedCount = 0,
   onDeleteSelected = null,
   onUpdateCategory = null,
-  categories = []
+  categories = [],
+  onDelete = null 
 }) {
+  
   const [showEntries, setShowEntries] = useState(itemsPerPage);
   const [updateCategoryValue, setUpdateCategoryValue] = useState("");
 
@@ -160,7 +162,7 @@ export default function ProductFilters({
               {onDeleteSelected && (
                 <button
                   onClick={() => {
-                    if (window.confirm(`Delete ${selectedCount} item${selectedCount !== 1 ? 's' : ''}?`)) {
+                    if (window.confirm(`Delete ${selectedCount} selected item${selectedCount !== 1 ? 's' : ''}?`)) {
                       onDeleteSelected();
                     }
                   }}

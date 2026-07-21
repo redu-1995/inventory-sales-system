@@ -21,7 +21,7 @@ export default function Products() {
   const [showModal, setShowModal] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState('');
   
   // 1. Pull core data structure & state metrics from useProducts
@@ -67,16 +67,22 @@ export default function Products() {
   // ==========================================
   // ACTION HANDLERS (EDIT & DELETE TRIGGER CONFIG)
   // ==========================================
-  const handleEdit = (productId) => {
-    setSelectedProductId(productId);
-    setIsEditOpen(true);
-  };
+ const handleEdit = (productId) => {
+  console.log("1. Clicked Edit for ID:", productId);
+  console.log("2. Live 'products' array state:", products);
+  
+  const productToEdit = products.find(p => p.id === productId);
+  console.log("3. Found product object:", productToEdit);
 
+  setSelectedProduct(productToEdit);
+  setIsEditOpen(true);
+};
   const handleDeleteTrigger = (productId, productName) => {
-    setSelectedProductId(productId);
-    setSelectedProductName(productName || "this product");
-    setIsDeleteOpen(true);
-  };
+  const productToDelete = products.find(p => p.id === productId);
+  setSelectedProduct(productToDelete); 
+  setSelectedProductName(productName || "this product");
+  setIsDeleteOpen(true);
+};
 
   // ==========================================
   // EXPORT & IMPORT UTILITY IMPLEMENTATIONS
@@ -237,18 +243,18 @@ const handleExport = async () => {
       />
       
       {/* Edit Modification Modal */}
+     {/* Edit Modification Modal */}
       <ProductEditModal 
         isOpen={isEditOpen} 
         onClose={() => setIsEditOpen(false)} 
-        productId={selectedProductId}
+        product={selectedProduct} // Use "product" here
         onProductUpdated={refreshProducts} 
       />
-
       {/* Structured Delete Prompt Dialogue Container */}
       <DeleteConfirmationModal
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
-        productId={selectedProductId}
+        productId={selectedProduct?.id} 
         productName={selectedProductName}
         onProductDeleted={refreshProducts}
       />

@@ -1,0 +1,27 @@
+import React from 'react';
+
+export default function InventoryActivityTable({ activities }) {
+  if (!activities || activities.length === 0) {
+    return (
+      <div className="text-center py-8 text-sm text-slate-500">
+        No recent activity logs found.
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-h-60 overflow-y-auto text-xs divide-y divide-slate-100">
+      {activities.map((activity) => (
+        <div key={activity.id} className="py-3 flex justify-between items-start gap-3">
+          <div>
+            <p className="font-semibold text-slate-950">{activity.reference || 'Inventory update'}</p>
+            <p className="text-slate-500 mt-1">By {activity.user || 'System'}</p>
+          </div>
+          <span className="text-slate-500 whitespace-nowrap">
+            {activity.created_at ? new Date(activity.created_at).toLocaleDateString() : ''}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}

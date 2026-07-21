@@ -29,11 +29,7 @@ export default function Sidebar() {
       path: "/products",
       icon: Package,
     },
-    {
-      name: "Categories",
-      path: "/categories",
-      icon: Tags,
-    },
+
     {
       name: "Inventory",
       path: "/inventory",
