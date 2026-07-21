@@ -108,7 +108,8 @@ class StockMovementViewSet(ModelViewSet):
 
 
 class PurchaseOrderViewSet(ModelViewSet):
-    queryset = PurchaseOrder.objects.all().order_by('-order_date')
+  
+    queryset = PurchaseOrder.objects.all().select_related('supplier', 'user').prefetch_related('items__product').order_by('-order_date')
     serializer_class = PurchaseOrderSerializer
 
     def get_serializer_context(self):
@@ -118,7 +119,7 @@ class PurchaseOrderViewSet(ModelViewSet):
 
 
 class PurchaseOrderItemViewSet(ModelViewSet):
-    queryset = PurchaseOrderItem.objects.all()
+    queryset = PurchaseOrderItem.objects.all().select_related('product')
     serializer_class = PurchaseOrderItemSerializer
 
 

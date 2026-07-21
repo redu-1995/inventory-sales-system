@@ -23,13 +23,12 @@ export default function ProductFilters({
   categories = [],
   onDelete = null 
 }) {
-  
-  const [showEntries, setShowEntries] = useState(itemsPerPage);
   const [updateCategoryValue, setUpdateCategoryValue] = useState("");
 
   const handleShowEntriesChange = (value) => {
-    setShowEntries(value);
-    if (setItemsPerPage) setItemsPerPage(value);
+    if (setItemsPerPage) {
+      setItemsPerPage(value);
+    }
   };
 
   const isFiltered = searchQuery || categoryFilter || brandFilter || statusFilter || stockStatusFilter;
@@ -105,7 +104,7 @@ export default function ProductFilters({
           <div className="flex items-center gap-2 ml-auto">
             <span className="text-sm text-gray-600">Show</span>
             <select
-              value={showEntries}
+              value={itemsPerPage}
               onChange={(e) => handleShowEntriesChange(Number(e.target.value))}
               className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
             >

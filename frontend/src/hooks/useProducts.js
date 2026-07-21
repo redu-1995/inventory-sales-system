@@ -16,7 +16,7 @@ export function useProducts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowIds, setSelectedRowIds] = useState([]);
   
-  const ITEMS_PER_PAGE = 10; // Set standard datagrid page sizes
+ const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Fetch logic from your Django backend API
   const fetchProducts = useCallback(async () => {
@@ -148,14 +148,21 @@ const filteredProducts = useMemo(() => {
 }, [products, searchQuery, categoryFilter, brandFilter, statusFilter, stockStatusFilter, sortBy]);
 
   // ================= CLIENT PAGINATION CALCULATION =================
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / ITEMS_PER_PAGE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / itemsPerPage)
+);
   
   // Safely adjust out-of-bounds current pages when filtering shrinks list sizes
   const activePage = currentPage > totalPages ? totalPages : currentPage;
 
   const paginatedProducts = useMemo(() => {
-    const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
-    return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    const startIndex = (activePage - 1) * itemsPerPage;
+
+    return filteredProducts.slice(
+        startIndex,
+        startIndex + itemsPerPage
+    );
   }, [filteredProducts, activePage]);
 
   // ================= OBJECT LAYER RECONCILIATION =================
@@ -185,6 +192,8 @@ const filteredProducts = useMemo(() => {
     filteredCount: filteredProducts.length,
     loading,
     error,
-    refreshProducts: fetchProducts
+    refreshProducts: fetchProducts,
+    itemsPerPage,
+     setItemsPerPage,
   };
 }

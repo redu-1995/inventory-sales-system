@@ -23,6 +23,7 @@ export default function Products() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState('');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   
   // 1. Pull core data structure & state metrics from useProducts
   const {
@@ -138,6 +139,13 @@ const handleExport = async () => {
       event.target.value = "";
     }
   };
+  
+
+// Handle page size change & reset to first page
+const handleItemsPerPageChange = (newSize) => {
+  setItemsPerPage(newSize);
+  setCurrentPage(1); // Crucial so you don't get stuck on an invalid page index!
+};
 
   return (
     <div className="min-h-screen bg-gray-50/50 p-3 sm:p-5 lg:p-6 font-sans antialiased overflow-x-hidden">
@@ -191,7 +199,7 @@ const handleExport = async () => {
             
             <ProductStats statistics={summary} loading={dashboardLoading} />
 
-            <ProductFilters
+           <ProductFilters
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
               categoryFilter={categoryFilter}
@@ -204,6 +212,9 @@ const handleExport = async () => {
               setSortBy={setSortBy}
               resetAllFilters={resetAllFilters}
               products={products}
+              // Add these two lines:
+              itemsPerPage={itemsPerPage}
+              setItemsPerPage={setItemsPerPage}
             />
 
             <BulkActions selectedCount={selectedRowIds?.length || 0} onDelete={deleteSelectedProducts} />

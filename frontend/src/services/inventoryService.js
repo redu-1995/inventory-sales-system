@@ -164,7 +164,26 @@ export const inventoryService = {
     // Removed the leading slash to ensure correct baseURL resolution
     const response = await api.get("inventory/analytics/");
     return response.data;
-  }
+  },
+  // GET /api/purchase-orders/
+  getPurchaseOrders: async () => {
+    const response = await api.get('inventory/purchase-orders/');
+    return response.data;
+  },
+
+  // POST /api/purchase-orders/
+  createPurchaseRequest: async (payload) => {
+    const response = await api.post('inventory/purchase-orders/', payload);
+    return response.data;
+  },
+
+  // PATCH /api/purchase-orders/:id/
+  receivePurchaseOrder: async (id) => {
+    const response = await api.patch(`inventory/purchase-orders/${id}/`, {
+      status: 'RECEIVED',
+    });
+    return response.data;
+  },
 };
 
 export default inventoryService;

@@ -8,7 +8,7 @@ export const useInventory = () => {
   const [recentActivities, setRecentActivities] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const [lowStockList, setLowStockList] = useState([]); 
-  
+  const [purchaseOrders, setPurchaseOrders] = useState([]);
   // KPI Metrics Calculation States
   const [summary, setSummary] = useState({
     total_stock_units: 0,
@@ -176,27 +176,7 @@ export const useInventory = () => {
     }
   };
 
-  /**
-   * Action Handler: Submits a purchase order request to the backend.
-   */
-  const createPurchaseRequest = useCallback(async (purchaseData) => {
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
-    try {
-      const data = await inventoryService.createPurchaseRequest(purchaseData);
-      setSuccess(true);
-      return data;
-    } catch (err) {
-      const errorMsg = err.detail || err || "Failed to submit purchase request.";
-      setError(errorMsg);
-      setSuccess(false);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  
 
   /**
    * Action Handler: Handle streaming Excel downloads directly
@@ -241,8 +221,65 @@ export const useInventory = () => {
   useEffect(() => {
     fetchAnalytics();
   }, [fetchAnalytics]);
+/**
+   * Fetches the list of all Purchase Orders from backend
+   */
+  const fetchPurchaseOrders = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await inventoryService.getPurchaseOrders();
+      setPurchaseOrders(data);
+      setError(null);
+    } catch (err) {
+      setError(err.response?.data || 'Failed to fetch purchase orders');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
 
+  /**
+   * Creates a new purchase request with nested items.
+   * Matches DRF PurchaseOrderSerializer structure:
+   * 
+   * payload = {
+   *   supplier: 1,
+   *   items: [
+   *     { product: 10, quantity: 5, cost_price: 25.50 }
+   *   ]
+   * }
+   */
+  const createPurchaseRequest = async (payload) => {
+    setLoading(true);
+    try {
+      const newPo = await inventoryService.createPurchaseRequest(payload);
+      await fetchPurchaseOrders(); // Automatically refresh list after creation
+      return newPo;
+    } catch (err) {
+      throw err.response?.data || err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  /**
+   * Updates Purchase Order status to RECEIVED.
+   * Triggers the backend transaction logic:
+   * - Increments Inventory quantity
+   * - Creates StockMovement audit logs (IN)
+   */
+  const receivePurchaseOrder = async (id) => {
+    setLoading(true);
+    try {
+      const updatedPo = await inventoryService.receivePurchaseOrder(id);
+      await fetchPurchaseOrders(); // Refresh table state after receiving
+      return updatedPo;
+    } catch (err) {
+      throw err.response?.data || err;
+    } finally {
+      setLoading(false);
+    }
+  };
   // --- 4. SINGLE UNIFIED EXPORT RETURN ---
   return {
     // Inventory Data & Summary States
@@ -252,7 +289,7 @@ export const useInventory = () => {
     lowStockProducts,
     summary,
     analytics, // <-- Added safely here
-    
+    purchaseOrders,
     // Alerts states
     lowStockList,
     loadingAlerts,
@@ -288,6 +325,9 @@ export const useInventory = () => {
     createPurchaseOrder,
     createPurchaseRequest, 
     exportReport,
-    resetStatus           
+    resetStatus,
+    fetchPurchaseOrders,
+    createPurchaseRequest,
+    receivePurchaseOrder,          
   };
 };
