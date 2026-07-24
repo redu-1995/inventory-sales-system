@@ -19,15 +19,13 @@ from reportlab.lib import colors
 from .models import (
     Inventory,
     StockMovement,
-    PurchaseOrder,
-    PurchaseOrderItem
+   
 )
 
 from .serializers import (
     InventorySerializer,
     StockMovementSerializer,
-    PurchaseOrderSerializer,
-    PurchaseOrderItemSerializer
+    
 )
 
 
@@ -107,20 +105,7 @@ class StockMovementViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class PurchaseOrderViewSet(ModelViewSet):
-  
-    queryset = PurchaseOrder.objects.all().select_related('supplier', 'user').prefetch_related('items__product').order_by('-order_date')
-    serializer_class = PurchaseOrderSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"request": self.request})
-        return context
-
-
-class PurchaseOrderItemViewSet(ModelViewSet):
-    queryset = PurchaseOrderItem.objects.all().select_related('product')
-    serializer_class = PurchaseOrderItemSerializer
 
 
 class InventoryExportViewSet(ReadOnlyModelViewSet):

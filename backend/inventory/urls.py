@@ -4,8 +4,7 @@ from .views import (
     InventoryViewSet,
     LowStockAlertViewSet,
     StockMovementViewSet,
-    PurchaseOrderViewSet,
-    PurchaseOrderItemViewSet,
+   
     InventoryExportViewSet,
     InventoryAnalyticsViewSet
     
@@ -25,17 +24,7 @@ router.register(
     basename='stock-movement'
 )
 
-router.register(
-    r'purchase-orders',
-    PurchaseOrderViewSet,
-    basename='purchase-order'
-)
 
-router.register(
-    r'purchase-order-items',
-    PurchaseOrderItemViewSet,
-    basename='purchase-order-item'
-)
 router.register(r'exports', InventoryExportViewSet, basename='inventory-export')
 
 router.register(
@@ -43,5 +32,6 @@ router.register(
     LowStockAlertViewSet,
     basename='low-stock-alerts'
 )
+
 router.register(r'analytics', InventoryAnalyticsViewSet, basename='inventory-analytics')
 urlpatterns = router.urls

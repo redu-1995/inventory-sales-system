@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Package,
   Boxes,
+  FileText, // Added for Purchase Orders icon
   ShoppingCart,
   Users,
   BarChart3,
@@ -29,11 +30,15 @@ export default function Sidebar() {
       path: "/products",
       icon: Package,
     },
-
     {
       name: "Inventory",
       path: "/inventory",
       icon: Boxes,
+    },
+    {
+      name: "Purchase Orders",
+      path: "/purchase-orders",
+      icon: FileText,
     },
     {
       name: "Sales",
@@ -96,7 +101,7 @@ export default function Sidebar() {
 
             const Icon = item.icon;
 
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname.startsWith(item.path);
 
             return (
               <button

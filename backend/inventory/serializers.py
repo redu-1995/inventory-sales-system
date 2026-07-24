@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db import transaction
-from .models import Inventory, StockMovement, PurchaseOrder, PurchaseOrderItem
+from .models import Inventory, StockMovement
 
 class InventorySerializer(serializers.ModelSerializer):
     product_name = serializers.ReadOnlyField(source='product.name')
@@ -110,107 +110,107 @@ class StockMovementSerializer(serializers.ModelSerializer):
         return movement
 
 # Purchase Order mappings remain clean as they are handled during state updates
-class PurchaseOrderItemSerializer(serializers.ModelSerializer):
-    product_name = serializers.ReadOnlyField(source='product.name')
+# class PurchaseOrderItemSerializer(serializers.ModelSerializer):
+#     product_name = serializers.ReadOnlyField(source='product.name')
 
-    class Meta:
-        model = PurchaseOrderItem
-        fields = ['id', 'purchase_order', 'product', 'product_name', 'quantity', 'cost_price']
-
-
-from django.db import transaction
+#     class Meta:
+#         model = PurchaseOrderItem
+#         fields = ['id', 'purchase_order', 'product', 'product_name', 'quantity', 'cost_price']
 
 
-class PurchaseOrderItemSerializer(serializers.ModelSerializer):
-    product_name = serializers.ReadOnlyField(source='product.name')
+# from django.db import transaction
 
-    class Meta:
-        model = PurchaseOrderItem
+
+# class PurchaseOrderItemSerializer(serializers.ModelSerializer):
+#     product_name = serializers.ReadOnlyField(source='product.name')
+
+#     class Meta:
+#         model = PurchaseOrderItem
         # 'purchase_order' is removed from read_only/required fields during nested creation
         # because the parent serializer will assign it automatically.
-        fields = ['id', 'product', 'product_name', 'quantity', 'cost_price']
+#         fields = ['id', 'product', 'product_name', 'quantity', 'cost_price']
 
 
-class PurchaseOrderSerializer(serializers.ModelSerializer):
-    supplier_name = serializers.ReadOnlyField(source='supplier.name')
-    # 1. Removed read_only=True to allow receiving items during POST requests
-    items = PurchaseOrderItemSerializer(many=True)
+# class PurchaseOrderSerializer(serializers.ModelSerializer):
+#     supplier_name = serializers.ReadOnlyField(source='supplier.name')
+#     # 1. Removed read_only=True to allow receiving items during POST requests
+#     items = PurchaseOrderItemSerializer(many=True)
 
-    class Meta:
-        model = PurchaseOrder
-        fields = ['id', 'supplier', 'supplier_name', 'user', 'total_amount', 'status', 'order_date', 'items']
-        read_only_fields = ['order_date', 'user', 'total_amount']
+    # class Meta:
+    #     model = PurchaseOrder
+    #     fields = ['id', 'supplier', 'supplier_name', 'user', 'total_amount', 'status', 'order_date', 'items']
+    #     read_only_fields = ['order_date', 'user', 'total_amount']
 
-    @transaction.atomic
-    def create(self, validated_data):
-        # Extract the nested items payload
-        items_data = validated_data.pop('items')
+    # @transaction.atomic
+    # def create(self, validated_data):
+    #     # Extract the nested items payload
+    #     items_data = validated_data.pop('items')
         
-        # Pull current authenticated user from request context (if using authentication)
-        request = self.context.get('request')
-        user = request.user if request and request.user.is_authenticated else None
+    #     # Pull current authenticated user from request context (if using authentication)
+    #     request = self.context.get('request')
+    #     user = request.user if request and request.user.is_authenticated else None
 
-        # 2. Create the parent Purchase Order instance
-        purchase_order = PurchaseOrder.objects.create(
-            user=user,
-            **validated_data
-        )
+    #     # 2. Create the parent Purchase Order instance
+    #     purchase_order = PurchaseOrder.objects.create(
+    #         user=user,
+    #         **validated_data
+    #     )
 
-        total = 0
+    #     total = 0
 
-        # 3. Create nested Purchase Order Items & compute totals
-        for item_data in items_data:
-            PurchaseOrderItem.objects.create(
-                purchase_order=purchase_order,
-                **item_data
-            )
-            # Accumulate cost calculation
-            total += item_data['quantity'] * item_data['cost_price']
+    #     # 3. Create nested Purchase Order Items & compute totals
+    #     for item_data in items_data:
+    #         PurchaseOrderItem.objects.create(
+    #             purchase_order=purchase_order,
+    #             **item_data
+    #         )
+    #         # Accumulate cost calculation
+    #         total += item_data['quantity'] * item_data['cost_price']
 
-        # 4. Save computed total
-        purchase_order.total_amount = total
-        purchase_order.save()
+    #     # 4. Save computed total
+    #     purchase_order.total_amount = total
+    #     purchase_order.save()
 
-        return purchase_order
+    #     return purchase_order
 
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        """
-        Intercepts state updates. If status changes to 'RECEIVED',
-        it triggers inventory increases and logs automated stock movements.
-        """
-        old_status = instance.status
-        new_status = validated_data.get('status', old_status)
+    # @transaction.atomic
+    # def update(self, instance, validated_data):
+    #     """
+    #     Intercepts state updates. If status changes to 'RECEIVED',
+    #     it triggers inventory increases and logs automated stock movements.
+    #     """
+    #     old_status = instance.status
+    #     new_status = validated_data.get('status', old_status)
 
-        # Execute our automation ONLY when shifting to RECEIVED from a non-received state
-        if new_status == 'RECEIVED' and old_status != 'RECEIVED':
-            # Fetch all item lines associated with this Purchase Order
-            po_items = instance.items.all() 
+    #     # Execute our automation ONLY when shifting to RECEIVED from a non-received state
+    #     if new_status == 'RECEIVED' and old_status != 'RECEIVED':
+    #         # Fetch all item lines associated with this Purchase Order
+    #         po_items = instance.items.all() 
             
-            for item in po_items:
-                product = item.product
-                quantity_received = item.quantity
+    #         for item in po_items:
+    #             product = item.product
+    #             quantity_received = item.quantity
 
-                # Lock the inventory row to prevent race conditions during updates
-                inventory, created = Inventory.objects.select_for_update().get_or_create(
-                    product=product,
-                    defaults={'quantity': 0, 'reorder_level': 10}
-                )
+    #             # Lock the inventory row to prevent race conditions during updates
+    #             inventory, created = Inventory.objects.select_for_update().get_or_create(
+    #                 product=product,
+    #                 defaults={'quantity': 0, 'reorder_level': 10}
+    #             )
 
-                # Step 1: Increase inventory quantity metrics
-                inventory.quantity += quantity_received
-                inventory.save()
+    #             # Step 1: Increase inventory quantity metrics
+    #             inventory.quantity += quantity_received
+    #             inventory.save()
 
-                # Step 2: Create automated StockMovement audit log (IN)
-                request = self.context.get('request')
-                user = request.user if request and request.user.is_authenticated else None
+    #             # Step 2: Create automated StockMovement audit log (IN)
+    #             request = self.context.get('request')
+    #             user = request.user if request and request.user.is_authenticated else None
                 
-                StockMovement.objects.create(
-                    product=product,
-                    movement_type='IN',
-                    quantity=quantity_received,
-                    user=user
-                )
+    #             StockMovement.objects.create(
+    #                 product=product,
+    #                 movement_type='IN',
+    #                 quantity=quantity_received,
+    #                 user=user
+    #             )
 
-        # Call the standard DRF super method to save all basic field updates
-        return super().update(instance, validated_data)
+    #     # Call the standard DRF super method to save all basic field updates
+    #     return super().update(instance, validated_data)
