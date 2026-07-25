@@ -28,6 +28,7 @@ export default function PurchaseOrderFilters({
         </div>
 
         {/* Suppliers Dropdown */}
+        
         <select
           value={filters.supplier || ""}
           onChange={(e) => handleFilterChange("supplier", e.target.value)}
@@ -35,39 +36,23 @@ export default function PurchaseOrderFilters({
         >
           <option value="">All Suppliers</option>
           {suppliers.map((sup, idx) => (
-            <option key={sup.id || idx} value={sup.id || sup}>
-              {sup.name || sup}
+            <option key={sup.id || idx} value={sup.id}>
+              {sup.company_name || sup.name || sup.title || `Supplier #${sup.id}`}
             </option>
           ))}
         </select>
 
-        {/* 👈 2. NEW: Products Dropdown */}
-        <select
-          value={filters.product || ""}
-          onChange={(e) => handleFilterChange("product", e.target.value)}
-          className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-        >
-          <option value="">All Products</option>
-          {products.map((prod, idx) => (
-            <option key={prod.id || idx} value={prod.id || prod}>
-              {prod.name || prod.title || prod}
-            </option>
-          ))}
-        </select>
-
-        {/* Status Dropdown */}
+        {/* Status Dropdown - FIXED UPCASE VALUES */}
         <select
           value={filters.status || ""}
           onChange={(e) => handleFilterChange("status", e.target.value)}
           className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
         >
           <option value="">All Status</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Received">Received</option>
-          <option value="Cancelled">Cancelled</option>
+          <option value="PENDING">Pending</option>
+          <option value="RECEIVED">Received</option>
+          <option value="CANCELLED">Cancelled</option>
         </select>
-
         {/* Sorting Dropdown */}
         <select
           value={filters.ordering || "newest"}

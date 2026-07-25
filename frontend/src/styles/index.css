@@ -2,3 +2,27 @@
 
 @import "./variables.css";
 @import "./utilities.css";
+@media print {
+  /* 1. Hide browser header/footer elements like URLs, dates, and page titles */
+  @page {
+    margin: 15mm;
+    size: A4 portrait;
+  }
+
+  /* 2. Prevent page breaks inside important table rows or headers */
+  tr, blockquote {
+    page-break-inside: avoid;
+  }
+
+  /* 3. Force white background and suppress screen UI (sidebars, navs, action buttons) */
+  body {
+    background-color: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

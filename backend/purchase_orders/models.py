@@ -21,12 +21,30 @@ class PurchaseOrder(models.Model):
 
     def __str__(self):
         return f"PO #{self.id} - {self.supplier.company_name}"
+    @property
+    def calculated_total(self):
+        """Calculates total live directly from related items."""
+        total = sum(item.subtotal for item in self.items.all())
+        return total
 
+    def update_total_amount(self):
+        """Recalculates and saves total_amount to the database."""
+        self.total_amount = self.calculated_total
+        self.save(update_fields=['total_amount'])
+
+# models.py
 class PurchaseOrderItem(models.Model):
     purchase_order = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def subtotal(self):
+        """Calculates item subtotal dynamically."""
+        if self.quantity is not None and self.cost_price is not None:
+            return self.quantity * self.cost_price
+        return 0.00
 
     def __str__(self):
         return f"{self.product.name} x{self.quantity}"

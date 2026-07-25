@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from .models import PurchaseOrder
 from .serializers import PurchaseOrderSerializer
-
+from django.http import HttpResponse
+import csv
 
 class PurchaseOrderViewSet(viewsets.ModelViewSet):
     queryset = PurchaseOrder.objects.select_related('supplier', 'user').prefetch_related('items__product').all()
@@ -72,3 +73,27 @@ class PurchaseOrderViewSet(viewsets.ModelViewSet):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+    @action(detail=False, methods=['get'], url_path='export')
+    def export(self, request):
+        """Custom Action: GET /api/purchase-orders/export/"""
+        # Filter queryset using your existing filtering logic
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Example: Exporting to CSV
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="purchase_orders.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['ID', 'PO Number', 'Supplier', 'Status', 'Total Amount', 'Order Date'])
+
+        for order in queryset:
+            writer.writerow([
+                order.id,
+                getattr(order, 'po_number', f"PO-{order.id}"),
+                order.supplier.company_name if order.supplier else '',
+                order.status,
+                getattr(order, 'total_amount', 0),
+                order.order_date
+            ])
+
+        return response

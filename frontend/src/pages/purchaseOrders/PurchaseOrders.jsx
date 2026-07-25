@@ -14,6 +14,8 @@ export default function PurchaseOrders() {
     purchaseOrders,
     loading,
     stats,
+    suppliers = [], 
+    products = [], 
     currentPage,
     setCurrentPage,
     itemsPerPage,
@@ -36,6 +38,7 @@ export default function PurchaseOrders() {
     setFilters({
       search: "",
       supplier: "",
+      product: "", // 👈 3. Include product reset key
       status: "",
       ordering: "newest",
     });
@@ -57,7 +60,7 @@ export default function PurchaseOrders() {
           </div>
         </div>
 
-        {/* Action Buttons Connected directly to usePurchaseOrders */}
+        {/* Action Buttons */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleExportOrders}
@@ -80,11 +83,13 @@ export default function PurchaseOrders() {
       {/* Stats Section */}
       <PurchaseOrderStats orders={purchaseOrders} backendStats={stats} />
 
-      {/* Filters Section */}
+      {/* Filters Section - Pass suppliers & products */}
       <PurchaseOrderFilters
         filters={filters}
         setFilters={setFilters}
-        onReset={handleResetFilters}
+        suppliers={suppliers} // 👈 Pass fetched suppliers list
+        products={products}   // 👈 Pass fetched products list
+        onReset={handleResetFilters} // 👈 Fixed trailing 'Q' syntax error
       />
 
       {/* Table Section */}
@@ -116,14 +121,14 @@ export default function PurchaseOrders() {
         />
       )}
 
-      {/* Create Purchase Request Modal (Driven by Hook State) */}
+      {/* Create Purchase Request Modal */}
       {isCreateModalOpen && (
-      <PurchaseOrderModal
-        isOpen={isCreateModalOpen} // 👈 1. Pass isOpen so the modal doesn't return null
-        onClose={() => setIsCreateModalOpen(false)}
-        onOrderCreated={handleCreateOrder} // 👈 2. Match the prop name defined in PurchaseOrderModal
-      />
-    )}
+        <PurchaseOrderModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onOrderCreated={handleCreateOrder}
+        />
+      )}
     </div>
   );
 }

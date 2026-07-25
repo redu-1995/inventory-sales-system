@@ -4,17 +4,15 @@ from django.contrib import messages
 from .models import PurchaseOrder, PurchaseOrderItem
 from .services import receive_purchase_order
 
-
 class PurchaseOrderItemInline(admin.TabularInline):
     model = PurchaseOrderItem
     extra = 1
-    # REMOVED: autocomplete_fields = ['product']  <-- Commented out to avoid admin.E040
     fields = ('product', 'quantity', 'cost_price', 'get_subtotal')
     readonly_fields = ('get_subtotal',)
 
     @admin.display(description='Subtotal')
     def get_subtotal(self, obj):
-        if obj.quantity and obj.cost_price:
+        if obj.quantity is not None and obj.cost_price is not None:
             return f"${obj.quantity * obj.cost_price:,.2f}"
         return "$0.00"
 
@@ -90,7 +88,16 @@ class PurchaseOrderAdmin(admin.ModelAdmin):
             obj.user = request.user
         super().save_model(request, obj, form, change)
 
+    @admin.display(description='Total Amount', ordering='total_amount')
+    def formatted_total(self, obj):
+        # Uses calculated_total if total_amount is 0
+        total = obj.total_amount if obj.total_amount > 0 else obj.calculated_total
+        return f"${total:,.2f}"
 
+    def save_formset(self, request, form, formset, change):
+        """Recalculates total_amount after saving inline items."""
+        super().save_formset(request, form, formset, change)
+        form.instance.update_total_amount()
 @admin.register(PurchaseOrderItem)
 class PurchaseOrderItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'purchase_order', 'product', 'quantity', 'cost_price')

@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { purchaseOrderService } from "../services/purchaseOrderService";
+import { productAPI } from "../services/productService"; 
 
 export function usePurchaseOrders() {
   const [purchaseOrders, setPurchaseOrders] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,13 +25,41 @@ export function usePurchaseOrders() {
   const [filters, setFilters] = useState({
     search: "",
     supplier: "",
+    product: "",
     status: "",
     ordering: "newest",
   });
 
   // Centralized Modal States
-  const [selectedOrder, setSelectedOrder] = useState(null); // For View/Details Modal
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // For Create Modal
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  // Fetch Dropdown Options on Mount
+  useEffect(() => {
+    const fetchDropdowns = async () => {
+      try {
+        // Fetch products via productAPI
+        if (productAPI?.getProducts) {
+          const prodData = await productAPI.getProducts();
+          const prodList = Array.isArray(prodData) ? prodData : prodData?.results || [];
+          setProducts(prodList);
+        }
+
+        // Fetch suppliers if available on productAPI or purchaseOrderService
+        if (productAPI?.getSuppliers) {
+          const suppData = await productAPI.getSuppliers();
+          setSuppliers(Array.isArray(suppData) ? suppData : suppData?.results || []);
+        } else if (purchaseOrderService?.getSuppliers) {
+          const suppData = await purchaseOrderService.getSuppliers();
+          setSuppliers(Array.isArray(suppData) ? suppData : suppData?.results || []);
+        }
+      } catch (err) {
+        console.error("Error fetching dropdown values:", err);
+      }
+    };
+
+    fetchDropdowns();
+  }, []);
 
   // Fetch Orders
   const fetchOrders = useCallback(async () => {
@@ -40,16 +71,17 @@ export function usePurchaseOrders() {
         page_size: itemsPerPage,
         search: filters.search,
         supplier: filters.supplier,
+        product: filters.product,
         status: filters.status,
         ordering: filters.ordering,
       });
 
-      const results = data.results || data;
+      const results = Array.isArray(data) ? data : data?.results || [];
       setPurchaseOrders(results);
-      setTotalItems(data.count || results.length);
+      setTotalItems(data?.count || results.length);
 
-      // Compute stats client-side if not sent by backend payload
-      if (data.stats) {
+      // Compute stats
+      if (data?.stats) {
         setStats(data.stats);
       } else {
         setStats({
@@ -66,27 +98,26 @@ export function usePurchaseOrders() {
     }
   }, [currentPage, itemsPerPage, filters]);
 
+  // Reset to Page 1 on Filter Changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
+
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
-  // Handle Order Creation via Service
+  // Actions
   const handleCreateOrder = async (orderData) => {
-    try {
-      const createdOrder = await purchaseOrderService.createPurchaseOrder(orderData);
-      setIsCreateModalOpen(false);
-      await fetchOrders(); // Refresh table data & stats
-      return createdOrder;
-    } catch (err) {
-      throw err;
-    }
+    const createdOrder = await purchaseOrderService.createPurchaseOrder(orderData);
+    setIsCreateModalOpen(false);
+    await fetchOrders();
+    return createdOrder;
   };
 
-  // Handle Export Action
   const handleExportOrders = async () => {
     try {
       const blob = await purchaseOrderService.exportPurchaseOrders(filters);
-      // Create downloadable link
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement("a");
       link.href = url;
@@ -99,49 +130,34 @@ export function usePurchaseOrders() {
     }
   };
 
-  // Receive Purchase Order
   const handleReceive = async (id) => {
-    try {
-      const updatedOrder = await purchaseOrderService.receivePurchaseOrder(id);
-      // If modal is open for this order, update selectedOrder state
-      if (selectedOrder && selectedOrder.id === id) {
-        setSelectedOrder(updatedOrder);
-      }
-      await fetchOrders();
-    } catch (err) {
-      throw err;
+    const updatedOrder = await purchaseOrderService.receivePurchaseOrder(id);
+    if (selectedOrder && selectedOrder.id === id) {
+      setSelectedOrder(updatedOrder);
     }
+    await fetchOrders();
   };
 
-  // Cancel Purchase Order
   const handleCancel = async (id) => {
-    try {
-      const updatedOrder = await purchaseOrderService.cancelPurchaseOrder(id);
-      // If modal is open for this order, update selectedOrder state
-      if (selectedOrder && selectedOrder.id === id) {
-        setSelectedOrder(updatedOrder);
-      }
-      await fetchOrders();
-    } catch (err) {
-      throw err;
+    const updatedOrder = await purchaseOrderService.cancelPurchaseOrder(id);
+    if (selectedOrder && selectedOrder.id === id) {
+      setSelectedOrder(updatedOrder);
     }
+    await fetchOrders();
   };
 
-  // Delete Purchase Order
   const handleDelete = async (id) => {
-    try {
-      await purchaseOrderService.deletePurchaseOrder(id);
-      if (selectedOrder && selectedOrder.id === id) {
-        setSelectedOrder(null);
-      }
-      await fetchOrders();
-    } catch (err) {
-      throw err;
+    await purchaseOrderService.deletePurchaseOrder(id);
+    if (selectedOrder && selectedOrder.id === id) {
+      setSelectedOrder(null);
     }
+    await fetchOrders();
   };
 
   return {
     purchaseOrders,
+    suppliers,
+    products,
     loading,
     error,
     stats,
