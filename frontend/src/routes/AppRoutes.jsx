@@ -8,6 +8,7 @@ import Products from '../pages/products/Products';
 import Inventory from '../pages/inventory/Inventory';
 import PurchaseOrders from '../pages/purchaseOrders/PurchaseOrders';
 import PurchaseOrderPrintPage from '../pages/purchaseOrders/PurchaseOrderPrintPage';
+import Sales from '../pages/sales/Sales';
 
 // Layout HOC to cleanly frame inner route matching targets
 const AuthenticatedAppLayout = () => (
@@ -36,7 +37,7 @@ export default function AppRoutes() {
         <Route path="/products" element={<Products />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/customers" element={<CustomersModule />} />
-        <Route path="/sales" element={<SalesModule />} />
+        <Route path="/sales" element={<Sales />} />
         <Route path="/purchase-orders" element={<PurchaseOrders />} />
       </Route>
 

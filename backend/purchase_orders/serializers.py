@@ -6,7 +6,6 @@ from inventory.models import Inventory, StockMovement
 
 
 class PurchaseOrderItemSerializer(serializers.ModelSerializer):
-    # Map directly to Product.name
     product_name = serializers.CharField(source='product.name', read_only=True)
     subtotal = serializers.SerializerMethodField()
 
@@ -31,7 +30,6 @@ class PurchaseOrderItemSerializer(serializers.ModelSerializer):
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     items = PurchaseOrderItemSerializer(many=True)
     
-    # Corrected: Match Supplier.company_name and handle null values safely
     supplier_name = serializers.CharField(
         source='supplier.company_name', 
         read_only=True, 
@@ -53,7 +51,6 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
             'user_name',
             'status',
             'expected_delivery',
-            'notes',
             'total_amount',
             'order_date',
             'items',
@@ -71,14 +68,12 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user if request and request.user.is_authenticated else None
 
-        # 1. Create Purchase Order Shell
         purchase_order = PurchaseOrder.objects.create(
             user=user,
             total_amount=0,
             **validated_data
         )
 
-        # 2. Create Items & Calculate Total Amount
         total_amount = 0
         for item_data in items_data:
             item = PurchaseOrderItem.objects.create(
@@ -99,14 +94,17 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
                 f"Cannot update a purchase order that is already {instance.status.lower()}."
             )
 
-        items_data = validated_data.pop('items', None)
-        new_status = validated_data.get('status', instance.status)
+        # 1. Capture old status BEFORE modifying instance attributes
+        old_status = instance.status
+        new_status = validated_data.get('status', old_status)
 
-        # 1. Update basic fields (supplier, expected_delivery, notes)
+        items_data = validated_data.pop('items', None)
+
+        # 2. Update basic fields on instance
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
-        # 2. Re-create items if provided in request
+        # 3. Re-create items if updated item array is provided
         if items_data is not None:
             instance.items.all().delete()
             total_amount = 0
@@ -115,16 +113,28 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
                 total_amount += item_data['quantity'] * item_data['cost_price']
             instance.total_amount = total_amount
 
-        # 3. Increase stock & create movement on 'RECEIVED'
-        if new_status == 'RECEIVED' and instance.status != 'RECEIVED':
+        # 4. Trigger inventory update ONLY on transition to RECEIVED
+        if old_status != 'RECEIVED' and new_status == 'RECEIVED':
             request = self.context.get('request')
             user = request.user if request and request.user.is_authenticated else None
 
-            for item in instance.items.select_related('product'):
-                inventory, _ = Inventory.objects.get_or_create(product=item.product)
-                inventory.quantity += item.quantity
-                inventory.save(update_fields=['quantity', 'updated_at'])
+            # Fetch fresh line items from DB
+            po_items = instance.items.select_related('product')
 
+            for item in po_items:
+                inventory, created = Inventory.objects.get_or_create(
+                    product=item.product,
+                    defaults={
+                        'quantity': 0,
+                        'reorder_level': 10
+                    }
+                )
+
+                # Increment inventory quantity
+                inventory.quantity += item.quantity
+                inventory.save()
+
+                # Record stock movement log entry
                 StockMovement.objects.create(
                     product=item.product,
                     movement_type='IN',
