@@ -50,13 +50,15 @@ class SaleSerializer(serializers.ModelSerializer):
     sale_date = serializers.DateTimeField(required=False)
     tax_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, write_only=True)
     discount_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, write_only=True)
-
+    paid_amount = serializers.ReadOnlyField()
+    remaining_amount = serializers.ReadOnlyField()
+    payments = PaymentSerializer(many=True, read_only=True)
     class Meta:
         model = Sale
         fields = [
             'id', 'customer', 'customer_name', 'user', 'user_name',
             'tax_amount', 'discount_amount', 'total_amount', 
-            'payment_method', 'status', 'sale_date', 'items', 'payments',
+            'payment_method', 'status', 'sale_date', 'items', 'payments','paid_amount', 'remaining_amount'
         ]
         read_only_fields = ['user']
 

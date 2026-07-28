@@ -46,6 +46,7 @@ const SalesTable = ({
   loading = false,
   error = null,
   onViewSale = () => {},
+  onReceivePayment = () => {},
   onPrintInvoice = () => {},
   onResetFilters,
   onDeleteSale,
@@ -160,11 +161,11 @@ const SalesTable = ({
                   />
                 </th>
                 <th className="py-3 px-4">Invoice #</th>
-                <th className="py-3 px-4">Customer</th>
                 <th className="py-3 px-4">Date</th>
-                <th className="py-3 px-4">Items</th>
+                <th className="py-3 px-4">Customer</th>
                 <th className="py-3 px-4">Total</th>
-                <th className="py-3 px-4">Payment Status</th>
+                <th className="py-3 px-4">Paid / Remaining</th>
+                <th className="py-3 px-4">Status</th>
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
@@ -177,6 +178,7 @@ const SalesTable = ({
                   isSelected={selectedIds.includes(sale.id)}
                   onSelectRow={handleSelectRow}
                   onView={onViewSale}
+                  onReceivePayment={onReceivePayment} 
                   onPrint={onPrintInvoice}
                   onDelete={handleDeleteSingle}
                 />

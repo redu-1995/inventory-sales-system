@@ -4,6 +4,9 @@ import SalesStats from '../../components/sales/SalesStats';
 import SalesFilters from '../../components/sales/SalesFilters';
 import SalesTable from '../../components/sales/SalesTable';
 import CreateSaleModal from '../../components/sales/SaleModal'; 
+import ReceivePaymentModal from '../../components/sales/ReceivePaymentModal'; 
+import ViewSaleModal from '../../components/sales/SaleDetailsModal'; 
+import PrintInvoice from '../../components/sales/PrintInvoice'; 
 import { useSales } from '../../hooks/useSales';
 
 const INITIAL_FILTERS = {
@@ -16,7 +19,11 @@ const INITIAL_FILTERS = {
 const Sales = () => {
   const { deleteSale } = useSales();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // --- Modal Visibility & Active Data States ---
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedPaymentSale, setSelectedPaymentSale] = useState(null); // For Receive Payment
+  const [selectedViewSale, setSelectedViewSale] = useState(null);       // For View Sale Details
+  const [selectedPrintSale, setSelectedPrintSale] = useState(null);     // 👈 2. State for Print Invoice Modal
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // --- Backend Data States ---
@@ -28,6 +35,15 @@ const Sales = () => {
 
   // --- Filters State ---
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+
+  // Company details configuration (Passed to PrintInvoice)
+  const companyInfo = {
+    name: 'ABC COSMETICS PLC',
+    address: 'Addis Ababa, Ethiopia',
+    phone: '+251 911 000 000',
+    email: 'info@abccosmetics.com',
+    tin: '0012345678',
+  };
 
   // Utility to build Auth Headers
   const getAuthHeaders = useCallback(() => {
@@ -59,7 +75,7 @@ const Sales = () => {
     }
   }, [getAuthHeaders]);
 
-  // --- Fetch Modal Dropdown Data (Products & Customers) ---
+  // --- Fetch Dropdown Data ---
   const fetchModalData = useCallback(async () => {
     try {
       setIsLoadingModalData(true);
@@ -89,34 +105,68 @@ const Sales = () => {
     fetchModalData();
   }, [fetchSales, fetchModalData]);
 
-  // --- Handle Sale Submission ---
-  const handleCreateSale = async (payload) => {
+  // --- ACTION HANDLERS ---
+
+  // 1. 👁 ACTION: View Sale Details
+  const handleViewSale = (sale) => {
+    setSelectedViewSale(sale);
+  };
+
+  // 2. 💰 ACTION: Open Receive Payment Modal
+  const handleOpenReceivePayment = (sale) => {
+    setSelectedPaymentSale(sale);
+  };
+
+  // Submit Payment to Backend
+  const handleReceivePaymentSubmit = async ({ saleId, amount, paymentMethod }) => {
     try {
       setIsSubmitting(true);
 
+      const response = await fetch('http://127.0.0.1:8000/api/sales/payments/', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          sale: saleId,
+          amount: parseFloat(amount),
+          payment_method: paymentMethod || 'Cash',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to record payment');
+      }
+
+      await fetchSales();
+      setSelectedPaymentSale(null);
+    } catch (error) {
+      console.error('Payment update failed:', error);
+      alert(`Error recording payment: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // 3. 🖨 ACTION: Print Invoice (👈 3. Updated Handler to open modal)
+  const handlePrintInvoice = (sale) => {
+    setSelectedPrintSale(sale);
+  };
+
+  // --- Create Order Submission ---
+  const handleCreateSale = async (payload) => {
+    try {
+      setIsSubmitting(true);
       const response = await fetch('http://127.0.0.1:8000/api/sales/sales/', {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorMessage = 'Failed to record sale order';
-        try {
-          const errorJson = JSON.parse(errorText);
-          errorMessage = errorJson.detail || errorJson.message || JSON.stringify(errorJson);
-        } catch {
-          if (errorText) errorMessage = errorText;
-        }
-        throw new Error(errorMessage);
-      }
+      if (!response.ok) throw new Error('Failed to record sale order');
 
       await fetchSales();
-      setIsModalOpen(false);
-
+      setIsCreateModalOpen(false);
     } catch (error) {
-      console.error('Failed to create sale order:', error);
+      console.error('Failed to create sale:', error);
       alert(`Error creating sale: ${error.message}`);
     } finally {
       setIsSubmitting(false);
@@ -154,35 +204,27 @@ const Sales = () => {
     });
   }, [sales, filters]);
 
-  // --- Filter-Aware Export Function ---
+  // --- CSV Export Logic ---
   const handleExportFilteredSales = useCallback((filename = 'filtered_sales_report.csv') => {
     if (!filteredSales || filteredSales.length === 0) {
-      alert('No sales data match the current filters to export.');
+      alert('No sales data to export.');
       return;
     }
 
-    // CSV Headers
     const headers = ['Order ID', 'Customer', 'Date', 'Payment Method', 'Status', 'Total Amount'];
-
-    // Convert filtered data into CSV rows
     const rows = filteredSales.map((sale) => {
       const customerName = sale.customer_name || (typeof sale.customer === 'object' ? sale.customer?.full_name : '') || 'N/A';
-      const saleDate = sale.sale_date ? sale.sale_date.split('T')[0] : '';
-
       return [
         sale.id,
-        `"${customerName.replace(/"/g, '""')}"`, // Escape quotes inside strings
-        saleDate,
+        `"${customerName.replace(/"/g, '""')}"`,
+        sale.sale_date ? sale.sale_date.split('T')[0] : '',
         `"${(sale.payment_method || '').replace(/"/g, '""')}"`,
         sale.status || '',
         sale.total_amount || 0,
       ];
     });
 
-    // Assemble CSV content
     const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
-
-    // Trigger browser file download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -194,19 +236,14 @@ const Sales = () => {
     URL.revokeObjectURL(url);
   }, [filteredSales]);
 
-  // --- Calculate Dynamic Stats ---
+  // --- Stats Calculation ---
   const stats = useMemo(() => {
     const totalOrders = sales.length;
     const totalRevenue = sales.reduce((acc, curr) => acc + (parseFloat(curr.total_amount) || 0), 0);
     const paidOrders = sales.filter((s) => s.status === 'PAID').length;
     const unpaidOrders = sales.filter((s) => s.status === 'UNPAID' || s.status === 'PARTIAL').length;
 
-    return {
-      totalOrders,
-      totalRevenue,
-      paidOrders,
-      unpaidOrders,
-    };
+    return { totalOrders, totalRevenue, paidOrders, unpaidOrders };
   }, [sales]);
 
   return (
@@ -220,15 +257,13 @@ const Sales = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all shadow-xs cursor-pointer"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>Create Order</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all cursor-pointer"
+        >
+          <Plus className="w-4 h-4 stroke-[2.5]" />
+          <span>Create Order</span>
+        </button>
       </div>
 
       {/* Overview Statistics */}
@@ -245,21 +280,48 @@ const Sales = () => {
       <SalesTable
         sales={filteredSales}
         loading={isLoadingSales}
-        onViewOrder={(id) => console.log('View order:', id)}
-        onDownloadInvoice={(id) => console.log('Download invoice:', id)}
-        onExportSales={handleExportFilteredSales} // 👈 Exports only filteredSales
+        onViewSale={handleViewSale}                   
+        onReceivePayment={handleOpenReceivePayment}  
+        onPrintInvoice={handlePrintInvoice}          
+        onExportSales={handleExportFilteredSales}
         onDeleteSale={deleteSale}
       />
 
-      {/* Create Sale Modal */}
+      {/* --- MODALS SECTION --- */}
+
+      {/* 1. Create Sale Modal */}
       <CreateSaleModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreateSale}
         availableProducts={products}
         availableCustomers={customers}
         isSubmitting={isSubmitting || isLoadingModalData}
       />
+
+      {/* 2. Receive Payment Modal */}
+      <ReceivePaymentModal
+        isOpen={!!selectedPaymentSale}
+        onClose={() => setSelectedPaymentSale(null)}
+        sale={selectedPaymentSale}
+        onSubmit={handleReceivePaymentSubmit}
+      />
+
+      {/* 3. View Sale Details Modal */}
+      <ViewSaleModal
+        isOpen={!!selectedViewSale}
+        onClose={() => setSelectedViewSale(null)}
+        sale={selectedViewSale}
+      />
+
+      {/* 4. Print Invoice Modal (👈 4. Added Print Invoice Modal render) */}
+      {selectedPrintSale && (
+        <PrintInvoice
+          sale={selectedPrintSale}
+          companyInfo={companyInfo}
+          onClose={() => setSelectedPrintSale(null)}
+        />
+      )}
     </div>
   );
 };

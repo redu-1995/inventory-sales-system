@@ -26,6 +26,15 @@ class Sale(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='UNPAID')
     sale_date = models.DateTimeField(default=timezone.now)
 
+    @property
+    def paid_amount(self):
+        """Calculates total amount paid by summing all related Payment records."""
+        return sum(payment.amount for payment in self.payments.all())
+
+    @property
+    def remaining_amount(self):
+        """Calculates remaining balance."""
+        return max(Decimal('0.00'), self.total_amount - self.paid_amount)
     def recalculate_total(self):
         """Calculates total_amount by summing all child item subtotals (+ tax - discount)."""
         items_subtotal = sum(item.subtotal for item in self.items.all())
