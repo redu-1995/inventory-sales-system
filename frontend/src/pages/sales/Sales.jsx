@@ -17,20 +17,28 @@ const INITIAL_FILTERS = {
 };
 
 const Sales = () => {
-  const { deleteSale } = useSales();
+  const {
+    sales,
+    stats: backendStats,
+    loading: isLoadingSales,
+    fetchSales,
+    fetchSalesReport,
+    createSale,
+    deleteSale,
+    receivePayment,
+    exportSales,
+  } = useSales();
 
   // --- Modal Visibility & Active Data States ---
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedPaymentSale, setSelectedPaymentSale] = useState(null); // For Receive Payment
   const [selectedViewSale, setSelectedViewSale] = useState(null);       // For View Sale Details
-  const [selectedPrintSale, setSelectedPrintSale] = useState(null);     // 👈 2. State for Print Invoice Modal
+  const [selectedPrintSale, setSelectedPrintSale] = useState(null);     // For Print Invoice Modal
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // --- Backend Data States ---
-  const [sales, setSales] = useState([]);
+  // --- Backend Dropdown Data States ---
   const [products, setProducts] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [isLoadingSales, setIsLoadingSales] = useState(false);
   const [isLoadingModalData, setIsLoadingModalData] = useState(false);
 
   // --- Filters State ---
@@ -45,37 +53,22 @@ const Sales = () => {
     tin: '0012345678',
   };
 
-  // Utility to build Auth Headers
+  // Utility to build Auth Headers for dropdown requests
   const getAuthHeaders = useCallback(() => {
     const token = localStorage.getItem('token') || localStorage.getItem('access_token');
     return {
       'Content-Type': 'application/json',
-      ...(token && { 'Authorization': `Bearer ${token}` }),
+      ...(token && { Authorization: `Bearer ${token}` }),
     };
   }, []);
 
-  // --- Fetch Sales List ---
-  const fetchSales = useCallback(async () => {
-    try {
-      setIsLoadingSales(true);
-      const res = await fetch('http://127.0.0.1:8000/api/sales/sales/', {
-        headers: getAuthHeaders(),
-      });
+  // --- Fetch Initial Sales & Stats ---
+  useEffect(() => {
+    fetchSales();
+    fetchSalesReport();
+  }, [fetchSales, fetchSalesReport]);
 
-      if (res.ok) {
-        const data = await res.json();
-        setSales(Array.isArray(data) ? data : data.results || []);
-      } else {
-        console.error('Failed to fetch sales list:', res.status);
-      }
-    } catch (error) {
-      console.error('Error fetching sales:', error);
-    } finally {
-      setIsLoadingSales(false);
-    }
-  }, [getAuthHeaders]);
-
-  // --- Fetch Dropdown Data ---
+  // --- Fetch Dropdown Data for Creation Modal ---
   const fetchModalData = useCallback(async () => {
     try {
       setIsLoadingModalData(true);
@@ -94,16 +87,17 @@ const Sales = () => {
         setCustomers(Array.isArray(customersData) ? customersData : customersData.results || []);
       }
     } catch (error) {
-      console.error('Error fetching dropdown data:', error);
+      console.error('Error fetching modal dropdown data:', error);
     } finally {
       setIsLoadingModalData(false);
     }
   }, [getAuthHeaders]);
 
-  useEffect(() => {
-    fetchSales();
+  // Fetch dropdown options when modal is opened
+  const handleOpenCreateModal = () => {
     fetchModalData();
-  }, [fetchSales, fetchModalData]);
+    setIsCreateModalOpen(true);
+  };
 
   // --- ACTION HANDLERS ---
 
@@ -117,59 +111,51 @@ const Sales = () => {
     setSelectedPaymentSale(sale);
   };
 
-  // Submit Payment to Backend
+  // Submit Payment via Hook
   const handleReceivePaymentSubmit = async ({ saleId, amount, paymentMethod }) => {
     try {
       setIsSubmitting(true);
-
-      const response = await fetch('http://127.0.0.1:8000/api/sales/payments/', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({
-          sale: saleId,
-          amount: parseFloat(amount),
-          payment_method: paymentMethod || 'Cash',
-        }),
+      await receivePayment({
+        sale: saleId,
+        amount: parseFloat(amount),
+        payment_method: paymentMethod || 'Cash',
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to record payment');
-      }
-
-      await fetchSales();
       setSelectedPaymentSale(null);
     } catch (error) {
       console.error('Payment update failed:', error);
-      alert(`Error recording payment: ${error.message}`);
+      alert(`Error recording payment: ${error.message || 'Payment processing failed.'}`);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // 3. 🖨 ACTION: Print Invoice (👈 3. Updated Handler to open modal)
+  // 3. 🖨 ACTION: Print Invoice
   const handlePrintInvoice = (sale) => {
     setSelectedPrintSale(sale);
   };
 
-  // --- Create Order Submission ---
+  // 4. ➕ ACTION: Create Sale via Hook
   const handleCreateSale = async (payload) => {
     try {
       setIsSubmitting(true);
-      const response = await fetch('http://127.0.0.1:8000/api/sales/sales/', {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) throw new Error('Failed to record sale order');
-
-      await fetchSales();
+      await createSale(payload);
       setIsCreateModalOpen(false);
     } catch (error) {
       console.error('Failed to create sale:', error);
-      alert(`Error creating sale: ${error.message}`);
+      alert(`Error creating sale: ${error.message || 'Operation failed.'}`);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // 5. 🗑 ACTION: Delete Sale via Hook
+  const handleDeleteSale = async (id) => {
+    if (!window.confirm(`Are you sure you want to delete order #${id}?`)) return;
+    try {
+      await deleteSale(id);
+    } catch (error) {
+      console.error('Failed to delete sale:', error);
+      alert(`Error deleting sale: ${error.message || 'Operation failed.'}`);
     }
   };
 
@@ -179,8 +165,9 @@ const Sales = () => {
 
     return sales.filter((sale) => {
       const searchTerm = filters.search.toLowerCase().trim();
-      const customerName = sale.customer_name || (typeof sale.customer === 'object' ? sale.customer?.full_name : '');
-      
+      const customerName =
+        sale.customer_name || (typeof sale.customer === 'object' ? sale.customer?.full_name : '');
+
       const matchesSearch =
         !searchTerm ||
         sale.id?.toString().includes(searchTerm) ||
@@ -196,55 +183,65 @@ const Sales = () => {
         normalizeString(sale.payment_method) === normalizeString(filters.paymentMethod);
 
       const formattedSaleDate = sale.sale_date ? sale.sale_date.split('T')[0] : '';
-      const matchesDate =
-        !filters.date ||
-        formattedSaleDate === filters.date;
+      const matchesDate = !filters.date || formattedSaleDate === filters.date;
 
       return matchesSearch && matchesStatus && matchesPaymentMethod && matchesDate;
     });
   }, [sales, filters]);
 
   // --- CSV Export Logic ---
-  const handleExportFilteredSales = useCallback((filename = 'filtered_sales_report.csv') => {
-    if (!filteredSales || filteredSales.length === 0) {
-      alert('No sales data to export.');
-      return;
-    }
+  const handleExportFilteredSales = useCallback(
+    (filename = 'filtered_sales_report.csv') => {
+      if (filters.search || filters.status !== 'All' || filters.paymentMethod !== 'All' || filters.date) {
+        // Fallback to client-side CSV for filtered subset
+        if (!filteredSales || filteredSales.length === 0) {
+          alert('No sales data to export.');
+          return;
+        }
 
-    const headers = ['Order ID', 'Customer', 'Date', 'Payment Method', 'Status', 'Total Amount'];
-    const rows = filteredSales.map((sale) => {
-      const customerName = sale.customer_name || (typeof sale.customer === 'object' ? sale.customer?.full_name : '') || 'N/A';
-      return [
-        sale.id,
-        `"${customerName.replace(/"/g, '""')}"`,
-        sale.sale_date ? sale.sale_date.split('T')[0] : '',
-        `"${(sale.payment_method || '').replace(/"/g, '""')}"`,
-        sale.status || '',
-        sale.total_amount || 0,
-      ];
-    });
+        const headers = ['Order ID', 'Customer', 'Date', 'Payment Method', 'Status', 'Total Amount'];
+        const rows = filteredSales.map((sale) => {
+          const customerName =
+            sale.customer_name || (typeof sale.customer === 'object' ? sale.customer?.full_name : '') || 'N/A';
+          return [
+            sale.id,
+            `"${customerName.replace(/"/g, '""')}"`,
+            sale.sale_date ? sale.sale_date.split('T')[0] : '',
+            `"${(sale.payment_method || '').replace(/"/g, '""')}"`,
+            sale.status || '',
+            sale.total_amount || 0,
+          ];
+        });
 
-    const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }, [filteredSales]);
+        const csvContent = [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        // Direct backend blob export via hook when no custom filters are set
+        exportSales(filename);
+      }
+    },
+    [filters, filteredSales, exportSales]
+  );
 
-  // --- Stats Calculation ---
-  const stats = useMemo(() => {
+  // --- Calculated Stats Fallback ---
+  const displayStats = useMemo(() => {
+    if (backendStats) return backendStats;
+
     const totalOrders = sales.length;
     const totalRevenue = sales.reduce((acc, curr) => acc + (parseFloat(curr.total_amount) || 0), 0);
     const paidOrders = sales.filter((s) => s.status === 'PAID').length;
     const unpaidOrders = sales.filter((s) => s.status === 'UNPAID' || s.status === 'PARTIAL').length;
 
     return { totalOrders, totalRevenue, paidOrders, unpaidOrders };
-  }, [sales]);
+  }, [backendStats, sales]);
 
   return (
     <div className="p-6 bg-slate-50 min-h-screen">
@@ -258,7 +255,7 @@ const Sales = () => {
         </div>
 
         <button
-          onClick={() => setIsCreateModalOpen(true)}
+          onClick={handleOpenCreateModal}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
@@ -267,7 +264,7 @@ const Sales = () => {
       </div>
 
       {/* Overview Statistics */}
-      <SalesStats stats={stats} />
+      <SalesStats stats={displayStats} />
 
       {/* Filters */}
       <SalesFilters
@@ -280,11 +277,11 @@ const Sales = () => {
       <SalesTable
         sales={filteredSales}
         loading={isLoadingSales}
-        onViewSale={handleViewSale}                   
-        onReceivePayment={handleOpenReceivePayment}  
-        onPrintInvoice={handlePrintInvoice}          
+        onViewSale={handleViewSale}
+        onReceivePayment={handleOpenReceivePayment}
+        onPrintInvoice={handlePrintInvoice}
         onExportSales={handleExportFilteredSales}
-        onDeleteSale={deleteSale}
+        onDeleteSale={handleDeleteSale}
       />
 
       {/* --- MODALS SECTION --- */}
@@ -314,7 +311,7 @@ const Sales = () => {
         sale={selectedViewSale}
       />
 
-      {/* 4. Print Invoice Modal (👈 4. Added Print Invoice Modal render) */}
+      {/* 4. Print Invoice Modal */}
       {selectedPrintSale && (
         <PrintInvoice
           sale={selectedPrintSale}

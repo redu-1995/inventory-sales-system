@@ -4,7 +4,7 @@ export const salesService = {
   /**
    * 1. Fetch Sales List
    * Supports optional query parameters (e.g., status, search, date filters)
-   * GET /api/sales/?status=PAID&search=John
+   * GET /sales/sales/?status=PAID&search=John
    */
   async fetchSales(params = {}) {
     const response = await api.get('/sales/sales/', { params });
@@ -12,8 +12,18 @@ export const salesService = {
   },
 
   /**
-   * Fetch Single Sale Details by ID
-   * GET /api/sales/:id/
+   * 2. Fetch Sales Report / Analytics Stats
+   * Returns aggregated totals: revenue, order count, AOV, pending payments, trends.
+   * GET /sales/sales/report/
+   */
+  async fetchSalesReport() {
+    const response = await api.get('/sales/sales/report/');
+    return response.data;
+  },
+
+  /**
+   * 3. Fetch Single Sale Details by ID
+   * GET /sales/sales/:id/
    */
   async fetchSaleById(id) {
     const response = await api.get(`/sales/sales/${id}/`);
@@ -21,18 +31,18 @@ export const salesService = {
   },
 
   /**
-   * 2. Create Sale
+   * 4. Create Sale
    * Payload format:
    * {
    *   customer: 1, // Customer ID
    *   payment_method: 'CASH', // or 'CARD', 'TRANSFER'
-   *   status: 'PAID', // or 'UNPAID', 'PARTIAL'
+   *   status: 'PAID', // or 'PENDING', 'PARTIAL'
    *   items: [
    *     { product: 10, quantity: 2 },
    *     { product: 14, quantity: 1 }
    *   ]
    * }
-   * POST /api/sales/
+   * POST /sales/sales/
    */
   async createSale(saleData) {
     const response = await api.post('/sales/sales/', saleData);
@@ -40,10 +50,10 @@ export const salesService = {
   },
 
   /**
-   * 3. Update Sale
+   * 5. Update Sale
    * Updates customer, payment method, or line items.
    * Modifying items automatically restores & adjusts stock on the backend.
-   * PUT /api/sales/:id/ or PATCH /api/sales/:id/
+   * PATCH /sales/sales/:id/
    */
   async updateSale(id, saleData) {
     const response = await api.patch(`/sales/sales/${id}/`, saleData);
@@ -51,9 +61,9 @@ export const salesService = {
   },
 
   /**
-   * 4. Delete Sale
+   * 6. Delete Sale
    * Deleting a sale automatically restores inventory stock on the backend.
-   * DELETE /api/sales/:id/
+   * DELETE /sales/sales/:id/
    */
   async deleteSale(id) {
     const response = await api.delete(`/sales/sales/${id}/`);
@@ -61,16 +71,16 @@ export const salesService = {
   },
 
   /**
-   * 5. Receive Payment
+   * 7. Receive Payment
    * Adds a payment record to a sale.
-   * Updates sale status automatically (e.g., UNPAID -> PARTIAL -> PAID).
+   * Updates sale status automatically (e.g., PENDING -> PARTIAL -> PAID).
    * Payload format:
    * {
    *   sale: 5, // Sale ID
    *   amount: "150.00",
    *   payment_method: "CARD"
    * }
-   * POST /api/payments/
+   * POST /sales/payments/
    */
   async receivePayment(paymentData) {
     const response = await api.post('/sales/payments/', paymentData);
@@ -78,9 +88,9 @@ export const salesService = {
   },
 
   /**
-   * 6. Export Sales CSV
+   * 8. Export Sales CSV
    * Triggers file download in the user's browser.
-   * GET /api/sales/export/
+   * GET /sales/sales/export/
    */
   async exportSales(filename = 'sales_report.csv') {
     const response = await api.get('/sales/sales/export/', {

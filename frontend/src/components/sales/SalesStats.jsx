@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { 
   DollarSign, 
   ShoppingBag, 
@@ -9,32 +9,114 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
 
-const SalesStats = ({ stats }) => {
-  // Fallback / default data based on your design mockup
-  const defaultStats = {
-    totalRevenue: stats?.totalRevenue ?? 128450.00,
-    revenueTrend: stats?.revenueTrend ?? '+12.5%',
-    isRevenuePositive: stats?.isRevenuePositive ?? true,
-    
-    totalOrders: stats?.totalOrders ?? 342,
-    ordersTrend: stats?.ordersTrend ?? '+8.2%',
-    isOrdersPositive: stats?.isOrdersPositive ?? true,
-    
-    avgOrderValue: stats?.avgOrderValue ?? 375.58,
-    avgTrend: stats?.avgTrend ?? '-2.1%',
-    isAvgPositive: stats?.isAvgPositive ?? false,
-    
-    pendingPayments: stats?.pendingPayments ?? 14250.00,
-    pendingOrdersCount: stats?.pendingOrdersCount ?? 18
+const SalesStats = ({ stats, salesData = [] }) => {
+  // Extract and format stats from the DRF sales_report endpoint response or calculate from salesData array
+  const calculatedStats = useMemo(() => {
+    // 1. Primary: Use the backend GET /api/sales/report/ response structure
+    if (stats && (stats.total_revenue !== undefined || stats.totalRevenue !== undefined)) {
+      return {
+        totalRevenue: Number(stats.total_revenue ?? stats.totalRevenue ?? 0),
+        revenueTrend: stats.revenue_trend ?? stats.revenueTrend ?? '+0.0%',
+        isRevenuePositive: !(stats.revenue_trend ?? '').startsWith('-'),
+
+        totalOrders: Number(stats.total_orders ?? stats.totalOrders ?? stats.total_sales ?? 0),
+        ordersTrend: stats.orders_trend ?? stats.ordersTrend ?? '+0.0%',
+        isOrdersPositive: !(stats.orders_trend ?? '').startsWith('-'),
+
+        avgOrderValue: Number(stats.avg_order_value ?? stats.avgOrderValue ?? 0),
+        avgTrend: stats.avg_trend ?? stats.avgTrend ?? '+0.0%',
+        isAvgPositive: !(stats.avg_trend ?? '').startsWith('-'),
+
+        pendingPayments: Number(stats.pending_payments ?? stats.pendingPayments ?? 0),
+        pendingOrdersCount: Number(stats.pending_orders_count ?? stats.pendingOrdersCount ?? 0)
+      };
+    }
+
+    // 2. Fallback: Aggregate client-side if a raw sales array is passed instead of report endpoint
+    if (Array.isArray(salesData) && salesData.length > 0) {
+      let revenue = 0;
+      let pendingAmount = 0;
+      let pendingCount = 0;
+
+      salesData.forEach((sale) => {
+        const statusUpper = (sale.status || '').toUpperCase();
+        const total = Number(sale.total_amount ?? sale.total ?? 0);
+        const paid = Number(sale.paid_amount ?? sale.paid ?? 0);
+        const remaining = Number(
+          sale.remaining_amount ?? sale.remaining ?? (total - paid)
+        );
+
+        if (statusUpper !== 'CANCELLED') {
+          revenue += total;
+        }
+
+        // Account for 'PENDING', 'PARTIAL', or 'PARTIALLY_PAID' states
+        if (
+          statusUpper === 'PENDING' ||
+          statusUpper === 'PARTIAL' ||
+          statusUpper === 'PARTIALLY_PAID' ||
+          remaining > 0
+        ) {
+          pendingAmount += remaining > 0 ? remaining : total;
+          pendingCount += 1;
+        }
+      });
+
+      const totalCount = salesData.length;
+      const avgValue = totalCount > 0 ? revenue / totalCount : 0;
+
+      return {
+        totalRevenue: revenue,
+        revenueTrend: '+0.0%',
+        isRevenuePositive: true,
+
+        totalOrders: totalCount,
+        ordersTrend: '+0.0%',
+        isOrdersPositive: true,
+
+        avgOrderValue: avgValue,
+        avgTrend: '+0.0%',
+        isAvgPositive: true,
+
+        pendingPayments: pendingAmount,
+        pendingOrdersCount: pendingCount
+      };
+    }
+
+    // 3. Default empty state
+    return {
+      totalRevenue: 0,
+      revenueTrend: '0.0%',
+      isRevenuePositive: true,
+      totalOrders: 0,
+      ordersTrend: '0.0%',
+      isOrdersPositive: true,
+      avgOrderValue: 0,
+      avgTrend: '0.0%',
+      isAvgPositive: true,
+      pendingPayments: 0,
+      pendingOrdersCount: 0
+    };
+  }, [stats, salesData]);
+
+  // Safe Currency Formatter Helper
+  const safeFormat = (val) => {
+    if (typeof formatCurrency === 'function') {
+      return formatCurrency(val);
+    }
+    return `${Number(val || 0).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })} ETB`;
   };
 
   const statCards = [
     {
       id: 'revenue',
       title: 'Total Revenue',
-      value: formatCurrency ? formatCurrency(defaultStats.totalRevenue) : `$${defaultStats.totalRevenue.toLocaleString()}`,
-      trend: defaultStats.revenueTrend,
-      isPositive: defaultStats.isRevenuePositive,
+      value: safeFormat(calculatedStats.totalRevenue),
+      trend: calculatedStats.revenueTrend,
+      isPositive: calculatedStats.isRevenuePositive,
       subtitle: 'vs last month',
       icon: DollarSign,
       iconBg: 'bg-blue-500/10',
@@ -43,9 +125,9 @@ const SalesStats = ({ stats }) => {
     {
       id: 'orders',
       title: 'Total Orders',
-      value: defaultStats.totalOrders.toLocaleString(),
-      trend: defaultStats.ordersTrend,
-      isPositive: defaultStats.isOrdersPositive,
+      value: calculatedStats.totalOrders.toLocaleString(),
+      trend: calculatedStats.ordersTrend,
+      isPositive: calculatedStats.isOrdersPositive,
       subtitle: 'vs last month',
       icon: ShoppingBag,
       iconBg: 'bg-emerald-500/10',
@@ -54,9 +136,9 @@ const SalesStats = ({ stats }) => {
     {
       id: 'avg_order',
       title: 'Avg. Order Value',
-      value: formatCurrency ? formatCurrency(defaultStats.avgOrderValue) : `$${defaultStats.avgOrderValue.toLocaleString()}`,
-      trend: defaultStats.avgTrend,
-      isPositive: defaultStats.isAvgPositive,
+      value: safeFormat(calculatedStats.avgOrderValue),
+      trend: calculatedStats.avgTrend,
+      isPositive: calculatedStats.isAvgPositive,
       subtitle: 'vs last month',
       icon: TrendingUp,
       iconBg: 'bg-indigo-500/10',
@@ -65,8 +147,8 @@ const SalesStats = ({ stats }) => {
     {
       id: 'pending',
       title: 'Pending Payments',
-      value: formatCurrency ? formatCurrency(defaultStats.pendingPayments) : `$${defaultStats.pendingPayments.toLocaleString()}`,
-      badgeText: `${defaultStats.pendingOrdersCount} orders`,
+      value: safeFormat(calculatedStats.pendingPayments),
+      badgeText: `${calculatedStats.pendingOrdersCount} pending / partial`,
       isWarning: true,
       subtitle: 'requires collection',
       icon: Clock,
@@ -79,7 +161,7 @@ const SalesStats = ({ stats }) => {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {statCards.map((card) => {
         const Icon = card.icon;
-        
+
         return (
           <div
             key={card.id}

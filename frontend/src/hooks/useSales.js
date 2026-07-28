@@ -3,12 +3,13 @@ import salesService from '../services/salesService';
 
 export const useSales = () => {
   const [sales, setSales] = useState([]);
+  const [stats, setStats] = useState(null);
   const [currentSale, setCurrentSale] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   /**
-   * Helper to reset error state before initiating an API requestf
+   * Helper to reset error state before initiating an API request
    */
   const startLoading = () => {
     setLoading(true);
@@ -18,28 +19,42 @@ export const useSales = () => {
   /**
    * 1. Fetch List of Sales
    */
- const fetchSales = useCallback(async (params = {}) => {
-  startLoading();
-  try {
-    const data = await salesService.fetchSales(params);
-    
-    // Check if DRF pagination was used (data.results) or direct list (data)
-    const salesList = Array.isArray(data) ? data : (data.results || []);
-    
-    setSales(salesList);
-    return salesList;
-  } catch (err) {
-    const errorMessage = err.response?.data || 'Failed to fetch sales.';
-    setError(errorMessage);
-    setSales([]); // Fallback to empty array so .map() won't crash
-    throw err;
-  } finally {
-    setLoading(false);
-  }
-}, []);
+  const fetchSales = useCallback(async (params = {}) => {
+    startLoading();
+    try {
+      const data = await salesService.fetchSales(params);
+      
+      // Check if DRF pagination was used (data.results) or direct list (data)
+      const salesList = Array.isArray(data) ? data : (data.results || []);
+      
+      setSales(salesList);
+      return salesList;
+    } catch (err) {
+      const errorMessage = err.response?.data || 'Failed to fetch sales.';
+      setError(errorMessage);
+      setSales([]); // Fallback to empty array so .map() won't crash
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   /**
-   * Fetch Single Sale Details
+   * 2. Fetch Aggregated Sales Report / Analytics Stats
+   */
+  const fetchSalesReport = useCallback(async () => {
+    try {
+      const reportData = await salesService.fetchSalesReport();
+      setStats(reportData);
+      return reportData;
+    } catch (err) {
+      console.error('Failed to fetch sales report:', err);
+      // Keep existing stats or set default fallback
+    }
+  }, []);
+
+  /**
+   * 3. Fetch Single Sale Details
    */
   const fetchSaleById = useCallback(async (id) => {
     startLoading();
@@ -57,13 +72,17 @@ export const useSales = () => {
   }, []);
 
   /**
-   * 2. Create Sale
+   * 4. Create Sale
    */
   const createSale = async (saleData) => {
     startLoading();
     try {
       const newSale = await salesService.createSale(saleData);
       setSales((prev) => [newSale, ...prev]);
+      
+      // Automatically refresh summary stats on change
+      fetchSalesReport();
+      
       return newSale;
     } catch (err) {
       const errorMessage = err.response?.data || 'Failed to create sale.';
@@ -75,7 +94,7 @@ export const useSales = () => {
   };
 
   /**
-   * 3. Update Sale
+   * 5. Update Sale
    */
   const updateSale = async (id, saleData) => {
     startLoading();
@@ -87,6 +106,10 @@ export const useSales = () => {
       if (currentSale?.id === id) {
         setCurrentSale(updatedSale);
       }
+
+      // Automatically refresh summary stats on change
+      fetchSalesReport();
+
       return updatedSale;
     } catch (err) {
       const errorMessage = err.response?.data || `Failed to update sale #${id}.`;
@@ -98,7 +121,7 @@ export const useSales = () => {
   };
 
   /**
-   * 4. Delete Sale
+   * 6. Delete Sale
    */
   const deleteSale = async (id) => {
     startLoading();
@@ -108,6 +131,9 @@ export const useSales = () => {
       if (currentSale?.id === id) {
         setCurrentSale(null);
       }
+
+      // Automatically refresh summary stats on change
+      fetchSalesReport();
     } catch (err) {
       const errorMessage = err.response?.data || `Failed to delete sale #${id}.`;
       setError(errorMessage);
@@ -118,7 +144,7 @@ export const useSales = () => {
   };
 
   /**
-   * 5. Receive Payment
+   * 7. Receive Payment
    * Adds payment record & updates sale locally in state
    */
   const receivePayment = async (paymentData) => {
@@ -136,6 +162,10 @@ export const useSales = () => {
           setCurrentSale(updatedSale);
         }
       }
+
+      // Refresh report stats to update pending payments & status counts
+      fetchSalesReport();
+
       return newPayment;
     } catch (err) {
       const errorMessage = err.response?.data || 'Failed to process payment.';
@@ -147,7 +177,7 @@ export const useSales = () => {
   };
 
   /**
-   * 6. Export Sales CSV
+   * 8. Export Sales CSV
    */
   const exportSales = async (filename) => {
     startLoading();
@@ -164,10 +194,12 @@ export const useSales = () => {
 
   return {
     sales,
+    stats,
     currentSale,
     loading,
     error,
     fetchSales,
+    fetchSalesReport,
     fetchSaleById,
     createSale,
     updateSale,
