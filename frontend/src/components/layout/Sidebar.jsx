@@ -55,16 +55,7 @@ export default function Sidebar() {
       path: "/reports",
       icon: BarChart3,
     },
-    {
-      name: "Users",
-      path: "/users",
-      icon: Users,
-    },
-    {
-      name: "Settings",
-      path: "/settings",
-      icon: Settings,
-    },
+   
   ];
 
   return (
