@@ -76,7 +76,7 @@ const Sales = () => {
 
       const [productsRes, customersRes] = await Promise.all([
         fetch('http://127.0.0.1:8000/api/products/products/', { headers }),
-        fetch('http://127.0.0.1:8000/api/customers/', { headers }),
+        fetch('http://127.0.0.1:8000/api/customers/customers/', { headers }),
       ]);
 
       if (productsRes.ok && customersRes.ok) {

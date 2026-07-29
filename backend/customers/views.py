@@ -35,14 +35,9 @@ class CustomerViewSet(ModelViewSet):
     # ==========================================
     @action(detail=False, methods=['get'], url_path='stats')
     def stats(self, request):
-        """
-        Returns summary metrics for CustomerStats UI header card.
-        Route: GET /api/customers/stats/
-        """
         total_customers = Customer.objects.count()
         active_customers = Customer.objects.filter(status='ACTIVE').count()
 
-        # Calculate metrics using sales table
         sales_agg = Customer.objects.aggregate(
             grand_spent=Coalesce(
                 Sum('sales__total_amount', filter=~Q(sales__status__iexact='CANCELLED')),
@@ -50,7 +45,6 @@ class CustomerViewSet(ModelViewSet):
             )
         )
 
-        # Outstanding balance across all unpaid sales
         pending_sales = Customer.objects.filter(
             Q(sales__status__iexact='UNPAID') | Q(sales__status__iexact='PARTIAL') | Q(sales__status__iexact='PENDING')
         ).annotate(
@@ -84,10 +78,13 @@ class CustomerViewSet(ModelViewSet):
     def purchase_history(self, request, pk=None):
         """
         Returns full list of sales completed by a specific customer.
-        Route: GET /api/customers/{id}/sales/
+        Route: GET /api/customers/customers/{id}/sales/
         """
         customer = self.get_object()
-        sales = customer.sales.all().order_by('-sale_date')
+        # Fallback ordering check to avoid FieldError
+        order_field = '-sale_date' if hasattr(customer.sales.model, 'sale_date') else '-created_at'
+        sales = customer.sales.exclude(status__iexact='CANCELLED').order_by(order_field)
+        
         serializer = SaleSerializer(sales, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -96,10 +93,6 @@ class CustomerViewSet(ModelViewSet):
     # ==========================================
     @action(detail=True, methods=['get'], url_path='balance')
     def balance(self, request, pk=None):
-        """
-        Returns remaining unpaid balance for a specific customer.
-        Route: GET /api/customers/{id}/balance/
-        """
         customer = self.get_object()
         serializer = self.get_serializer(customer)
         return Response({
@@ -112,10 +105,6 @@ class CustomerViewSet(ModelViewSet):
     # ==========================================
     @action(detail=False, methods=['get'], url_path='export')
     def export_customers(self, request):
-        """
-        Exports filtered customer list to a downloadable CSV file.
-        Route: GET /api/customers/export/
-        """
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="customers_report.csv"'
 
@@ -125,7 +114,6 @@ class CustomerViewSet(ModelViewSet):
             'Status', 'Total Orders', 'Total Spent', 'Outstanding Balance', 'Created At'
         ])
 
-        # Apply active query filters to export data
         queryset = self.filter_queryset(self.get_queryset())
 
         for customer in queryset:

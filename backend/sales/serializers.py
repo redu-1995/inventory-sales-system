@@ -39,28 +39,35 @@ class PaymentSerializer(serializers.ModelSerializer):
         return payment
 
 
+# sales/serializers.py
 class SaleSerializer(serializers.ModelSerializer):
     customer_name = serializers.ReadOnlyField(source='customer.full_name')
     user_name = serializers.ReadOnlyField(source='user.username')
 
     items = SaleItemSerializer(many=True)
     payments = PaymentSerializer(many=True, read_only=True)
+    item_count = serializers.SerializerMethodField()
 
-    # Optional explicit fields to handle frontend overrides safely
+    # Optional explicit fields
     sale_date = serializers.DateTimeField(required=False)
     tax_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, write_only=True)
     discount_amount = serializers.DecimalField(max_digits=10, decimal_places=2, required=False, write_only=True)
+    
     paid_amount = serializers.ReadOnlyField()
     remaining_amount = serializers.ReadOnlyField()
-    payments = PaymentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Sale
         fields = [
             'id', 'customer', 'customer_name', 'user', 'user_name',
             'tax_amount', 'discount_amount', 'total_amount', 
-            'payment_method', 'status', 'sale_date', 'items', 'payments','paid_amount', 'remaining_amount'
+            'payment_method', 'status', 'sale_date', 'items', 'item_count', 
+            'payments', 'paid_amount', 'remaining_amount'
         ]
         read_only_fields = ['user']
+
+    def get_item_count(self, obj):
+        return obj.items.count()
 
     def validate_items(self, value):
         if not value:
