@@ -33,7 +33,7 @@ class SaleViewSet(ModelViewSet):
     ).order_by('-sale_date')
 
     serializer_class = SaleSerializer
-    permission_classes = [IsAuthenticated]
+   
 
     # Enables perform_create to attach the logged-in user automatically
     def perform_create(self, serializer):
