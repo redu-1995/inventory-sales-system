@@ -100,21 +100,7 @@ export default function ProductFilters({
             </button>
           )}
 
-          {/* Show Entries Dropdown */}
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="text-sm text-gray-600">Show</span>
-            <select
-              value={itemsPerPage}
-              onChange={(e) => handleShowEntriesChange(Number(e.target.value))}
-              className="bg-white border border-gray-300 rounded-md px-2 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer hover:border-gray-400 transition-colors"
-            >
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-            <span className="text-sm text-gray-600">entries</span>
-          </div>
+          
         </div>
       </div>
 

@@ -54,24 +54,8 @@ export default function PurchaseOrderPagination({
 
       {/* Right: Controls & Page Numbers */}
       <div className="flex items-center gap-6">
-        {/* Entries Per Page Select */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500">Show</span>
-          <select
-            value={itemsPerPage}
-            onChange={(e) => {
-              setItemsPerPage(Number(e.target.value));
-              setCurrentPage(1); // Reset to first page whenever page size changes
-            }}
-            className="bg-gray-50 border border-gray-200 rounded-lg text-xs font-medium text-gray-700 px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-          </select>
-          <span className="text-xs text-gray-500">per page</span>
-        </div>
+       
+        
 
         {/* Navigation Buttons */}
         <div className="flex items-center gap-1">

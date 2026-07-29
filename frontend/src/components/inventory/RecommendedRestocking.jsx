@@ -8,9 +8,7 @@ export default function RecommendedRestocking({ lowStock, onReorderTrigger }) {
     <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-bold text-slate-950">Recommended Restocking</h3>
-        <button type="button" className="text-xs text-blue-600 hover:text-blue-700 font-semibold">
-          View All
-        </button>
+        
       </div>
 
       {items.length === 0 ? (

@@ -30,13 +30,13 @@ export default function InventoryStats({ summary }) {
       title: 'Out of Stock Products',
       value: outOfStock.toLocaleString(),
       delta: '2% vs last month',
-      tone: 'text-red-600',
+      tone: 'text-rose-600',
       icon: XCircle,
-      iconClass: 'bg-red-50 text-red-600'
+      iconClass: 'bg-rose-50 text-rose-600'
     },
     {
       title: 'Inventory Value',
-      value: `$${inventoryValue.toLocaleString()}`,
+      value: `$${inventoryValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       delta: '1.7% vs last month',
       tone: 'text-emerald-600',
       icon: CircleDollarSign,
@@ -48,26 +48,40 @@ export default function InventoryStats({ summary }) {
       delta: healthScore >= 80 ? 'Excellent cover' : 'Needs attention',
       tone: healthScore >= 80 ? 'text-emerald-600' : 'text-amber-600',
       icon: PackageCheck,
-      iconClass: 'bg-emerald-50 text-emerald-600'
+      iconClass: healthScore >= 80 ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
       {cards.map((card) => {
         const Icon = card.icon;
+        const deltaParts = card.delta.split(' ');
+        const deltaVal = deltaParts[0];
+        const deltaRest = deltaParts.slice(1).join(' ');
 
         return (
-          <div key={card.title} className="bg-white border border-slate-200 rounded-lg shadow-sm p-5 min-h-32 flex items-start gap-4">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${card.iconClass}`}>
-              <Icon size={24} strokeWidth={1.9} />
+          <div 
+            key={card.title} 
+            className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-start gap-3 hover:border-slate-300 transition-colors min-w-0"
+          >
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${card.iconClass}`}>
+              <Icon size={18} strokeWidth={2} />
             </div>
-            <div className="min-w-0">
-              <p className="text-sm font-semibold text-slate-900">{card.title}</p>
-              <h3 className="text-3xl font-black text-slate-950 tracking-tight mt-2">{card.value}</h3>
-              <p className="text-xs text-slate-500 mt-3">
-                <span className={`font-bold ${card.tone}`}>^ {card.delta.split(' ')[0]}</span>{' '}
-                {card.delta.replace(card.delta.split(' ')[0], '').trim()}
+            
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 truncate" title={card.title}>
+                {card.title}
+              </p>
+              
+              {/* Dynamic text sizing prevents currency overflow */}
+              <h3 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5 truncate">
+                {card.value}
+              </h3>
+              
+              <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                <span className={`font-semibold shrink-0 ${card.tone}`}>↑ {deltaVal}</span>
+                <span className="truncate">{deltaRest}</span>
               </p>
             </div>
           </div>

@@ -21,15 +21,7 @@ export default function PurchaseOrderStats({ orders = [], backendStats }) {
       iconColor: "text-amber-500",
       accentColor: "bg-amber-500",
     },
-    {
-      title: "Approved Orders",
-      count: stats.approved || 0,
-      subtext: "Ready for delivery",
-      icon: CheckCircle2,
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-500",
-      accentColor: "bg-blue-600",
-    },
+   
     {
       title: "Received Orders",
       count: stats.received || 0,
@@ -51,7 +43,7 @@ export default function PurchaseOrderStats({ orders = [], backendStats }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {statCards.map((card, idx) => {
         const Icon = card.icon;
         return (

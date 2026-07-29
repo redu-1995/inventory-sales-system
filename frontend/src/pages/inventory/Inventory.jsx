@@ -199,35 +199,45 @@ export default function Inventory() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-5 lg:p-7 space-y-5 font-sans">
-      <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-5 border-b border-slate-200">
+        {/* Title & Description */}
         <div>
-          <h1 className="text-3xl font-black text-slate-950 tracking-tight">Inventory Management</h1>
-          <p className="text-sm text-slate-600 mt-2">Monitor stock levels, inventory movements, and restocking activities.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Inventory Management
+          </h1>
+          <p className="text-xs text-slate-500 mt-1 flex items-center gap-2">
+            Monitor stock levels, inventory movements, and restocking activities.
+            <span className="inline-flex items-center gap-1.5 ml-2 pl-2 border-l border-slate-200 text-slate-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Last updated: 2 minutes ago
+            </span>
+          </p>
         </div>
 
-        <div className="flex flex-col items-stretch lg:items-end gap-4">
-          <div className="flex flex-wrap items-center gap-3">
-
-            <span className="text-sm text-slate-600">
-              Last updated: 2 minutes ago <span className="ml-1 inline-block w-2 h-2 rounded-full bg-emerald-500" />
-            </span>
-          </div>
-
-          <div className="flex flex-wrap gap-3 justify-start lg:justify-end">
-            <button 
-            type="button" // CRITICAL: Stops any parent form from processing a layout reset
+        {/* Actions Header */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Stock In */}
+          <button 
+            type="button"
             onClick={openStockInModal}
-            className={`${actionButtonClass} bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium`}
+            className={`${actionButtonClass} bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium shadow-sm transition-all duration-150`}
           >
-            <Upload size={16} />
-            Stock In
+            <Upload size={15} />
+            <span>Stock In</span>
           </button>
-                        
-                          <button onClick={openStockOutModal} className={`${actionButtonClass} bg-red-600 hover:bg-red-700`}>
-              <Download size={16} />
-              Stock Out
-            </button>
-                <button 
+                  
+          {/* Stock Out */}
+          <button 
+            type="button"
+            onClick={openStockOutModal} 
+            className={`${actionButtonClass} bg-rose-600 hover:bg-rose-700 text-white flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium shadow-sm transition-all duration-150`}
+          >
+            <Download size={15} />
+            <span>Stock Out</span>
+          </button>
+
+          {/* Inventory Adjustment */}
+          <button 
             type="button"
             onClick={() => {
               console.log('--- DIAGNOSTIC: Adjustment Button Clicked ---');
@@ -244,53 +254,64 @@ export default function Inventory() {
                 console.warn('WARNING: loadStockInOptions function is not defined in this scope!');
               }
             }}
-            className={`${actionButtonClass} bg-orange-500 hover:bg-orange-600`}
+            className={`${actionButtonClass} bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium shadow-sm transition-all duration-150`}
           >
-            <SlidersHorizontal size={16} />
-            Inventory Adjustment
+            <SlidersHorizontal size={15} />
+            <span>Inventory Adjustment</span>
           </button>
-             <div className="relative">
+
+          {/* Export Dropdown */}
+          <div className="relative">
+            <button 
+              type="button"
+              onClick={() => !exporting && setExportOpen((open) => !open)} 
+              disabled={exporting}
+              className={`${actionButtonClass} bg-slate-800 hover:bg-slate-900 text-white disabled:opacity-50 flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium shadow-sm transition-all duration-150`}
+            >
+              <FileText size={15} />
+              <span>{exporting ? 'Exporting...' : 'Export'}</span>
+              <ChevronDown size={13} className={`transition-transform duration-200 ${exportOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {exportOpen && (
+              <div className="absolute right-0 z-30 mt-2 w-40 rounded-lg border border-slate-200 bg-white shadow-lg py-1.5 text-xs font-medium animate-in fade-in zoom-in-95 duration-100">
                 <button 
-                  onClick={() => !exporting && setExportOpen((open) => !open)} 
-                  disabled={exporting}
-                  className={`${actionButtonClass} bg-blue-700 hover:bg-blue-800 disabled:opacity-50 inline-flex items-center gap-2`}
+                  type="button"
+                  onClick={() => {
+                    handleExport('pdf');
+                    setExportOpen(false);
+                  }}
+                  className="w-full px-3 py-2 text-left text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-colors cursor-pointer"
                 >
-                  <FileText size={16} />
-                  {exporting ? 'Exporting...' : 'Export'}
-                  <ChevronDown size={14} />
+                  <FileText size={14} className="text-rose-500" />
+                  <span>Export PDF</span>
                 </button>
                 
-                {exportOpen && (
-                  <div className="absolute right-0 z-20 mt-2 w-44 rounded-md border border-slate-200 bg-white shadow-lg py-2">
-                    <button 
-                      type="button"
-                      onClick={() => handleExport('pdf')}
-                      className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer"
-                    >
-                      <FileText size={15} className="text-red-600" />
-                      Export PDF
-                    </button>
-                    
-                    <button 
-                      type="button"
-                      onClick={() => handleExport('excel')}
-                      className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer"
-                    >
-                      <FileSpreadsheet size={15} className="text-emerald-600" />
-                      Export Excel
-                    </button>
-                    
-                    <button 
-                      type="button"
-                      onClick={() => handleExport('csv')}
-                      className="w-full px-4 py-2 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-2 cursor-pointer"
-                    >
-                      <FileText size={15} className="text-blue-600" />
-                      Export CSV
-                    </button>
-                  </div>
-                )}
+                <button 
+                  type="button"
+                  onClick={() => {
+                    handleExport('excel');
+                    setExportOpen(false);
+                  }}
+                  className="w-full px-3 py-2 text-left text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <FileSpreadsheet size={14} className="text-emerald-600" />
+                  <span>Export Excel</span>
+                </button>
+                
+                <button 
+                  type="button"
+                  onClick={() => {
+                    handleExport('csv');
+                    setExportOpen(false);
+                  }}
+                  className="w-full px-3 py-2 text-left text-slate-700 hover:bg-slate-50 flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <FileText size={14} className="text-blue-500" />
+                  <span>Export CSV</span>
+                </button>
               </div>
+            )}
           </div>
         </div>
       </div>
