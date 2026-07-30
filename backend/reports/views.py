@@ -1,4 +1,3 @@
-# reports/views.py
 import pandas as pd
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -22,6 +21,8 @@ from .utils import generate_csv_response, generate_excel_response
 
 class ReportViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
+
+    # ---------------- Standard API Actions ----------------
 
     @action(detail=False, methods=['get'], url_path='dashboard-summary')
     def dashboard_summary(self, request):
@@ -87,32 +88,41 @@ class ReportViewSet(viewsets.ViewSet):
         serializer = ChartDataSerializer(data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # ---------------- Export Endpoints ----------------
+    # ---------------- Export Endpoints (Mapped via as_view in urls.py) ----------------
 
-    @action(detail=False, methods=['get'], url_path='export/sales')
-    def export_sales(self, request):
-        export_format = request.query_params.get('format', 'csv')
-        sales_data = ReportService.get_sales_report()['daily_sales']
+class ExportViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
 
-        df = pd.DataFrame(sales_data)
+    def customers(self, request):
+        export_format = request.query_params.get('file_format', 'csv')
+        customers = ReportService.get_customer_report()
+
+        # Ensure dictionary is wrapped in a list for Pandas
+        data_list = customers if isinstance(customers, list) else [customers] if isinstance(customers, dict) else []
+        df = pd.DataFrame(data_list)
+
+        if export_format == 'excel':
+            return generate_excel_response('customers_report', {'Customer Summary': df})
+
+        headers = ['Customer', 'Total Orders', 'Total Spent']
+        data_rows = [[c.get('name'), c.get('total_orders'), c.get('total_spent')] for c in data_list]
+        return generate_csv_response('customers_report', headers, data_rows)
+
+    def sales(self, request):
+        export_format = request.query_params.get('file_format', 'csv')
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+        customer_id = request.query_params.get('customer')
+        payment_status = request.query_params.get('payment_status')
+
+        raw_sales = ReportService.get_sales_report(start_date, end_date, customer_id, payment_status)
+        sales_data = raw_sales.get('daily_sales', []) if isinstance(raw_sales, dict) else raw_sales
+
+        df = pd.DataFrame(sales_data if isinstance(sales_data, list) else [sales_data])
 
         if export_format == 'excel':
             return generate_excel_response('sales_report', {'Sales Summary': df})
-        
+
         headers = ['Date', 'Sales', 'Orders']
         data_rows = [[row.get('date'), row.get('sales'), row.get('orders')] for row in sales_data]
         return generate_csv_response('sales_report', headers, data_rows)
-
-    @action(detail=False, methods=['get'], url_path='export/inventory')
-    def export_inventory(self, request):
-        export_format = request.query_params.get('format', 'csv')
-        low_stock = ReportService.get_low_stock_report()
-
-        df = pd.DataFrame(low_stock)
-
-        if export_format == 'excel':
-            return generate_excel_response('inventory_report', {'Low Stock': df})
-
-        headers = ['Product', 'Stock', 'Reorder Level']
-        data_rows = [[item['product'], item['stock'], item['reorder_level']] for item in low_stock]
-        return generate_csv_response('inventory_report', headers, data_rows)

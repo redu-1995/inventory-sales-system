@@ -10,6 +10,7 @@ import PurchaseOrders from '../pages/purchaseOrders/PurchaseOrders';
 import PurchaseOrderPrintPage from '../pages/purchaseOrders/PurchaseOrderPrintPage';
 import Sales from '../pages/sales/Sales';
 import Customers from '../pages/customers/Customers';
+import Reports from '../pages/reports/Reports'
 
 // Layout HOC to cleanly frame inner route matching targets
 const AuthenticatedAppLayout = () => (
@@ -37,6 +38,7 @@ export default function AppRoutes() {
         <Route path="/customers" element={<Customers />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/purchase-orders" element={<PurchaseOrders />} />
+        <Route path="/reports" element={<Reports />} />
       </Route>
 
       {/* 3. Isolated Print Page (Protected, but NO Dashboard Layout) */}

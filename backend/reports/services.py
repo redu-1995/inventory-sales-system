@@ -3,6 +3,10 @@ from django.db.models import Sum, Count, F, Q, Avg, ExpressionWrapper, DecimalFi
 from django.db.models.functions import Coalesce, TruncDate
 from decimal import Decimal
 from datetime import datetime, timedelta
+from django.utils import timezone
+
+# Instead of datetime.now() or datetime.now().date():
+now = timezone.now()
 
 # Correct app imports according to your modular structure
 from sales.models import Sale, SaleItem
@@ -40,7 +44,7 @@ class ReportService:
 
         # Low Stock count (quantity <= min_stock_level)
         low_stock_count = Inventory.objects.filter(
-            quantity__lte=F('product__min_stock_level')
+            quantity__lte=F('reorder_level')
         ).count()
 
         # Products Sold Total Quantity
@@ -127,10 +131,12 @@ class ReportService:
             )
         )['total_val']
 
-        in_stock = Inventory.objects.filter(quantity__gt=F('product__min_stock_level')).count()
+        in_stock = Inventory.objects.filter(
+            quantity__gt=F('reorder_level')
+        ).count()
         low_stock = Inventory.objects.filter(
             quantity__gt=0,
-            quantity__lte=F('product__min_stock_level')
+            quantity__lte=F('reorder_level')
         ).count()
         out_of_stock = Inventory.objects.filter(quantity=0).count()
 
@@ -187,15 +193,16 @@ class ReportService:
 
     @staticmethod
     def get_low_stock_report():
+        # Query reorder_level directly from the Inventory model
         low_stock_items = Inventory.objects.filter(
-            quantity__lte=F('product__min_stock_level')
+            quantity__lte=F('reorder_level')
         ).select_related('product')
 
         return [
             {
                 "product": item.product.name,
                 "stock": item.quantity,
-                "reorder_level": item.product.min_stock_level
+                "reorder_level": item.reorder_level
             }
             for item in low_stock_items
         ]
@@ -203,7 +210,7 @@ class ReportService:
     @staticmethod
     def get_recent_transactions(limit=10):
         sales = Sale.objects.select_related('customer').order_by('-sale_date')[:limit]
-        purchases = PurchaseOrder.objects.select_related('supplier').order_by('-created_at')[:limit]
+        purchases = PurchaseOrder.objects.select_related('supplier').order_by('-order_date')[:limit]
 
         transactions = []
 
@@ -218,13 +225,14 @@ class ReportService:
             })
 
         for po in purchases:
-            party_name = po.supplier.name if hasattr(po, 'supplier') and po.supplier else "N/A"
+            # If your model field is `company_name`:
+            party_name = po.supplier.company_name if hasattr(po, 'supplier') and po.supplier else "N/A"
             transactions.append({
                 "type": "Purchase",
                 "reference": f"PO-{po.id:04d}",
                 "party": party_name,
                 "amount": po.total_amount,
-                "date": po.created_at
+                "date": po.order_date
             })
 
         transactions.sort(key=lambda x: x['date'], reverse=True)
