@@ -1,29 +1,41 @@
 import api from './api';
 
 const dashboardService = {
-  // GET /api/dashboard/
-  getDashboardSummary: async () => {
-    const response = await api.get('/core/dashboard/');
+  getDashboardData: async () => {
+    const response = await api.get('/dashboard/');
     return response.data;
   },
 
-  // GET /api/reports/low-stock/
-  getLowStockReport: async () => {
-    const response = await api.get('/core/reports/low-stock/');
+  getSummary: async () => {
+    const response = await api.get('/dashboard/summary/');
     return response.data;
   },
 
-  // GET /api/reports/out-of-stock/
-  getOutOfStockReport: async () => {
-    const response = await api.get('/core/reports/out-of-stock/');
+  getSalesChart: async () => {
+    const response = await api.get('/dashboard/sales-chart/');
     return response.data;
   },
 
-  // GET /api/reports/top-moving/
-  getTopMovingReport: async () => {
-    const response = await api.get('/core/reports/top-moving/');
+  getTopProducts: async () => {
+    const response = await api.get('/dashboard/top-products/');
     return response.data;
-  }
+  },
+
+  getLowStock: async () => {
+    const response = await api.get('/dashboard/low-stock/');
+    return response.data;
+  },
+
+  getRecentTransactions: async () => {
+    const response = await api.get('/dashboard/recent-transactions/');
+    return response.data;
+  },
+
+  getInventoryOverview: async () => {
+    const response = await api.get('/dashboard/inventory-summary/');
+    return response.data;
+  },
 };
 
+export { dashboardService };
 export default dashboardService;

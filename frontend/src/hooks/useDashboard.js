@@ -2,49 +2,48 @@ import { useState, useEffect, useCallback } from 'react';
 import dashboardService from '../services/dashboardService';
 
 export const useDashboard = () => {
-  const [summary, setSummary] = useState(null);
-  const [lowStockList, setLowStockList] = useState([]);
-  const [outOfStockList, setOutOfStockList] = useState([]);
-  const [topMovingList, setTopMovingList] = useState([]);
-  
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchAllDashboardData = useCallback(async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      // Parallel execution matching all backend endpoints
-      const [summaryRes, lowStockRes, outOfStockRes, topMovingRes] = await Promise.all([
-        dashboardService.getDashboardSummary(),
-        dashboardService.getLowStockReport(),
-        dashboardService.getOutOfStockReport(),
-        dashboardService.getTopMovingReport(),
-      ]);
-
-      setSummary(summaryRes);
-      setLowStockList(lowStockRes);
-      setOutOfStockList(outOfStockRes);
-      setTopMovingList(topMovingRes);
+      const res = await dashboardService.getDashboardData();
+      setData(res);
     } catch (err) {
-      console.error("Dashboard processing error: ", err);
-      setError(err.response?.data?.detail || 'Failed to capture dashboard synchronization streams.');
+      console.error('Failed to load dashboard data:', err);
+      setError(err.response?.data?.message || 'Failed to fetch dashboard metrics.');
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchAllDashboardData();
-  }, [fetchAllDashboardData]);
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   return {
-    summary,
-    lowStockList,
-    outOfStockList,
-    topMovingList,
+    dashboardData: data,
+    summary: data ? {
+      revenueToday: data.revenue_today,
+      todaySalesCount: data.today_sales_count,
+      inventoryValue: data.inventory_value,
+      totalProducts: data.total_products,
+      totalCustomers: data.total_customers,
+      lowStockCount: data.low_stock_count,
+    } : null,
+    salesChart: data?.sales_chart || { labels: [], values: [] },
+    lowStock: data?.low_stock_items || [],
+    recentSales: data?.recent_sales || [],
+    recentPurchaseOrders: data?.recent_purchase_orders || [],
+    topProducts: data?.top_products || [],
+    paymentSummary: data?.payment_summary || { paid: 0, partial: 0, unpaid: 0 },
+    inventorySummary: data?.inventory_summary || { in_stock: 0, low_stock: 0, out_of_stock: 0 },
+    recentActivity: data?.recent_activity || [],
     loading,
     error,
-    refreshData: fetchAllDashboardData
+    refresh: fetchDashboardData,
   };
 };
