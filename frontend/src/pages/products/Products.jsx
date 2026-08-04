@@ -24,6 +24,7 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const { statistics, loading } = useProducts();
   
   // 1. Pull core data structure & state metrics from useProducts
   const {
@@ -197,7 +198,7 @@ const handleItemsPerPageChange = (newSize) => {
         <div className="grid grid-cols-1 w-full min-w-0 items-start">
           <div className="space-y-4 w-full min-w-0 overflow-hidden block">
             
-            <ProductStats statistics={summary} loading={dashboardLoading} />
+            <ProductStats statistics={statistics} loading={dashboardLoading} />
 
            <ProductFilters
               searchQuery={searchQuery}

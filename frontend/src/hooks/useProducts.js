@@ -15,8 +15,7 @@ export function useProducts() {
   const [sortBy, setSortBy] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowIds, setSelectedRowIds] = useState([]);
-  
- const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Fetch logic from your Django backend API
   const fetchProducts = useCallback(async () => {
@@ -25,7 +24,6 @@ export function useProducts() {
       setError(null);
       const data = await productAPI.getProducts();
       
-      // Handle instances where data comes nested in an results array or flat directly
       const rawProducts = Array.isArray(data) ? data : data?.results || [];
       setProducts(rawProducts);
     } catch (err) {
@@ -39,6 +37,46 @@ export function useProducts() {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  // ================= DYNAMIC STATISTICS ENGINE =================
+  const statistics = useMemo(() => {
+    if (!products.length) {
+      return { total_products: 0, total_categories: 0, low_stock: 0, out_of_stock: 0 };
+    }
+
+    // 1. Total Products
+    const total_products = products.length;
+
+    // 2. Count Unique Categories (handles string names or category objects)
+    const uniqueCategories = new Set(
+      products
+        .map((p) => p.category_name || (typeof p.category === "object" ? p.category?.name : null))
+        .filter(Boolean)
+    );
+    const total_categories = uniqueCategories.size;
+
+    let low_stock = 0;
+    let out_of_stock = 0;
+
+    // 3. Stock Level Aggregation based on product properties
+    products.forEach((product) => {
+      const qty = product.quantity ?? product.inventory?.quantity ?? 0;
+      const reorderLevel = product.reorder_level ?? product.inventory?.reorder_level ?? 10;
+
+      if (qty === 0) {
+        out_of_stock += 1;
+      } else if (qty <= reorderLevel) {
+        low_stock += 1;
+      }
+    });
+
+    return {
+      total_products,
+      total_categories,
+      low_stock,
+      out_of_stock,
+    };
+  }, [products]);
 
   // ================= RESET STATE TRIGGER =================
   const resetAllFilters = useCallback(() => {
@@ -54,121 +92,127 @@ export function useProducts() {
 
   // ================= BATCH PROCESSING ROW SELECTIONS =================
   const toggleSelectRow = useCallback((id) => {
-    setSelectedRowIds(prev => 
-      prev.includes(id) ? prev.filter(rowId => rowId !== id) : [...prev, id]
+    setSelectedRowIds((prev) =>
+      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
     );
   }, []);
 
-  const toggleSelectAllRows = useCallback((paginatedItems) => {
-    const paginatedIds = paginatedItems.map(p => p.id);
-    const allSelected = paginatedIds.every(id => selectedRowIds.includes(id));
-    
-    if (allSelected) {
-      // Uncheck only those on the active page view
-      setSelectedRowIds(prev => prev.filter(id => !paginatedIds.includes(id)));
-    } else {
-      // Add missing IDs cleanly without breaking duplicates
-      setSelectedRowIds(prev => Array.from(new Set([...prev, ...paginatedIds])));
-    }
-  }, [selectedRowIds]);
+  const toggleSelectAllRows = useCallback(
+    (paginatedItems) => {
+      const paginatedIds = paginatedItems.map((p) => p.id);
+      const allSelected = paginatedIds.every((id) => selectedRowIds.includes(id));
+
+      if (allSelected) {
+        setSelectedRowIds((prev) => prev.filter((id) => !paginatedIds.includes(id)));
+      } else {
+        setSelectedRowIds((prev) => Array.from(new Set([...prev, ...paginatedIds])));
+      }
+    },
+    [selectedRowIds]
+  );
 
   const deleteSelectedProducts = useCallback(async () => {
     try {
       if (!selectedRowIds || selectedRowIds.length === 0) return;
 
-      // Delete each selected product in parallel and wait for completion
       await Promise.all(
-        selectedRowIds.map((id) => productAPI.deleteProduct(id).catch(err => {
-          console.error(`Failed to delete product ${id}:`, err);
-        }))
+        selectedRowIds.map((id) =>
+          productAPI.deleteProduct(id).catch((err) => {
+            console.error(`Failed to delete product ${id}:`, err);
+          })
+        )
       );
 
-      // Refresh after deletions and clear selection
-      await fetchProducts(); // Force a fresh state reconciliation loop
+      await fetchProducts();
       setSelectedRowIds([]);
     } catch (err) {
       console.error("Bulk processing dropped:", err);
     }
   }, [selectedRowIds, fetchProducts]);
 
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter((product) => {
+        if (!product) return false;
 
-const filteredProducts = useMemo(() => {
-  return products.filter(product => {
-    if (!product) return false;
+        const name = product.name?.toLowerCase() || "";
+        const sku = product.sku?.toLowerCase() || "";
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = name.includes(query) || sku.includes(query);
 
-    // 1. Search filter normalization
-    const name = product.name?.toLowerCase() || '';
-    const sku = product.sku?.toLowerCase() || '';
-    const query = searchQuery.toLowerCase();
-    const matchesSearch = name.includes(query) || sku.includes(query);
+        const prodCategory = product.category_name || "";
+        const prodBrand =
+          typeof product.brand === "object" ? product.brand?.name : product.brand;
 
-    // 2. Dropdown category & brand text mappings
-    const prodCategory = product.category_name || '';
-    const prodBrand = typeof product.brand === 'object' ? product.brand?.name : product.brand;
+        const matchesCategory = !categoryFilter || prodCategory === categoryFilter;
+        const matchesBrand = !brandFilter || prodBrand === brandFilter;
 
-    const matchesCategory = !categoryFilter || prodCategory === categoryFilter;
-    const matchesBrand = !brandFilter || prodBrand === brandFilter;
+        let matchesStatus = true;
+        if (statusFilter) {
+          const productStatus = String(product.status).toLowerCase();
+          if (statusFilter === "true") {
+            matchesStatus = productStatus === "true" || product.status === true;
+          } else if (statusFilter === "false") {
+            matchesStatus = productStatus === "false" || product.status === false;
+          }
+        }
 
-    // 3. Status filter (Active/Inactive)
-    let matchesStatus = true;
-    if (statusFilter) {
-      const productStatus = String(product.status).toLowerCase();
-      if (statusFilter === "true") {
-        matchesStatus = productStatus === "true" || product.status === true;
-      } else if (statusFilter === "false") {
-        matchesStatus = productStatus === "false" || product.status === false;
-      }
-    }
+        let stockStatusText = "In Stock";
+        const quantity = product.quantity ?? product.inventory?.quantity ?? 0;
+        const reorderLevel = product.reorder_level ?? product.inventory?.reorder_level ?? 10;
 
-    // ================= 4. SYNCED STOCK STATUS ENGINE =================
-    // Calculate stock status based on inventory quantity, not product status
-    let stockStatusText = "In Stock";
-    const quantity = product.quantity || product.inventory?.quantity || 0;
-    const reorderLevel = product.inventory?.reorder_level || 10;
+        if (quantity === 0) {
+          stockStatusText = "Out of Stock";
+        } else if (quantity <= reorderLevel) {
+          stockStatusText = "Low Stock";
+        } else {
+          stockStatusText = "In Stock";
+        }
 
-    // Determine stock status based on actual quantity
-    if (quantity === 0) {
-      stockStatusText = "Out of Stock";
-    } else if (quantity <= reorderLevel) {
-      stockStatusText = "Low Stock";
-    } else {
-      stockStatusText = "In Stock";
-    }
+        const matchesStock =
+          !stockStatusFilter || stockStatusText === stockStatusFilter;
 
-    // Direct string match against your dropdown choices ("In Stock", "Out of Stock", "Low Stock")
-    const matchesStock = !stockStatusFilter || stockStatusText === stockStatusFilter;
-
-    return matchesSearch && matchesCategory && matchesBrand && matchesStatus && matchesStock;
-  }).sort((a, b) => {
-    if (sortBy === "oldest") return new Date(a.created_at) - new Date(b.created_at);
-    if (sortBy === "price-low") return (a.selling_price || 0) - (b.selling_price || 0);
-    if (sortBy === "price-high") return (b.selling_price || 0) - (a.selling_price || 0);
-    return new Date(b.created_at) - new Date(a.created_at);
-  });
-}, [products, searchQuery, categoryFilter, brandFilter, statusFilter, stockStatusFilter, sortBy]);
+        return (
+          matchesSearch &&
+          matchesCategory &&
+          matchesBrand &&
+          matchesStatus &&
+          matchesStock
+        );
+      })
+      .sort((a, b) => {
+        if (sortBy === "oldest")
+          return new Date(a.created_at) - new Date(b.created_at);
+        if (sortBy === "price-low")
+          return (a.selling_price || 0) - (b.selling_price || 0);
+        if (sortBy === "price-high")
+          return (b.selling_price || 0) - (a.selling_price || 0);
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+  }, [
+    products,
+    searchQuery,
+    categoryFilter,
+    brandFilter,
+    statusFilter,
+    stockStatusFilter,
+    sortBy,
+  ]);
 
   // ================= CLIENT PAGINATION CALCULATION =================
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredProducts.length / itemsPerPage)
-);
-  
-  // Safely adjust out-of-bounds current pages when filtering shrinks list sizes
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
   const activePage = currentPage > totalPages ? totalPages : currentPage;
 
   const paginatedProducts = useMemo(() => {
     const startIndex = (activePage - 1) * itemsPerPage;
+    return filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredProducts, activePage, itemsPerPage]);
 
-    return filteredProducts.slice(
-        startIndex,
-        startIndex + itemsPerPage
-    );
-  }, [filteredProducts, activePage]);
-
-  // ================= OBJECT LAYER RECONCILIATION =================
+  // ================= RETURN HOOK INTERFACE =================
   return {
-    products,                         // Global list data array
-    paginatedProducts,                 // Active chunk array fed into tables
+    products,
+    statistics, // Combined live stats payload
+    paginatedProducts,
     searchQuery,
     setSearchQuery,
     categoryFilter,
@@ -194,6 +238,6 @@ const filteredProducts = useMemo(() => {
     error,
     refreshProducts: fetchProducts,
     itemsPerPage,
-     setItemsPerPage,
+    setItemsPerPage,
   };
 }
