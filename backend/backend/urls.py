@@ -28,7 +28,8 @@ urlpatterns = [
     path('api/purchase-orders/', include('purchase_orders.urls')),
     path('api/reports/', include('reports.urls')),
     path('api/dashboard/', include('dashboard.urls')),
-    
+    path('api/notifications/', include('notifications.urls')),
+    path('api/core/', include('core.urls')),
 ]
 
 # Serves uploaded media files (like your product images) during local development
