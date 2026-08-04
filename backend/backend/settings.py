@@ -56,8 +56,8 @@ INSTALLED_APPS = [
     'purchase_orders',
     'reports',
     'dashboard',
-    'notifications',
-    'core'
+    'core',
+    'notifications.apps.NotificationsConfig'
 ]
 
 MIDDLEWARE = [

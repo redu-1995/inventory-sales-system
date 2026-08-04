@@ -9,6 +9,7 @@ from products.models import Product
 
 
 class Sale(models.Model):
+    invoice_number = models.CharField(max_length=50, unique=True, null=True, blank=True)
     STATUS_CHOICES = (
         ('PAID', 'Paid'),
         ('PARTIAL', 'Partial'),

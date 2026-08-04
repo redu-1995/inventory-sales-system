@@ -9,7 +9,7 @@ class ProductSearchResultSerializer(serializers.Serializer):
 
 class CustomerSearchResultSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    name = serializers.CharField()
+    full_name = serializers.CharField()
     email = serializers.EmailField(required=False)
 
 class SaleSearchResultSerializer(serializers.Serializer):

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, User, Phone, Mail, MapPin, Loader2 } from 'lucide-react';
+import { useNotifications } from '../../hooks/useNotifications'; 
 
 /**
  * CustomerModal Component
@@ -18,6 +19,7 @@ export default function CustomerModal({
   customerToEdit = null,
 }) {
   const isEditMode = Boolean(customerToEdit);
+  const { refresh } = useNotifications(); // Access notification refresh function
 
   // Form State
   const [formData, setFormData] = useState({
@@ -86,10 +88,16 @@ export default function CustomerModal({
     setLoading(true);
     try {
       await onSubmit(formData);
+      
+      // Refresh notifications immediately if creating a new customer
+      if (!isEditMode) {
+        await refresh();
+      }
+
       onClose();
     } catch (err) {
       console.error('Failed to save customer:', err);
-      // Handle Django backend field validation errors (e.g. { phone: ["Already exists"] })
+      // Handle Django backend field validation errors
       if (typeof err === 'object' && err !== null) {
         setErrors(err);
       } else {

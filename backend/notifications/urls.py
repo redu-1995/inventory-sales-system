@@ -1,9 +1,12 @@
-# notifications/serializers.py
-from rest_framework import serializers
-from .models import Notification
+# notifications/urls.py
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import NotificationViewSet
 
-class NotificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Notification
-        fields = ['id', 'user', 'title', 'message', 'notification_type', 'is_read', 'created_at', 'link']
-        read_only_fields = ['id', 'created_at']
+router = DefaultRouter()
+router.register(r'', NotificationViewSet, basename='notification')
+
+# Must be exact variable name 'urlpatterns' defined as a list [...]
+urlpatterns = [
+    path('', include(router.urls)),
+]

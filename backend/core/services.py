@@ -26,7 +26,7 @@ class SearchService:
         )[:limit]
 
         customers = Customer.objects.filter(
-            Q(name__icontains=query) | Q(email__icontains=query) | Q(phone__icontains=query)
+            Q(full_name__icontains=query) | Q(email__icontains=query) | Q(phone__icontains=query)
         )[:limit]
 
         sales = Sale.objects.filter(
