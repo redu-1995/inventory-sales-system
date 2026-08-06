@@ -63,19 +63,32 @@ export default function InventoryStats({ summary }) {
         return (
           <div 
             key={card.title} 
-            className="bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm flex items-start gap-3 hover:border-slate-300 transition-colors min-w-0"
+            className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm flex items-start gap-3 hover:border-slate-300 transition-all min-w-0 min-h-[120px]"
           >
             <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${card.iconClass}`}>
               <Icon size={18} strokeWidth={2} />
             </div>
             
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 truncate" title={card.title}>
-                {card.title}
+              <p
+                className="text-xs font-medium text-slate-500 leading-5 break-words"
+                  title={card.title}
+                >
               </p>
               
               {/* Dynamic text sizing prevents currency overflow */}
-              <h3 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5 truncate">
+             <h3
+                className="
+                  text-lg
+                  sm:text-xl
+                  lg:text-2xl
+                  font-bold
+                  text-slate-900
+                  leading-tight
+                  break-all
+                  mt-1
+                "
+              >
                 {card.value}
               </h3>
               

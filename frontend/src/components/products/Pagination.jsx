@@ -23,13 +23,7 @@ export default function Pagination({ currentPage, totalPages, setCurrentPage, fi
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">{filteredCount === 0 ? 0 : (currentPage - 1) * 5 + 1}</span> to{' '}
-            <span className="font-medium">
-              {Math.min(currentPage * 5, filteredCount)}
-            </span> of{' '}
-            <span className="font-medium">{filteredCount}</span> results
-          </p>
+          
         </div>
         <div>
           <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">

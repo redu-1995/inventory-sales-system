@@ -8,9 +8,20 @@ from products.models import Product
 
 @receiver(post_save, sender=Product)
 def product_stock_alerts(sender, instance, **kwargs):
+    # Safely get stock quantity depending on how your Product model handles stock
+    quantity = getattr(instance, 'quantity', None)
+    
+    # If quantity is not directly on Product, check for a related inventory model
+    if quantity is None and hasattr(instance, 'inventory'):
+        quantity = getattr(instance.inventory, 'quantity', None)
+    
+    # If quantity still cannot be determined, return early to prevent crashes
+    if quantity is None:
+        return
+
     reorder_level = getattr(instance, 'reorder_level', 5)
     
-    if instance.quantity == 0:
+    if quantity == 0:
         Notification.objects.create(
             user=None,
             notification_type='OUT_OF_STOCK',
@@ -18,12 +29,12 @@ def product_stock_alerts(sender, instance, **kwargs):
             message=f'{instance.name} is completely out of stock.',
             link=f'/inventory?search={instance.name}'
         )
-    elif instance.quantity <= reorder_level:
+    elif quantity <= reorder_level:
         Notification.objects.create(
             user=None,
             notification_type='LOW_STOCK',
             title='Low Stock Warning',
-            message=f'{instance.name} has only {instance.quantity} units left.',
+            message=f'{instance.name} has only {quantity} units left.',
             link=f'/inventory?search={instance.name}'
         )
 
