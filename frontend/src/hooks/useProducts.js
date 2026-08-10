@@ -12,6 +12,7 @@ export function useProducts() {
   const [brandFilter, setBrandFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [stockStatusFilter, setStockStatusFilter] = useState("");
+  const [archiveFilter, setArchiveFilter] = useState("active");
   const [sortBy, setSortBy] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowIds, setSelectedRowIds] = useState([]);
@@ -22,7 +23,7 @@ export function useProducts() {
     try {
       setLoading(true);
       setError(null);
-      const data = await productAPI.getProducts();
+      const data = await productAPI.getProducts({ archived: archiveFilter });
       
       const rawProducts = Array.isArray(data) ? data : data?.results || [];
       setProducts(rawProducts);
@@ -32,7 +33,7 @@ export function useProducts() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [archiveFilter]);
 
   useEffect(() => {
     fetchProducts();
@@ -130,6 +131,26 @@ export function useProducts() {
     }
   }, [selectedRowIds, fetchProducts]);
 
+  const archiveProduct = useCallback(async (id) => {
+    try {
+      await productAPI.archiveProduct(id);
+      await fetchProducts();
+    } catch (err) {
+      console.error(`Failed to archive product ${id}:`, err);
+      throw err;
+    }
+  }, [fetchProducts]);
+
+  const unarchiveProduct = useCallback(async (id) => {
+    try {
+      await productAPI.unarchiveProduct(id);
+      await fetchProducts();
+    } catch (err) {
+      console.error(`Failed to restore product ${id}:`, err);
+      throw err;
+    }
+  }, [fetchProducts]);
+
   const filteredProducts = useMemo(() => {
     return products
       .filter((product) => {
@@ -223,12 +244,16 @@ export function useProducts() {
     setStatusFilter,
     stockStatusFilter,
     setStockStatusFilter,
+    archiveFilter,
+    setArchiveFilter,
     sortBy,
     setSortBy,
     selectedRowIds,
     toggleSelectRow,
     toggleSelectAllRows: () => toggleSelectAllRows(paginatedProducts),
     deleteSelectedProducts,
+    archiveProduct,
+    unarchiveProduct,
     resetAllFilters,
     currentPage: activePage,
     setCurrentPage,

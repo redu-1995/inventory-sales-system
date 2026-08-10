@@ -43,6 +43,18 @@ export const productAPI = {
     return response.data;
   },
 
+  // Soft archive product
+  async archiveProduct(id) {
+    const response = await api.post(`products/products/${id}/archive/`);
+    return response.data;
+  },
+
+  // Soft restore product
+  async unarchiveProduct(id) {
+    const response = await api.post(`products/products/${id}/unarchive/`);
+    return response.data;
+  },
+
   // Delete product
   async deleteProduct(id) {
     const response = await api.delete(`products/products/${id}/`);

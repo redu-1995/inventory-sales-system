@@ -65,6 +65,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "selling_price",
             "image",
             "status",
+            "is_archived",
             "quantity",
             "reorder_level",
             "created_at",

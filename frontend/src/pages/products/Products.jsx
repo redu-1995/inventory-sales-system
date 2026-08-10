@@ -24,7 +24,6 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedProductName, setSelectedProductName] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const { statistics, loading } = useProducts();
   
   // 1. Pull core data structure & state metrics from useProducts
   const {
@@ -40,12 +39,16 @@ export default function Products() {
     setStatusFilter,
     stockStatusFilter,
     setStockStatusFilter,
+    archiveFilter,
+    setArchiveFilter,
     sortBy,
     setSortBy,
     selectedRowIds = [], 
     toggleSelectRow,
     toggleSelectAllRows,
     deleteSelectedProducts,
+    archiveProduct,
+    unarchiveProduct,
     resetAllFilters,
     currentPage,
     setCurrentPage,
@@ -53,6 +56,7 @@ export default function Products() {
     filteredCount,
     error: productError,
     loading: productLoading,
+    statistics,
     refreshProducts
   } = useProducts();
 
@@ -200,6 +204,21 @@ const handleItemsPerPageChange = (newSize) => {
             
             <ProductStats statistics={statistics} loading={dashboardLoading} />
 
+           <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-gray-200 rounded-lg p-4">
+              <div className="flex gap-2">
+                {['active', 'archived', 'all'].map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setArchiveFilter(option)}
+                    className={`px-3 py-2 rounded-lg text-xs font-semibold transition ${archiveFilter === option ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  >
+                    {option === 'active' ? 'Active' : option === 'archived' ? 'Archived' : 'All'}
+                  </button>
+                ))}
+              </div>
+              <div className="text-xs text-gray-500">Showing {archiveFilter === 'active' ? 'active' : archiveFilter === 'archived' ? 'archived' : 'all'} products</div>
+            </div>
+
            <ProductFilters
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
@@ -213,7 +232,6 @@ const handleItemsPerPageChange = (newSize) => {
               setSortBy={setSortBy}
               resetAllFilters={resetAllFilters}
               products={products}
-              // Add these two lines:
               itemsPerPage={itemsPerPage}
               setItemsPerPage={setItemsPerPage}
             />
@@ -229,7 +247,8 @@ const handleItemsPerPageChange = (newSize) => {
                   onToggleSelectRow={toggleSelectRow}
                   onToggleSelectAll={toggleSelectAllRows}
                   onEdit={handleEdit}
-                  onDelete={handleDeleteTrigger} // Triggers confirmation dialogue safely
+                  onArchive={(id, name) => handleDeleteTrigger(id, name)}
+                  onUnarchive={unarchiveProduct}
                   loading={productLoading}
                 />
               </div>
@@ -262,13 +281,14 @@ const handleItemsPerPageChange = (newSize) => {
         product={selectedProduct} // Use "product" here
         onProductUpdated={refreshProducts} 
       />
-      {/* Structured Delete Prompt Dialogue Container */}
+      {/* Structured Delete / Archive Prompt Dialogue Container */}
       <DeleteConfirmationModal
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         productId={selectedProduct?.id} 
         productName={selectedProductName}
         onProductDeleted={refreshProducts}
+        isSoftDelete={true}
       />
     </div>
   );

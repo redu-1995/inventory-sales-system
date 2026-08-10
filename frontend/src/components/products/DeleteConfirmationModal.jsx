@@ -30,14 +30,12 @@ export default function DeleteConfirmationModal({
 
     try {
       if (isSoftDelete && productAPI.archiveProduct) {
-        // Soft delete / Archive product
         await productAPI.archiveProduct(productId);
       } else {
-        // Permanent delete
         await productAPI.deleteProduct(productId);
       }
       
-      onProductDeleted(); // Trigger parent state refresh
+      onProductDeleted();
       onClose();
     } catch (err) {
       console.error("Failed to delete/archive product:", err);
@@ -77,7 +75,7 @@ export default function DeleteConfirmationModal({
             </p>
             <p className="mt-1.5 text-xs text-gray-400">
               {isSoftDelete 
-                ? 'This will move the item to archived inventory, where it can be restored anytime.'
+                ? 'This will archive the product and preserve its history for restoration and reporting.'
                 : 'This action cannot be undone and will immediately erase all item record data.'}
             </p>
           </div>

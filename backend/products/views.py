@@ -4,6 +4,7 @@ import openpyxl
 from django.db import models, transaction
 from django.http import HttpResponse
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -79,6 +80,14 @@ class ProductViewSet(ModelViewSet):
                 models.Q(inventory__quantity=0) | models.Q(inventory__isnull=True)
             )
 
+        archived = self.request.query_params.get("archived", "active")
+        if archived == "active":
+            queryset = queryset.filter(is_archived=False)
+        elif archived == "archived":
+            queryset = queryset.filter(is_archived=True)
+        elif archived == "all":
+            pass
+
         return queryset
 
     @transaction.atomic
@@ -96,6 +105,44 @@ class ProductViewSet(ModelViewSet):
         Inventory.objects.get_or_create(
             product=product,
             defaults={"quantity": quantity, "reorder_level": reorder_level}
+        )
+
+    @action(detail=True, methods=["post"])
+    def archive(self, request, pk=None):
+        product = self.get_object()
+        if product.is_archived:
+            return Response(
+                {"detail": "Product is already archived."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        product.is_archived = True
+        product.save(update_fields=["is_archived", "updated_at"])
+        return Response(
+            {"detail": "Product archived successfully."},
+            status=status.HTTP_200_OK,
+        )
+
+    @action(detail=True, methods=["post"])
+    def unarchive(self, request, pk=None):
+        product = self.get_object()
+        if not product.is_archived:
+            return Response(
+                {"detail": "Product is already active."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        product.is_archived = False
+        product.save(update_fields=["is_archived", "updated_at"])
+        return Response(
+            {"detail": "Product restored successfully."},
+            status=status.HTTP_200_OK,
+        )
+
+    def destroy(self, request, *args, **kwargs):
+        return Response(
+            {
+                "detail": "Products cannot be permanently deleted. Archive the product instead."
+            },
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
         )
 
 

@@ -7,7 +7,8 @@ export default function ProductTable({
   onToggleSelectRow, 
   onToggleSelectAll,
   onEdit = null,
-  onDelete = null 
+  onArchive = null,
+  onUnarchive = null,
 }) {
   const allSelected = products.length > 0 && products.every(p => selectedRowIds.includes(p.id));
 
@@ -74,26 +75,35 @@ export default function ProductTable({
                   {formatDate(product.updated_at || product.created_at)}
                 </td>
                 <td className="p-3 text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    {onEdit && (
-                      <button
-                        onClick={() => onEdit(product.id)}
-                        className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 transition-colors"
-                      >
-                        Edit
-                      </button>
-                    )}
-                    {onDelete && (
-                      <button
-                        onClick={() => {
-                          if (window.confirm(`Delete "${product.name}"?`)) {
-                            onDelete(product.id, product.name);
-                          }
-                        }}
-                        className="px-2 py-1 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-md hover:bg-red-100 transition-colors"
-                      >
-                        Delete
-                      </button>
+                  <div className="flex flex-wrap items-center justify-center gap-1">
+                    {product.is_archived ? (
+                      onUnarchive && (
+                        <button
+                          onClick={() => onUnarchive(product.id)}
+                          className="px-2 py-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md hover:bg-emerald-100 transition-colors"
+                        >
+                          Restore
+                        </button>
+                      )
+                    ) : (
+                      <>
+                        {onEdit && (
+                          <button
+                            onClick={() => onEdit(product.id)}
+                            className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 transition-colors"
+                          >
+                            Edit
+                          </button>
+                        )}
+                        {onArchive && (
+                          <button
+                            onClick={() => onArchive(product.id, product.name)}
+                            className="px-2 py-1 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-md hover:bg-amber-100 transition-colors"
+                          >
+                            Archive
+                          </button>
+                        )}
+                      </>
                     )}
                   </div>
                 </td>
