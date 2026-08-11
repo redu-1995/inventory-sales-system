@@ -57,16 +57,21 @@ export default function PurchaseOrderDetailsModal({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {(order.items || []).map((item, idx) => (
-                    <tr key={item.id || idx}>
-                      <td className="p-3 font-medium text-gray-900">{item.product_name}</td>
-                      <td className="p-3 text-right">{item.quantity}</td>
-                      <td className="p-3 text-right">{Number(item.unit_cost || item.cost || 0).toLocaleString()} ETB</td>
-                      <td className="p-3 text-right font-semibold">
-                        {(item.quantity * (item.unit_cost || item.cost || 0)).toLocaleString()} ETB
-                      </td>
-                    </tr>
-                  ))}
+                  {(order.items || []).map((item, idx) => {
+                    const costPrice = Number(item.cost_price || 0);
+                    const subtotal = Number(item.subtotal ?? item.quantity * costPrice);
+
+                    return (
+                      <tr key={item.id || idx}>
+                        <td className="p-3 font-medium text-gray-900">{item.product_name}</td>
+                        <td className="p-3 text-right">{item.quantity}</td>
+                        <td className="p-3 text-right">{costPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB</td>
+                        <td className="p-3 text-right font-semibold">
+                          {subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ETB
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
