@@ -7,7 +7,7 @@ export const KPISection = ({ summary }) => {
   if (!summary) return null;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 sm:gap-5">
       <KPICard
         title="Revenue Today"
         value={formatCurrency(summary.revenueToday)}

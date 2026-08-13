@@ -38,6 +38,16 @@ export function AuthProvider({ children }) {
     return decodedUser;
   };
 
+  const forgotPassword = async (username, newPassword, confirmPassword) => {
+    const response = await api.post('auth/forgot-password/', {
+      username,
+      new_password: newPassword,
+      confirm_password: confirmPassword,
+    });
+
+    return response.data;
+  };
+
   const logout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
@@ -45,7 +55,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, forgotPassword, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );
