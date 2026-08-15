@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.db import transaction
+from django.utils import timezone
 from .models import PurchaseOrder, PurchaseOrderItem
 from products.models import Product, Supplier
 from inventory.models import Inventory, StockMovement
@@ -60,6 +61,15 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
     def validate_items(self, value):
         if not value:
             raise serializers.ValidationError("At least one purchase order item is required.")
+        return value
+
+    def validate_expected_delivery(self, value):
+        if value is None:
+            return value
+
+        if value < timezone.now().date():
+            raise serializers.ValidationError("Expected delivery date cannot be in the past.")
+
         return value
 
     @transaction.atomic

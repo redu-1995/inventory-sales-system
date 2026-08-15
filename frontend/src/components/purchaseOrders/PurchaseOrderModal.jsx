@@ -8,6 +8,7 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
   const [supplier, setSupplier] = useState('');
   const [expectedDelivery, setExpectedDelivery] = useState('');
   const [notes, setNotes] = useState('');
+  const today = new Date().toISOString().split('T')[0];
   const [items, setItems] = useState([
     { product: '', quantity: 1, cost_price: '' }
   ]);
@@ -226,6 +227,7 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
               </label>
               <input
                 type="date"
+                min={today}
                 value={expectedDelivery}
                 onChange={(e) => setExpectedDelivery(e.target.value)}
                 disabled={loading}

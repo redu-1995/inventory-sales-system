@@ -115,14 +115,42 @@ class ExportViewSet(viewsets.ViewSet):
         customer_id = request.query_params.get('customer')
         payment_status = request.query_params.get('payment_status')
 
-        raw_sales = ReportService.get_sales_report(start_date, end_date, customer_id, payment_status)
-        sales_data = raw_sales.get('daily_sales', []) if isinstance(raw_sales, dict) else raw_sales
+        sales_data = ReportService.get_sales_export_rows(start_date, end_date, customer_id, payment_status)
+        df = pd.DataFrame(sales_data)
 
-        df = pd.DataFrame(sales_data if isinstance(sales_data, list) else [sales_data])
+        headers = [
+            'Invoice Number',
+            'Sale Date',
+            'Customer',
+            'Subtotal',
+            'Discount',
+            'Tax',
+            'Total Amount',
+            'Amount Paid',
+            'Balance Due',
+            'Payment Status',
+            'Payment Method',
+            'Created By',
+        ]
 
         if export_format == 'excel':
-            return generate_excel_response('sales_report', {'Sales Summary': df})
+            return generate_excel_response('sales_report', {'Sales Summary': df[headers]})
 
-        headers = ['Date', 'Sales', 'Orders']
-        data_rows = [[row.get('date'), row.get('sales'), row.get('orders')] for row in sales_data]
+        data_rows = [
+            [
+                row.get('Invoice Number'),
+                row.get('Sale Date'),
+                row.get('Customer'),
+                row.get('Subtotal'),
+                row.get('Discount'),
+                row.get('Tax'),
+                row.get('Total Amount'),
+                row.get('Amount Paid'),
+                row.get('Balance Due'),
+                row.get('Payment Status'),
+                row.get('Payment Method'),
+                row.get('Created By'),
+            ]
+            for row in sales_data
+        ]
         return generate_csv_response('sales_report', headers, data_rows)

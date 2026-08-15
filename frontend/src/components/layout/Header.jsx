@@ -173,13 +173,7 @@ export default function Header() {
                 <p className="text-xs text-slate-500 capitalize">{userRoleDisplay}</p>
               </div>
 
-              <a
-                href="#profile"
-                className="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 transition"
-              >
-                <User className="w-4 h-4" /> Profile Settings
-              </a>
-
+             
               {logout && (
                 <button
                   onClick={logout}

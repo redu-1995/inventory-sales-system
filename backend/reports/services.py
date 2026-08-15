@@ -93,6 +93,42 @@ class ReportService:
         }
 
     @staticmethod
+    def get_sales_export_rows(start_date=None, end_date=None, customer_id=None, payment_status=None):
+        queryset = Sale.objects.select_related('customer', 'user').prefetch_related('items', 'payments').all()
+
+        if start_date:
+            queryset = queryset.filter(sale_date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(sale_date__lte=end_date)
+        if customer_id:
+            queryset = queryset.filter(customer_id=customer_id)
+        if payment_status:
+            queryset = queryset.filter(status=payment_status)
+
+        rows = []
+        for sale in queryset.order_by('-sale_date'):
+            subtotal = sale.items.aggregate(
+                total=Coalesce(Sum('subtotal'), Decimal('0.00'))
+            )['total'] or Decimal('0.00')
+
+            rows.append({
+                'Invoice Number': sale.invoice_number or f'INV-{sale.id}',
+                'Sale Date': sale.sale_date.strftime('%Y-%m-%d') if sale.sale_date else '',
+                'Customer': sale.customer.full_name if sale.customer else 'Walk-in Customer',
+                'Subtotal': subtotal,
+                'Discount': sale.discount_amount,
+                'Tax': sale.tax_amount,
+                'Total Amount': sale.total_amount,
+                'Amount Paid': sale.paid_amount,
+                'Balance Due': sale.remaining_amount,
+                'Payment Status': sale.status,
+                'Payment Method': sale.payment_method,
+                'Created By': sale.user.username if sale.user else 'N/A',
+            })
+
+        return rows
+
+    @staticmethod
     def get_purchase_report(supplier_id=None, status=None, start_date=None, end_date=None):
         queryset = PurchaseOrder.objects.all()
 
