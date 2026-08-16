@@ -95,17 +95,51 @@ class ExportViewSet(viewsets.ViewSet):
 
     def customers(self, request):
         export_format = request.query_params.get('file_format', 'csv')
-        customers = ReportService.get_customer_report()
-
-        # Ensure dictionary is wrapped in a list for Pandas
-        data_list = customers if isinstance(customers, list) else [customers] if isinstance(customers, dict) else []
-        df = pd.DataFrame(data_list)
-
+        status = request.query_params.get('status')
+        
+        customer_data = ReportService.get_customer_export_rows()
+        
+        # Filter by status if provided
+        if status:
+            customer_data = [c for c in customer_data if c.get('Status') == status]
+        
+        df = pd.DataFrame(customer_data)
+        
+        headers = [
+            'Customer ID',
+            'Customer Name',
+            'Phone',
+            'Email',
+            'Address',
+            'Status',
+            'Total Orders',
+            'Total Purchase Amount',
+            'Amount Paid',
+            'Outstanding Balance',
+            'Last Purchase Date',
+            'Created Date',
+        ]
+        
         if export_format == 'excel':
-            return generate_excel_response('customers_report', {'Customer Summary': df})
-
-        headers = ['Customer', 'Total Orders', 'Total Spent']
-        data_rows = [[c.get('name'), c.get('total_orders'), c.get('total_spent')] for c in data_list]
+            return generate_excel_response('customers_report', {'Customer Summary': df[headers] if not df.empty else df})
+        
+        data_rows = [
+            [
+                row.get('Customer ID'),
+                row.get('Customer Name'),
+                row.get('Phone'),
+                row.get('Email'),
+                row.get('Address'),
+                row.get('Status'),
+                row.get('Total Orders'),
+                row.get('Total Purchase Amount'),
+                row.get('Amount Paid'),
+                row.get('Outstanding Balance'),
+                row.get('Last Purchase Date'),
+                row.get('Created Date'),
+            ]
+            for row in customer_data
+        ]
         return generate_csv_response('customers_report', headers, data_rows)
 
     def sales(self, request):
@@ -154,3 +188,144 @@ class ExportViewSet(viewsets.ViewSet):
             for row in sales_data
         ]
         return generate_csv_response('sales_report', headers, data_rows)
+
+    def inventory(self, request):
+        export_format = request.query_params.get('file_format', 'csv')
+        
+        inventory_data = ReportService.get_inventory_export_rows()
+        df = pd.DataFrame(inventory_data)
+        
+        headers = [
+            'SKU',
+            'Product Name',
+            'Category',
+            'Current Stock',
+            'Reorder Level',
+            'Stock Status',
+            'Unit Cost',
+            'Inventory Value',
+            'Last Updated',
+        ]
+        
+        if export_format == 'excel':
+            return generate_excel_response('inventory_report', {'Inventory Summary': df[headers]})
+        
+        data_rows = [
+            [
+                row.get('SKU'),
+                row.get('Product Name'),
+                row.get('Category'),
+                row.get('Current Stock'),
+                row.get('Reorder Level'),
+                row.get('Stock Status'),
+                row.get('Unit Cost'),
+                row.get('Inventory Value'),
+                row.get('Last Updated'),
+            ]
+            for row in inventory_data
+        ]
+        return generate_csv_response('inventory_report', headers, data_rows)
+
+    def stock_movements(self, request):
+        export_format = request.query_params.get('file_format', 'csv')
+        
+        movement_data = ReportService.get_stock_movement_export_rows()
+        df = pd.DataFrame(movement_data)
+        
+        headers = [
+            'Movement ID',
+            'SKU',
+            'Product Name',
+            'Movement Type',
+            'Quantity',
+            'User',
+            'Date',
+        ]
+        
+        if export_format == 'excel':
+            return generate_excel_response('stock_movements_report', {'Stock Movements': df[headers]})
+        
+        data_rows = [
+            [
+                row.get('Movement ID'),
+                row.get('SKU'),
+                row.get('Product Name'),
+                row.get('Movement Type'),
+                row.get('Quantity'),
+                row.get('User'),
+                row.get('Date'),
+            ]
+            for row in movement_data
+        ]
+        return generate_csv_response('stock_movements_report', headers, data_rows)
+
+    def purchases(self, request):
+        export_format = request.query_params.get('file_format', 'csv')
+        supplier_id = request.query_params.get('supplier')
+        po_status = request.query_params.get('status')
+        
+        # Get purchase order summary data
+        po_data = ReportService.get_purchase_order_export_rows()
+        
+        # Filter by supplier if provided
+        if supplier_id:
+            po_data = [po for po in po_data if po.get('Supplier') == supplier_id]
+        
+        # Filter by status if provided
+        if po_status:
+            po_data = [po for po in po_data if po.get('Status') == po_status]
+        
+        # Get purchase order items data
+        po_items_data = ReportService.get_purchase_order_items_export_rows()
+        
+        # Filter items to only include those from filtered POs
+        if po_data:
+            po_numbers = [po['PO Number'] for po in po_data]
+            po_items_data = [item for item in po_items_data if item['PO Number'] in po_numbers]
+        
+        # Headers for purchase orders
+        po_headers = [
+            'PO Number',
+            'Supplier',
+            'Order Date',
+            'Status',
+            'Expected Delivery',
+            'Total Amount',
+            'Created By',
+            'Notes',
+        ]
+        
+        # Headers for purchase order items
+        item_headers = [
+            'PO Number',
+            'SKU',
+            'Product Name',
+            'Quantity',
+            'Unit Cost',
+            'Subtotal',
+        ]
+        
+        # Excel export with two sheets
+        if export_format == 'excel':
+            po_df = pd.DataFrame(po_data)
+            items_df = pd.DataFrame(po_items_data)
+            return generate_excel_response('purchase_orders_report', {
+                'Purchase Orders': po_df[po_headers] if not po_df.empty else po_df,
+                'PO Items': items_df[item_headers] if not items_df.empty else items_df,
+            })
+        
+        # CSV export - just the main PO summary
+        po_data_rows = [
+            [
+                row.get('PO Number'),
+                row.get('Supplier'),
+                row.get('Order Date'),
+                row.get('Status'),
+                row.get('Expected Delivery'),
+                row.get('Total Amount'),
+                row.get('Created By'),
+                row.get('Notes'),
+            ]
+            for row in po_data
+        ]
+        return generate_csv_response('purchase_orders_report', po_headers, po_data_rows)

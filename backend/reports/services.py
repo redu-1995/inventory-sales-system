@@ -10,7 +10,7 @@ now = timezone.now()
 
 # Correct app imports according to your modular structure
 from sales.models import Sale, SaleItem
-from inventory.models import Inventory
+from inventory.models import Inventory, StockMovement
 from purchase_orders.models import PurchaseOrder  
 from products.models import Product
 from customers.models import Customer
@@ -302,3 +302,169 @@ class ReportService:
             "labels": labels,
             "values": values
         }
+
+    @staticmethod
+    def get_inventory_export_rows():
+        """
+        Generate inventory summary export rows with calculated stock status.
+        Returns list of dicts with columns:
+        SKU, Product Name, Category, Current Stock, Reorder Level, 
+        Stock Status, Unit Cost, Inventory Value, Last Updated
+        """
+        inventory_items = Inventory.objects.select_related('product', 'product__category').all()
+        
+        rows = []
+        for inv in inventory_items.order_by('-updated_at'):
+            product = inv.product
+            quantity = inv.quantity
+            
+            # Calculate stock status
+            if quantity == 0:
+                status = 'Out of Stock'
+            elif quantity <= inv.reorder_level:
+                status = 'Low Stock'
+            else:
+                status = 'In Stock'
+            
+            # Calculate inventory value
+            inventory_value = quantity * product.cost_price
+            
+            rows.append({
+                'SKU': product.sku,
+                'Product Name': product.name,
+                'Category': product.category.name if product.category else 'N/A',
+                'Current Stock': quantity,
+                'Reorder Level': inv.reorder_level,
+                'Stock Status': status,
+                'Unit Cost': product.cost_price,
+                'Inventory Value': inventory_value,
+                'Last Updated': inv.updated_at.strftime('%Y-%m-%d %H:%M:%S') if inv.updated_at else 'N/A',
+            })
+        
+        return rows
+
+    @staticmethod
+    def get_stock_movement_export_rows():
+        """
+        Generate stock movement history export rows.
+        Returns list of dicts with columns:
+        Movement ID, SKU, Product Name, Movement Type, Quantity, User, Date
+        """
+        movements = StockMovement.objects.select_related('product', 'user').order_by('-created_at')
+        
+        rows = []
+        for movement in movements:
+            product = movement.product
+            rows.append({
+                'Movement ID': movement.id,
+                'SKU': product.sku,
+                'Product Name': product.name,
+                'Movement Type': movement.get_movement_type_display(),
+                'Quantity': movement.quantity,
+                'User': movement.user.username if movement.user else 'System',
+                'Date': movement.created_at.strftime('%Y-%m-%d %H:%M:%S') if movement.created_at else 'N/A',
+            })
+        
+        return rows
+
+    @staticmethod
+    def get_purchase_order_export_rows():
+        """
+        Generate purchase order summary export rows.
+        Returns list of dicts with columns:
+        PO Number, Supplier, Order Date, Status, Expected Delivery, Total Amount, Created By, Notes
+        """
+        purchase_orders = PurchaseOrder.objects.select_related('supplier', 'user').order_by('-order_date')
+        
+        rows = []
+        for po in purchase_orders:
+            rows.append({
+                'PO Number': f'PO-{po.id:04d}',
+                'Supplier': po.supplier.company_name if po.supplier else 'N/A',
+                'Order Date': po.order_date.strftime('%Y-%m-%d %H:%M:%S') if po.order_date else 'N/A',
+                'Status': po.get_status_display(),
+                'Expected Delivery': po.expected_delivery.strftime('%Y-%m-%d') if po.expected_delivery else 'N/A',
+                'Total Amount': po.total_amount,
+                'Created By': po.user.username if po.user else 'System',
+                'Notes': po.notes or '',
+            })
+        
+        return rows
+
+    @staticmethod
+    def get_purchase_order_items_export_rows():
+        """
+        Generate purchase order items export rows.
+        Returns list of dicts with columns:
+        PO Number, SKU, Product Name, Quantity, Unit Cost, Subtotal
+        """
+        from purchase_orders.models import PurchaseOrderItem
+        
+        items = PurchaseOrderItem.objects.select_related('purchase_order', 'product').order_by('-purchase_order__order_date')
+        
+        rows = []
+        for item in items:
+            po = item.purchase_order
+            product = item.product
+            subtotal = item.subtotal
+            
+            rows.append({
+                'PO Number': f'PO-{po.id:04d}',
+                'SKU': product.sku,
+                'Product Name': product.name,
+                'Quantity': item.quantity,
+                'Unit Cost': item.cost_price,
+                'Subtotal': subtotal,
+            })
+        
+        return rows
+
+    @staticmethod
+    def get_customer_export_rows():
+        """
+        Generate customer export rows with sales summary information.
+        Returns list of dicts with columns:
+        Customer ID, Customer Name, Phone, Email, Address, Status,
+        Total Orders, Total Purchase Amount, Amount Paid, Outstanding Balance,
+        Last Purchase Date, Created Date
+        """
+        customers = Customer.objects.all().order_by('-created_at')
+        
+        rows = []
+        for customer in customers:
+            # Get all sales for this customer
+            sales = customer.sales.all()
+            
+            # Calculate totals
+            total_orders = sales.count()
+            total_purchase_amount = sales.aggregate(
+                total=Coalesce(Sum('total_amount'), Decimal('0.00'))
+            )['total']
+            
+            # Calculate amount paid (sum of paid_amount property for each sale)
+            amount_paid = Decimal('0.00')
+            outstanding_balance = Decimal('0.00')
+            for sale in sales:
+                amount_paid += sale.paid_amount
+                outstanding_balance += sale.remaining_amount
+            
+            # Get last purchase date
+            last_sale = sales.order_by('-sale_date').first()
+            last_purchase_date = last_sale.sale_date.strftime('%Y-%m-%d') if last_sale and last_sale.sale_date else 'N/A'
+            
+            rows.append({
+                'Customer ID': customer.id,
+                'Customer Name': customer.full_name,
+                'Phone': customer.phone or 'N/A',
+                'Email': customer.email or 'N/A',
+                'Address': customer.address or 'N/A',
+                'Status': customer.get_status_display(),
+                'Total Orders': total_orders,
+                'Total Purchase Amount': total_purchase_amount,
+                'Amount Paid': amount_paid,
+                'Outstanding Balance': outstanding_balance,
+                'Last Purchase Date': last_purchase_date,
+                'Created Date': customer.created_at.strftime('%Y-%m-%d') if customer.created_at else 'N/A',
+            })
+        
+        return rows
