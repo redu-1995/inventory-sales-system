@@ -32,51 +32,51 @@ export default function Customers() {
     refreshCustomers,
   } = useCustomers();
 
-  // Modals Local State
+  // ✅ Separate state for Add/Edit Form and Details/View Modal
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [customerToEdit, setCustomerToEdit] = useState(null);
+
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [customerToView, setCustomerToView] = useState(null);
 
-  // Modal Open Handlers
+  // 1. Open Add Form
   const handleOpenAddModal = () => {
-    setSelectedCustomer(null);
+    setCustomerToEdit(null); // null means "Add New"
     setIsFormModalOpen(true);
   };
 
+  // 2. Open Edit Form
   const handleOpenEditModal = (customer) => {
-    // Close details modal if editing from within the details view
-    setIsDetailsModalOpen(false); 
-    setSelectedCustomer(customer);
+    setIsDetailsModalOpen(false); // Close details modal if open
+    setCustomerToView(null);
+    setCustomerToEdit(customer);   // Set customer specifically for editing
     setIsFormModalOpen(true);
   };
 
+  // 3. Open View Details
   const handleOpenViewModal = (customer) => {
-    setSelectedCustomer(customer);
+    setCustomerToView(customer);
     setIsDetailsModalOpen(true);
   };
 
   // Modal Close Handlers
   const handleCloseFormModal = () => {
     setIsFormModalOpen(false);
-    setSelectedCustomer(null);
+    setCustomerToEdit(null);
   };
 
   const handleCloseDetailsModal = () => {
     setIsDetailsModalOpen(false);
-    setSelectedCustomer(null);
+    setCustomerToView(null);
   };
 
   // Form Submit Handler
   const handleFormSubmit = async (formData) => {
-    try {
-      if (selectedCustomer) {
-        await updateCustomer(selectedCustomer.id, formData);
-      } else {
-        await createCustomer(formData);
-      }
-      handleCloseFormModal();
-    } catch (err) {
-      console.error('Failed to save customer:', err);
+    const id = customerToEdit?.id || customerToEdit?.customer_id || customerToEdit?._id;
+    if (id) {
+      await updateCustomer(id, formData);
+    } else {
+      await createCustomer(formData);
     }
   };
 
@@ -123,14 +123,14 @@ export default function Customers() {
         isOpen={isFormModalOpen}
         onClose={handleCloseFormModal}
         onSubmit={handleFormSubmit}
-        customerToEdit={selectedCustomer}
+        customerToEdit={customerToEdit}
       />
 
       {/* VIEW CUSTOMER DETAILS MODAL */}
       <CustomerDetailsModal
         isOpen={isDetailsModalOpen}
         onClose={handleCloseDetailsModal}
-        customer={selectedCustomer}
+        customer={customerToView}
         onEdit={handleOpenEditModal}
       />
     </div>

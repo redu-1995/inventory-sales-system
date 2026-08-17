@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Edit2 } from 'lucide-react';
 import { customerService } from '../../services/customerService';
 
-export default function CustomerDetailsModal({ customer, onClose }) {
+export default function CustomerDetailsModal({ customer, onClose, onEdit }) {
   const [salesHistory, setSalesHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -131,7 +132,7 @@ export default function CustomerDetailsModal({ customer, onClose }) {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
+        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
           <button
             onClick={onClose}
             type="button"
@@ -139,6 +140,20 @@ export default function CustomerDetailsModal({ customer, onClose }) {
           >
             Close
           </button>
+          {onEdit && customer && (
+            <button
+              onClick={() => {
+                if (typeof onEdit === 'function') {
+                  onEdit(customer);
+                }
+              }}
+              type="button"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-lg text-sm font-semibold transition-colors"
+            >
+              <Edit2 className="w-4 h-4" />
+              Edit Customer
+            </button>
+          )}
         </div>
 
       </div>

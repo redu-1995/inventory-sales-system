@@ -9,12 +9,29 @@ export const DashboardHeader = ({ onRefresh, loading }) => {
     day: 'numeric',
   });
 
+  // Determine greeting based on current time
+  const getTimeBasedGreeting = () => {
+    const hour = new Date().getHours();
+    
+    if (hour >= 5 && hour < 12) {
+      return 'Good Morning';
+    } else if (hour >= 12 && hour < 17) {
+      return 'Good Afternoon';
+    } else if (hour >= 17 && hour < 21) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
+  };
+
+  const greeting = getTimeBasedGreeting();
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200/80">
       <div>
         <div className="flex items-center gap-2">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Good Morning, Admin
+            {greeting}, Admin
           </h1>
           <span className="inline-block animate-bounce text-2xl">👋</span>
         </div>

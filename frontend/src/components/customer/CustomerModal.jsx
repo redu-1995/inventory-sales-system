@@ -1,27 +1,20 @@
+// CustomerModal.jsx
 import React, { useState, useEffect } from 'react';
 import { X, User, Phone, Mail, MapPin, Loader2 } from 'lucide-react';
-import { useNotifications } from '../../hooks/useNotifications'; 
+import { useNotifications } from '../../hooks/useNotifications';
 
-/**
- * CustomerModal Component
- * Form modal used for both creating and editing customer records.
- *
- * @param {Object} props
- * @param {boolean} props.isOpen - Controls modal visibility
- * @param {Function} props.onClose - Handler to close modal
- * @param {Function} props.onSubmit - Promise function (createCustomer or updateCustomer)
- * @param {Object|null} props.customerToEdit - Initial customer data if in edit mode
- */
 export default function CustomerModal({
   isOpen,
   onClose,
   onSubmit,
   customerToEdit = null,
 }) {
-  const isEditMode = Boolean(customerToEdit);
-  const { refresh } = useNotifications(); // Access notification refresh function
+  const { refresh } = useNotifications();
 
-  // Form State
+  // Find valid ID across common naming conventions
+  const customerId = customerToEdit?.id ?? customerToEdit?.customer_id ?? customerToEdit?._id;
+  const isEditMode = Boolean(customerToEdit && customerId);
+
   const [formData, setFormData] = useState({
     full_name: '',
     phone: '',
@@ -33,7 +26,6 @@ export default function CustomerModal({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Populate form data when editing or reset when opening fresh
   useEffect(() => {
     if (customerToEdit) {
       setFormData({
@@ -41,7 +33,7 @@ export default function CustomerModal({
         phone: customerToEdit.phone || '',
         email: customerToEdit.email || '',
         address: customerToEdit.address || '',
-        status: customerToEdit.status || 'ACTIVE',
+        status: customerToEdit.status ? customerToEdit.status.toUpperCase() : 'ACTIVE',
       });
     } else {
       setFormData({
@@ -57,17 +49,14 @@ export default function CustomerModal({
 
   if (!isOpen) return null;
 
-  // Form Field Change Handler
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error for field on edit
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: null }));
     }
   };
 
-  // Basic Validation
   const validate = () => {
     const newErrors = {};
     if (!formData.full_name.trim()) {
@@ -80,39 +69,35 @@ export default function CustomerModal({
     return Object.keys(newErrors).length === 0;
   };
 
-  // Submit Handler
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  e.preventDefault();
+  if (!validate()) return;
 
-    setLoading(true);
-    try {
-      await onSubmit(formData);
-      
-      // Refresh notifications immediately if creating a new customer
-      if (!isEditMode) {
-        await refresh();
-      }
+  setLoading(true);
+  try {
+    // ✅ Always pass just formData to onSubmit
+    await onSubmit(formData);
 
-      onClose();
-    } catch (err) {
-      console.error('Failed to save customer:', err);
-      // Handle Django backend field validation errors
-      if (typeof err === 'object' && err !== null) {
-        setErrors(err);
-      } else {
-        setErrors({ general: 'Something went wrong. Please try again.' });
-      }
-    } finally {
-      setLoading(false);
+    if (!isEditMode && refresh) {
+      await refresh();
     }
-  };
+
+    onClose();
+  } catch (err) {
+    console.error('Failed to save customer:', err);
+    if (typeof err === 'object' && err !== null) {
+      setErrors(err);
+    } else {
+      setErrors({ general: 'Something went wrong. Please try again.' });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
-      {/* Modal Card Container */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl border border-slate-200 shadow-xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-        
         {/* Header */}
         <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
           <div>
@@ -143,8 +128,6 @@ export default function CustomerModal({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4 overflow-y-auto">
-          
-          {/* Full Name */}
           <div>
             <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
               Full Name <span className="text-red-500">*</span>
@@ -159,7 +142,7 @@ export default function CustomerModal({
                 placeholder="e.g. Abebe Bikila"
                 className={`w-full pl-9 pr-3 py-2 bg-slate-50 border ${
                   errors.full_name ? 'border-red-500' : 'border-slate-200'
-                } rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all`}
+                } rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500`}
               />
             </div>
             {errors.full_name && (
@@ -169,9 +152,7 @@ export default function CustomerModal({
             )}
           </div>
 
-          {/* Phone & Status Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Phone */}
             <div>
               <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
                 Phone Number
@@ -186,17 +167,11 @@ export default function CustomerModal({
                   placeholder="+251 911 000000"
                   className={`w-full pl-9 pr-3 py-2 bg-slate-50 border ${
                     errors.phone ? 'border-red-500' : 'border-slate-200'
-                  } rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all`}
+                  } rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500`}
                 />
               </div>
-              {errors.phone && (
-                <span className="text-xs text-red-500 mt-1 block">
-                  {Array.isArray(errors.phone) ? errors.phone[0] : errors.phone}
-                </span>
-              )}
             </div>
 
-            {/* Status */}
             <div>
               <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
                 Status
@@ -213,7 +188,6 @@ export default function CustomerModal({
             </div>
           </div>
 
-          {/* Email */}
           <div>
             <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
               Email Address
@@ -228,17 +202,11 @@ export default function CustomerModal({
                 placeholder="customer@example.com"
                 className={`w-full pl-9 pr-3 py-2 bg-slate-50 border ${
                   errors.email ? 'border-red-500' : 'border-slate-200'
-                } rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all`}
+                } rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500`}
               />
             </div>
-            {errors.email && (
-              <span className="text-xs text-red-500 mt-1 block">
-                {Array.isArray(errors.email) ? errors.email[0] : errors.email}
-              </span>
-            )}
           </div>
 
-          {/* Address */}
           <div>
             <label className="block text-xs font-semibold uppercase text-slate-500 mb-1">
               Address
@@ -251,18 +219,17 @@ export default function CustomerModal({
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="e.g. Bole Sub-city, Addis Ababa"
-                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"
+                className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
               />
             </div>
           </div>
 
-          {/* Footer / Buttons */}
           <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors disabled:opacity-50"
+              className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50"
             >
               Cancel
             </button>
@@ -270,7 +237,7 @@ export default function CustomerModal({
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium disabled:opacity-50"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               <span>{isEditMode ? 'Save Changes' : 'Create Customer'}</span>

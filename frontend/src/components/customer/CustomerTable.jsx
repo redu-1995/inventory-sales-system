@@ -6,7 +6,7 @@ export default function CustomerTable({
   loading,
   onViewCustomer,
   onEditCustomer,
-  onDeleteCustomer,
+ 
 }) {
   return (
     <div className="overflow-x-auto">
@@ -32,7 +32,7 @@ export default function CustomerTable({
               customer={customer}
               onView={onViewCustomer}
               onEdit={onEditCustomer}
-              onDelete={onDeleteCustomer}
+            
             />
           ))}
         </tbody>
