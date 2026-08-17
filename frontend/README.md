@@ -1,16 +1,144 @@
-# React + Vite
+# Inventory & Sales Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A web-based Inventory & Sales Management System designed to help businesses manage products, inventory, customers, sales, purchase orders, and business reports from a centralized dashboard.
 
-Currently, two official plugins are available:
+The system is built with a React + Vite frontend and a Django REST Framework backend, with Ethiopian Birr (ETB) as the default currency.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+### Dashboard
+- Business overview and KPI cards
+- Today's sales and revenue
+- Inventory value
+- Total products and customers
+- Low-stock alerts
+- Recent transactions
+- Sales analytics and charts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Product Management
+- Create and manage products
+- Product categories
+- Product suppliers
+- Product pricing
+- Product stock information
+- Product search and filtering
+- Archive products instead of permanently deleting them
+- View active and archived products
 
-## Expanding the Oxlint configuration
+### Inventory Management
+- Monitor current stock levels
+- Track low-stock products
+- Track out-of-stock products
+- Configure reorder levels
+- Record stock movements
+- Stock-in, stock-out, and inventory adjustments
+- Inventory valuation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### Sales Management
+- Create sales transactions
+- Add multiple products to a sale
+- Customer selection
+- Invoice numbers
+- Payment methods
+- Paid, partial, and unpaid sales
+- Tax and discount handling
+- Automatic sale total calculation
+- Payment tracking
+- Remaining balance calculation
+
+### Customer Management
+- Create and update customers
+- Customer contact information
+- Active/inactive customer status
+- Customer search and filtering
+- Preserve customer history associated with previous sales
+
+### Purchase Orders
+- Create purchase orders
+- Manage suppliers
+- Add products and quantities
+- Track purchase order totals
+- Pending, received, and cancelled statuses
+- Expected delivery dates
+- Purchase order history
+
+### Notifications
+- Inventory-related notifications
+- Low-stock notifications
+- System notifications
+- Unread notification count
+- Notification list and status
+
+### Reports
+The system provides reports for:
+
+- Sales
+- Inventory
+- Customers
+- Purchase orders
+
+Reports can be exported for business use, including Excel/CSV formats where supported.
+
+## Technology Stack
+
+### Frontend
+
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- Axios
+- React Router
+- Lucide React
+- ESLint/Oxlint
+
+### Backend
+
+- Python
+- Django
+- Django REST Framework
+- PostgreSQL/SQLite for development
+- Django ORM
+- JWT authentication
+
+### Development Tools
+
+- Git
+- GitHub
+- VS Code
+- Postman
+- Docker (optional)
+
+## Project Structure
+
+```text
+inventory-sales-system/
+│
+├── backend/
+│   ├── backend/
+│   ├── core/
+│   ├── dashboard/
+│   ├── customers/
+│   ├── inventory/
+│   ├── notifications/
+│   ├── products/
+│   ├── purchase_orders/
+│   ├── reports/
+│   ├── sales/
+│   ├── users/
+│   ├── manage.py
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── ...
+│   ├── package.json
+│   └── vite.config.js
+│
+└── README.md
