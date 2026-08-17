@@ -1,6 +1,6 @@
 // src/components/reports/ReportStats.jsx
 import React from "react";
-import { DollarSign, ShoppingBag, Package, Users, AlertTriangle, TrendingUp } from "lucide-react";
+import { Coins, ShoppingBag, Package, Users, AlertTriangle, TrendingUp } from "lucide-react";
 
 export function ReportStats({ summary }) {
   if (!summary) return null;
@@ -9,7 +9,7 @@ export function ReportStats({ summary }) {
     {
       title: "Total Revenue",
       value: `ETB ${Number(summary.total_revenue).toLocaleString()}`,
-      icon: DollarSign,
+      icon: Coins,
       color: "bg-emerald-50 text-emerald-600",
     },
     {

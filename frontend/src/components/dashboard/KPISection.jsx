@@ -1,6 +1,13 @@
 import React from 'react';
 import { KPICard } from './KPICard';
-import { DollarSign, ShoppingBag, Package, Users, AlertTriangle, Boxes } from 'lucide-react';
+import { 
+  Coins,         
+  ShoppingBag, 
+  Package, 
+  Users, 
+  AlertTriangle, 
+  Boxes 
+} from 'lucide-react';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 export const KPISection = ({ summary }) => {
@@ -11,7 +18,7 @@ export const KPISection = ({ summary }) => {
       <KPICard
         title="Revenue Today"
         value={formatCurrency(summary.revenueToday)}
-        icon={DollarSign}
+        icon={Coins}
         color="emerald"
       />
       <KPICard

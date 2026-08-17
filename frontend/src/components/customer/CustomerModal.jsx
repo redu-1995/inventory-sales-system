@@ -75,7 +75,6 @@ export default function CustomerModal({
 
   setLoading(true);
   try {
-    // ✅ Always pass just formData to onSubmit
     await onSubmit(formData);
 
     if (!isEditMode && refresh) {

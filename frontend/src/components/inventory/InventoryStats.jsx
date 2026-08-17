@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, Boxes, CircleDollarSign, PackageCheck, XCircle } from 'lucide-react';
+import { AlertTriangle, Boxes, Coins, PackageCheck, XCircle } from 'lucide-react';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export default function InventoryStats({ summary }) {
   const totalUnits = summary?.total_stock_units || 0;
@@ -36,10 +37,11 @@ export default function InventoryStats({ summary }) {
     },
     {
       title: 'Inventory Value',
-      value: `$${inventoryValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      // Formatted with ETB utility
+      value: formatCurrency(inventoryValue),
       delta: '1.7% vs last month',
       tone: 'text-emerald-600',
-      icon: CircleDollarSign,
+      icon: Coins, // Replaced CircleDollarSign
       iconClass: 'bg-emerald-50 text-emerald-600'
     },
     {
@@ -72,12 +74,13 @@ export default function InventoryStats({ summary }) {
             <div className="min-w-0 flex-1">
               <p
                 className="text-xs font-medium text-slate-500 leading-5 break-words"
-                  title={card.title}
-                >
+                title={card.title}
+              >
+                {card.title}
               </p>
               
               {/* Dynamic text sizing prevents currency overflow */}
-             <h3
+              <h3
                 className="
                   text-lg
                   sm:text-xl
