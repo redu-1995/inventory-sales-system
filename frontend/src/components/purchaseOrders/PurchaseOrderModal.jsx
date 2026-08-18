@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, X, AlertCircle } from 'lucide-react';
-import api from '../../services/api'; // Standard axios instance
-import { purchaseOrderService } from '../../services/purchaseOrderService';
+import api from '../../services/api';
 
 export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
   // Form State
@@ -28,11 +27,10 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
       const fetchData = async () => {
         try {
           const [suppliersRes, productsRes] = await Promise.all([
-            api.get('products/suppliers/'), // Removed leading slash for consistency
+            api.get('products/suppliers/'),
             api.get('products/products/')
           ]);
 
-          // Support both DRF paginated responses ({ results: [...] }) and standard arrays
           const suppliers = suppliersRes.data?.results || suppliersRes.data || [];
           const products = productsRes.data?.results || productsRes.data || [];
 
@@ -62,24 +60,20 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
     onClose();
   };
 
-  // Add a new line item row
   const handleAddItemRow = () => {
     setItems([...items, { product: '', quantity: 1, cost_price: '' }]);
   };
 
-  // Remove a line item row
   const handleRemoveItemRow = (index) => {
     if (items.length > 1) {
       setItems(items.filter((_, i) => i !== index));
     }
   };
 
-  // Update specific fields in dynamic array
   const handleItemFieldChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index][field] = value;
 
-    // Auto-fill cost price if product selected
     if (field === 'product' && value) {
       const selectedProduct = productsList.find(p => p.id === parseInt(value, 10));
       if (selectedProduct && (selectedProduct.cost_price || selectedProduct.price)) {
@@ -90,7 +84,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
     setItems(updatedItems);
   };
 
-  // Calculate Running Grand Total
   const calculateTotal = () => {
     return items
       .reduce((sum, item) => {
@@ -119,7 +112,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
       return;
     }
 
-    // Assemble payload expected by DRF Purchase Order Endpoint
     const payload = {
       supplier: parseInt(supplier, 10),
       expected_delivery: expectedDelivery || null,
@@ -133,18 +125,14 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
 
     setLoading(true);
     try {
-      // Use the service created for purchase orders
-      const createdOrder = await purchaseOrderService.createPurchaseOrder(payload);
-      
+      // ✅ FIX: Delegate creation to parent (handleCreateOrder) ONLY ONCE
       if (onOrderCreated) {
-        onOrderCreated(createdOrder);
+        await onOrderCreated(payload);
       }
       handleResetForm();
       onClose();
     } catch (err) {
       console.error("Error creating purchase order:", err);
-      
-      // Parse detailed Django field errors
       if (err.response?.data) {
         const data = err.response.data;
         if (typeof data === 'object') {
@@ -186,7 +174,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6">
           
-          {/* Error Banner */}
           {error && (
             <div className="mb-5 flex items-start gap-2.5 rounded-lg bg-red-50 p-3.5 text-sm text-red-700 border border-red-100">
               <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
@@ -197,9 +184,7 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
             </div>
           )}
 
-          {/* Top Info Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-            {/* Supplier Select */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">
                 Select Supplier <span className="text-red-500">*</span>
@@ -220,7 +205,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
               </select>
             </div>
 
-            {/* Expected Delivery Date */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">
                 Expected Delivery Date
@@ -236,7 +220,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
             </div>
           </div>
 
-          {/* Line Items Section Header */}
           <div className="mb-2 flex items-center justify-between">
             <h4 className="text-sm font-semibold text-slate-900">Purchase Order Items</h4>
             <button
@@ -249,12 +232,10 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
             </button>
           </div>
 
-          {/* Dynamic Item Grid */}
           <div className="max-h-60 overflow-y-auto space-y-3 mb-5 pr-1">
             {items.map((item, index) => (
               <div key={index} className="flex gap-3 items-end bg-slate-50 p-3 rounded-lg border border-slate-100">
                 
-                {/* Select Product */}
                 <div className="flex-1">
                   <label className="block text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-1">
                     Product <span className="text-red-500">*</span>
@@ -275,7 +256,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
                   </select>
                 </div>
 
-                {/* Quantity */}
                 <div className="w-24">
                   <label className="block text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-1">
                     Qty <span className="text-red-500">*</span>
@@ -291,10 +271,9 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
                   />
                 </div>
 
-                {/* Unit Cost Price */}
                 <div className="w-32">
                   <label className="block text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-1">
-                    Unit Cost ($) <span className="text-red-500">*</span>
+                    Unit Cost <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="number"
@@ -309,17 +288,15 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
                   />
                 </div>
 
-                {/* Calculated Line Subtotal */}
                 <div className="w-24 text-right pr-2">
                   <span className="block text-[11px] font-medium text-slate-400 uppercase mb-2">
                     Total
                   </span>
                   <span className="text-sm font-semibold text-slate-700">
-                    ${((parseFloat(item.quantity) || 0) * (parseFloat(item.cost_price) || 0)).toFixed(2)}
+                    ETB {((parseFloat(item.quantity) || 0) * (parseFloat(item.cost_price) || 0)).toFixed(2)}
                   </span>
                 </div>
 
-                {/* Delete line button */}
                 {items.length > 1 && (
                   <button
                     type="button"
@@ -335,7 +312,6 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
             ))}
           </div>
 
-          {/* Optional Notes Input */}
           <div className="mb-6">
             <label className="block text-xs font-medium text-slate-600 mb-1">
               Order Notes / Terms (Optional)
@@ -344,17 +320,17 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
               rows="2"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="e.g., Deliver to Warehouse Gate 2, Net 30 payment terms..."
+              placeholder="e.g., Deliver to Bole warehouse, payment on delivery..."
               disabled={loading}
               className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-slate-50"
             />
           </div>
 
-          {/* Total & Footer Actions */}
+          {/* Total & Action Buttons */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-slate-100">
             <div>
               <span className="text-xs text-slate-500 uppercase tracking-wider">Total Order Amount</span>
-              <p className="text-2xl font-bold text-slate-900">${calculateTotal()}</p>
+              <p className="text-2xl font-bold text-slate-900">ETB {calculateTotal()}</p>
             </div>
 
             <div className="flex items-center gap-2 justify-end">
@@ -362,14 +338,14 @@ export const PurchaseOrderModal = ({ isOpen, onClose, onOrderCreated }) => {
                 type="button"
                 onClick={handleCloseModal}
                 disabled={loading}
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 disabled:opacity-50"
+                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex items-center justify-center rounded-lg bg-[#2563EB] px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="inline-flex items-center justify-center rounded-lg bg-[#2563EB] px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none disabled:opacity-50"
               >
                 {loading ? 'Creating Order...' : 'Create Purchase Order'}
               </button>
