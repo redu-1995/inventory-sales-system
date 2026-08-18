@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     'dashboard',
     'core',
     'notifications.apps.NotificationsConfig',
+    'import_export',
 ]
 
 
