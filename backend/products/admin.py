@@ -10,7 +10,7 @@ from .models import Category, Supplier, Product
 # --------------------------------------------------
 @admin.register(Category)
 class CategoryAdmin(ImportExportModelAdmin):
-    list_display = ('id', 'name', 'description')
+    list_display = ('id', 'name', 'description', 'created_at')
     search_fields = ('name',)
 
 
@@ -24,25 +24,46 @@ class SupplierAdmin(ImportExportModelAdmin):
 
 
 # --------------------------------------------------
-# 3. Product Resource (Name Matching for Imports)
+# 3. Product Import/Export Resource
 # --------------------------------------------------
 class ProductResource(resources.ModelResource):
     category = fields.Field(
         column_name='category',
         attribute='category',
-        widget=ForeignKeyWidget(Category, field='name')  # Matches Category.name
+        widget=ForeignKeyWidget(Category, field='name')  # Lookup Category by name
     )
     supplier = fields.Field(
         column_name='supplier',
         attribute='supplier',
-        widget=ForeignKeyWidget(Supplier, field='company_name')  # Matches Supplier.company_name
+        widget=ForeignKeyWidget(Supplier, field='company_name')  # Lookup Supplier by company_name
     )
 
     class Meta:
         model = Product
-        # Include cost_price, price, and quantity here:
-        fields = ('id', 'name', 'sku', 'cost_price', 'price', 'quantity', 'category', 'supplier')
-        export_order = ('id', 'name', 'sku', 'cost_price', 'price', 'quantity', 'category', 'supplier')
+        fields = (
+            'id',
+            'name',
+            'sku',
+            'barcode',
+            'description',
+            'cost_price',
+            'selling_price',
+            'status',
+            'category',
+            'supplier',
+        )
+        export_order = (
+            'id',
+            'name',
+            'sku',
+            'barcode',
+            'description',
+            'cost_price',
+            'selling_price',
+            'status',
+            'category',
+            'supplier',
+        )
 
 
 # --------------------------------------------------
@@ -51,6 +72,6 @@ class ProductResource(resources.ModelResource):
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
     resource_classes = [ProductResource]
-    list_display = ('id', 'name', 'sku', 'cost_price', 'price', 'quantity', 'category', 'supplier')
-    search_fields = ('name', 'sku')
-    list_filter = ('category', 'supplier')
+    list_display = ('id', 'name', 'sku', 'cost_price', 'selling_price', 'category', 'supplier', 'status')
+    search_fields = ('name', 'sku', 'barcode')
+    list_filter = ('category', 'supplier', 'status', 'is_archived')
