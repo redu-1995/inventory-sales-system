@@ -30,7 +30,7 @@ class ProductResource(resources.ModelResource):
     supplier = fields.Field(
         column_name='supplier',
         attribute='supplier',
-        widget=ForeignKeyWidget(Supplier, field='name')
+        widget=ForeignKeyWidget(Supplier, field='company_name')
     )
 
     class Meta:
