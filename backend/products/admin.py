@@ -40,8 +40,9 @@ class ProductResource(resources.ModelResource):
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'sku', 'category', 'supplier')
-        export_order = ('id', 'name', 'sku', 'category', 'supplier')
+        # Include cost_price, price, and quantity here:
+        fields = ('id', 'name', 'sku', 'cost_price', 'price', 'quantity', 'category', 'supplier')
+        export_order = ('id', 'name', 'sku', 'cost_price', 'price', 'quantity', 'category', 'supplier')
 
 
 # --------------------------------------------------
@@ -50,6 +51,6 @@ class ProductResource(resources.ModelResource):
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
     resource_classes = [ProductResource]
-    list_display = ('id', 'name', 'sku', 'category', 'supplier')
+    list_display = ('id', 'name', 'sku', 'cost_price', 'price', 'quantity', 'category', 'supplier')
     search_fields = ('name', 'sku')
     list_filter = ('category', 'supplier')
