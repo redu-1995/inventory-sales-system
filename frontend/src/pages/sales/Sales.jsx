@@ -8,6 +8,7 @@ import ReceivePaymentModal from '../../components/sales/ReceivePaymentModal';
 import ViewSaleModal from '../../components/sales/SaleDetailsModal'; 
 import PrintInvoice from '../../components/sales/PrintInvoice'; 
 import { useSales } from '../../hooks/useSales';
+import api from '../../services/api';
 
 const INITIAL_FILTERS = {
   search: '',
@@ -53,15 +54,6 @@ const Sales = () => {
     tin: '0012345678',
   };
 
-  // Utility to build Auth Headers for dropdown requests
-  const getAuthHeaders = useCallback(() => {
-    const token = localStorage.getItem('token') || localStorage.getItem('access_token');
-    return {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-    };
-  }, []);
-
   // --- Fetch Initial Sales & Stats ---
   useEffect(() => {
     fetchSales();
@@ -72,26 +64,22 @@ const Sales = () => {
   const fetchModalData = useCallback(async () => {
     try {
       setIsLoadingModalData(true);
-      const headers = getAuthHeaders();
-
       const [productsRes, customersRes] = await Promise.all([
-        fetch('http://127.0.0.1:8000/api/products/products/', { headers }),
-        fetch('http://127.0.0.1:8000/api/customers/customers/', { headers }),
+        api.get('products/products/'),
+        api.get('customers/customers/'),
       ]);
 
-      if (productsRes.ok && customersRes.ok) {
-        const productsData = await productsRes.json();
-        const customersData = await customersRes.json();
+      const productsData = productsRes.data;
+      const customersData = customersRes.data;
 
-        setProducts(Array.isArray(productsData) ? productsData : productsData.results || []);
-        setCustomers(Array.isArray(customersData) ? customersData : customersData.results || []);
-      }
+      setProducts(Array.isArray(productsData) ? productsData : productsData?.results || []);
+      setCustomers(Array.isArray(customersData) ? customersData : customersData?.results || []);
     } catch (error) {
       console.error('Error fetching modal dropdown data:', error);
     } finally {
       setIsLoadingModalData(false);
     }
-  }, [getAuthHeaders]);
+  }, []);
 
   // Fetch dropdown options when modal is opened
   const handleOpenCreateModal = () => {
