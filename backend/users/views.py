@@ -57,27 +57,55 @@ class ForgotPasswordView(APIView):
         confirm_password = request.data.get('confirm_password') or ''
 
         if not username:
-            return Response({'detail': 'Username is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'detail': 'Username is required.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Prevent the public demo account from changing its password
+        if username.lower() == 'demo':
+            return Response(
+                {'detail': 'Password reset is disabled for the demo account.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
 
         if not new_password or not confirm_password:
-            return Response({'detail': 'Please provide your new password and confirmation.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'detail': 'Please provide your new password and confirmation.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if new_password != confirm_password:
-            return Response({'detail': 'Passwords do not match.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'detail': 'Passwords do not match.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
             validate_password(new_password)
         except ValidationError as exc:
-            return Response({'detail': exc.messages[0]}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'detail': exc.messages[0]},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         user = User.objects.filter(username=username).first()
+
         if not user:
-            return Response({'detail': 'We could not find an account with that username.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {'detail': 'We could not find an account with that username.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         user.set_password(new_password)
         user.save(update_fields=['password'])
 
         return Response(
-            {'detail': 'Your password was updated successfully. You can now sign in with your new password.'},
+            {
+                'detail': (
+                    'Your password was updated successfully. '
+                    'You can now sign in with your new password.'
+                )
+            },
             status=status.HTTP_200_OK,
         )
