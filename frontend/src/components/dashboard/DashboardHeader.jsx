@@ -30,7 +30,7 @@ export const DashboardHeader = ({ onRefresh, loading }) => {
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200/80">
       <div>
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="page-title font-extrabold text-slate-900 tracking-tight">
             {greeting}, Admin
           </h1>
           <span className="inline-block animate-bounce text-2xl">👋</span>

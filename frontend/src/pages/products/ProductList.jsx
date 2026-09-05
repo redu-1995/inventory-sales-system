@@ -42,7 +42,7 @@ export default function ProductsMainSection() {
       {/* ==================== UPPER CONTROLS & SUBHEADER ==================== */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">Products</h1>
+          <h1 className="page-title font-bold text-slate-900 tracking-tight">Products</h1>
           <p className="text-xs text-slate-500 font-medium">Manage your inventory products and stock information.</p>
         </div>
         <div className="flex items-center gap-2">

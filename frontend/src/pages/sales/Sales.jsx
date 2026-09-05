@@ -236,7 +236,7 @@ const Sales = () => {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sales Orders</h1>
+          <h1 className="page-title font-bold text-slate-900 tracking-tight">Sales Orders</h1>
           <p className="text-sm text-slate-500 mt-1">
             Manage customer orders, track payments, and generate invoices.
           </p>

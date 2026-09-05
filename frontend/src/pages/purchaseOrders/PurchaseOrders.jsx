@@ -53,7 +53,7 @@ export default function PurchaseOrders() {
             <ShoppingCart size={22} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Purchase Orders</h1>
+            <h1 className="page-title font-bold text-gray-900">Purchase Orders</h1>
             <p className="text-xs text-gray-500">
               Manage supplier purchase requests, approvals, and inventory receiving.
             </p>

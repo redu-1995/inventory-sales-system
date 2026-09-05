@@ -21,6 +21,11 @@ body {
   overflow-x: hidden;
 }
 
+.page-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 .app-table-shell {
   width: 100%;
   max-width: 100%;

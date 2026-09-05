@@ -14,7 +14,7 @@ export default function CustomerHeader({ onAddCustomer, onExport }) {
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       {/* Title & Description */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Customers</h1>
+        <h1 className="page-title font-bold text-slate-800">Customers</h1>
         <p className="text-slate-500 text-sm mt-0.5">
           Manage customer information and purchase history.
         </p>

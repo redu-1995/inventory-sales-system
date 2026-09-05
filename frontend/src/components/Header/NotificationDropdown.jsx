@@ -63,18 +63,18 @@ export default function NotificationDropdown({ notifications = [], onMarkRead, o
   };
 
   return (
-    <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+    <div className="fixed inset-x-2 top-[4.25rem] z-50 w-auto rounded-2xl border border-slate-100 bg-white py-2 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150 sm:absolute sm:inset-x-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-100">
-        <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-center justify-between gap-3 border-b border-slate-100 px-4 py-2">
+        <div className="flex min-w-0 items-center gap-2">
           <Bell className="w-4 h-4 text-slate-700" />
-          <span className="text-sm font-semibold text-slate-800">Notifications</span>
+          <span className="truncate text-sm font-semibold text-slate-800">Notifications</span>
         </div>
 
         {notifications.some((n) => !n.is_read) && (
           <button
             onClick={onMarkAllRead}
-            className="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 transition"
+            className="inline-flex shrink-0 items-center gap-1 text-right text-xs font-medium text-blue-600 transition hover:text-blue-800"
           >
             <CheckCheck className="w-3.5 h-3.5" />
             Mark all as read
@@ -96,7 +96,7 @@ export default function NotificationDropdown({ notifications = [], onMarkRead, o
             return (
               <div
                 key={notif.id}
-                className={`p-3.5 hover:bg-slate-50 transition flex items-start gap-3 ${
+                className={`flex items-start gap-3 p-3.5 transition hover:bg-slate-50 ${
                   !notif.is_read ? "bg-blue-50/20" : ""
                 }`}
               >
@@ -107,8 +107,8 @@ export default function NotificationDropdown({ notifications = [], onMarkRead, o
 
                 {/* Details & Action */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-slate-800 truncate">
+                  <div className="flex min-w-0 items-center justify-between gap-2">
+                    <span className="min-w-0 truncate text-xs font-semibold text-slate-800">
                       {notif.title}
                     </span>
                     {!notif.is_read && (
@@ -120,7 +120,7 @@ export default function NotificationDropdown({ notifications = [], onMarkRead, o
                     {notif.message}
                   </p>
 
-                  <div className="flex items-center justify-between mt-2 pt-1">
+                  <div className="flex min-w-0 items-center justify-between gap-2 mt-2 pt-1">
                     <span className="text-[10px] text-slate-400">
                       {new Date(notif.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
@@ -133,7 +133,7 @@ export default function NotificationDropdown({ notifications = [], onMarkRead, o
                           if (!notif.is_read) onMarkRead(notif.id);
                           if (onClose) onClose();
                         }}
-                        className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition"
+                        className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-blue-600 transition hover:text-blue-800"
                       >
                         <span>{config.actionText}</span>
                         <ArrowRight className="w-3 h-3" />

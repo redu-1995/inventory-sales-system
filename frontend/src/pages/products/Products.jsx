@@ -166,7 +166,7 @@ const handleItemsPerPageChange = (newSize) => {
         {/* ================= HEADER SECTION ================= */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-100 pb-4">
           <div>
-            <h1 className="text-xl font-bold text-gray-900 tracking-tight">Products</h1>
+            <h1 className="page-title font-bold text-gray-900 tracking-tight">Products</h1>
             <p className="text-xs text-gray-500 mt-0.5">Manage your inventory products and stock information.</p>
           </div>
           
