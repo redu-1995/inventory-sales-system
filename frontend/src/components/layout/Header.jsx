@@ -1,13 +1,13 @@
 // src/components/Header/Header.jsx
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Bell, X, ChevronDown, User, LogOut } from "lucide-react";
+import { Search, Bell, X, ChevronDown, LogOut, Menu } from "lucide-react";
 import { useSearch } from "../../hooks/useSearch";
 import { useNotifications } from "../../hooks/useNotifications";
 import useAuth from "../../hooks/useAuth";
 import SearchDropdown from "../../components/Header/SearchDropdown";
 import NotificationDropdown from "../../components/Header/NotificationDropdown";
 
-export default function Header() {
+export default function Header({ onMenuClick }) {
   // Auth state
   const { user, logout } = useAuth();
 
@@ -59,11 +59,19 @@ export default function Header() {
   const userRoleDisplay = user?.role || "Staff";
 
   return (
-    <header className="h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 px-6 lg:px-8 flex items-center justify-between gap-4 sticky top-0 z-30 shadow-sm">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-slate-200 bg-white/95 px-3 shadow-sm backdrop-blur-md sm:gap-4 sm:px-6 lg:px-8">
+      <button
+        type="button"
+        onClick={onMenuClick}
+        aria-label="Open navigation"
+        className="shrink-0 rounded-xl p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
       {/* ------------------------------------------------------------------- */}
       {/* GLOBAL SEARCH SECTION                                               */}
       {/* ------------------------------------------------------------------- */}
-      <div className="relative w-full max-w-md" ref={searchRef}>
+      <div className="relative min-w-0 w-full max-w-md" ref={searchRef}>
         <div className="relative flex items-center">
           <Search className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
           <input
@@ -74,7 +82,7 @@ export default function Header() {
               setIsSearchOpen(true);
             }}
             onFocus={() => query.trim().length >= 2 && setIsSearchOpen(true)}
-            placeholder="Search products, customers, invoices..."
+            placeholder="Search products..."
             className="w-full pl-10 pr-9 py-2 bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
           />
           {query && (

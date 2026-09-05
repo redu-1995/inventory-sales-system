@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
 export default function DashboardLayout({ children }) {
-  return (
-    <div className="bg-slate-50 min-h-screen text-slate-800 antialiased">
-      {/* Sidebar - Fixed on the left */}
-      <Sidebar />
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      {/* Main Content Area with left margin for fixed sidebar */}
-      <div className="ml-56 h-screen flex flex-col">
-        <Header />
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-800 antialiased">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
+      <div className="flex min-h-screen flex-col lg:ml-60">
+        <Header onMenuClick={() => setIsSidebarOpen(true)} />
         
-        {/* Content Area - Scrollable */}
-        <main className="flex-1 overflow-y-auto min-w-0">
+        <main className="min-w-0 flex-1 overflow-y-auto">
           {children}
         </main>
       </div>

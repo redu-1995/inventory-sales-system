@@ -9,10 +9,11 @@ import {
   Users,
   BarChart3,
   LogOut,
+  X,
 } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen = false, onClose }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -56,10 +57,21 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="w-60 h-screen bg-slate-950 border-r border-slate-800/80 flex flex-col shadow-2xl fixed left-0 top-0 overflow-hidden z-40 select-none">
+    <>
+      <button
+        type="button"
+        aria-label="Close navigation"
+        onClick={onClose}
+        className={`fixed inset-0 z-40 bg-slate-950/60 transition-opacity duration-200 lg:hidden ${
+          isOpen ? 'visible opacity-100' : 'invisible opacity-0'
+        }`}
+      />
+      <aside className={`fixed left-0 top-0 z-50 flex h-dvh w-[min(18rem,86vw)] flex-col overflow-hidden border-r border-slate-800/80 bg-slate-950 shadow-2xl transition-transform duration-200 select-none lg:h-screen lg:w-60 lg:translate-x-0 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
 
       {/* Header / Brand Logo */}
-      <div className="h-16 flex items-center px-5 border-b border-slate-800/80 shrink-0">
+      <div className="flex h-16 shrink-0 items-center border-b border-slate-800/80 px-5">
         <div className="flex items-center space-x-3">
           {/* Logo Badge */}
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white font-extrabold shadow-lg shadow-indigo-600/30 ring-1 ring-white/20">
@@ -75,6 +87,15 @@ export default function Sidebar() {
               Sales & Inventory
             </span>
           </div>
+
+          <button
+            type="button"
+            aria-label="Close navigation"
+            onClick={onClose}
+            className="ml-auto rounded-lg p-2 text-slate-400 hover:bg-slate-900 hover:text-white lg:hidden"
+          >
+            <X size={18} />
+          </button>
         </div>
       </div>
 
@@ -95,7 +116,10 @@ export default function Sidebar() {
             return (
               <button
                 key={item.path}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  navigate(item.path);
+                  onClose?.();
+                }}
                 className={`group relative flex items-center w-full px-3 py-2.5 rounded-xl transition-all duration-200 text-xs font-semibold ${
                   isActive
                     ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
@@ -126,7 +150,10 @@ export default function Sidebar() {
       {/* Bottom Sticky Logout */}
       <div className="p-3 border-t border-slate-800/80 shrink-0 bg-slate-950">
         <button
-          onClick={logout}
+          onClick={() => {
+            onClose?.();
+            logout();
+          }}
           className="group flex items-center w-full px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 border border-transparent hover:border-rose-500/20 transition-all duration-200"
         >
           <LogOut size={18} className="mr-3 shrink-0 text-slate-400 group-hover:text-rose-400 transition-colors" />
@@ -134,6 +161,7 @@ export default function Sidebar() {
         </button>
       </div>
 
-    </aside>
+      </aside>
+    </>
   );
 }
