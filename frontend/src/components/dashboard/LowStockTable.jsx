@@ -27,8 +27,8 @@ export const LowStockTable = ({ lowStock }) => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+        <div className="app-table-shell">
+          <table className="app-table app-table--compact text-left text-sm">
             <thead>
               <tr className="bg-slate-50/80 text-slate-500 font-semibold text-xs uppercase tracking-wider border-y border-slate-100">
                 <th className="py-2.5 px-3 rounded-l-lg">Product</th>

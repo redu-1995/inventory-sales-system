@@ -12,8 +12,8 @@ export function LowStockReport({ lowStockItems }) {
         </span>
       </div>
 
-      <div className="overflow-x-auto flex-1">
-        <table className="w-full text-left text-sm text-gray-600">
+      <div className="app-table-shell flex-1">
+        <table className="app-table app-table--compact text-left text-sm text-gray-600">
           <thead className="text-xs text-gray-400 uppercase bg-gray-50">
             <tr>
               <th className="py-3 px-4 rounded-l-lg">Product</th>
@@ -31,9 +31,11 @@ export function LowStockReport({ lowStockItems }) {
             ) : (
               lowStockItems.map((item, idx) => (
                 <tr key={idx} className="hover:bg-gray-50/50">
-                  <td className="py-3 px-4 font-semibold text-gray-800 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-amber-500 shrink-0" />
-                    {item.product}
+                  <td className="py-3 px-4 font-semibold text-gray-800">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 text-amber-500 shrink-0" />
+                      {item.product}
+                    </div>
                   </td>
                   <td className="py-3 px-4 font-bold text-amber-600">{item.stock}</td>
                   <td className="py-3 px-4 text-right font-medium text-gray-500">{item.reorder_level}</td>

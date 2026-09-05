@@ -148,8 +148,8 @@ const SalesTable = ({
 
       {/* Sales Table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+        <div className="app-table-shell">
+          <table className="app-table text-left">
             <thead className="bg-gray-50/80 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
               <tr>
                 <th className="py-3 px-4 w-10">

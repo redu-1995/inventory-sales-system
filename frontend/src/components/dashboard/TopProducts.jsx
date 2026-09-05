@@ -9,8 +9,8 @@ export const TopProducts = ({ topProducts = [] }) => {
         <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">By Volume</span>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
+      <div className="app-table-shell">
+        <table className="app-table app-table--compact text-left text-sm">
           <thead>
             <tr className="bg-slate-50/80 text-slate-500 font-semibold text-xs uppercase tracking-wider border-y border-slate-100">
               <th className="py-2.5 px-3 rounded-l-lg">Product</th>
@@ -21,11 +21,13 @@ export const TopProducts = ({ topProducts = [] }) => {
             {topProducts.length > 0 ? (
               topProducts.map((prod, idx) => (
                 <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-3 px-3 font-semibold text-slate-800 flex items-center gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[11px] font-bold flex items-center justify-center shrink-0">
-                      {idx + 1}
-                    </span>
-                    <span>{prod.product}</span>
+                  <td className="py-3 px-3 font-semibold text-slate-800">
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-500 text-[11px] font-bold flex items-center justify-center shrink-0">
+                        {idx + 1}
+                      </span>
+                      <span>{prod.product}</span>
+                    </div>
                   </td>
                   <td className="py-3 px-3 text-right font-extrabold text-indigo-600">
                     {prod.sold}

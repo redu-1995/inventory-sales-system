@@ -21,6 +21,46 @@ body {
   overflow-x: hidden;
 }
 
+.app-table-shell {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.app-table--compact {
+  min-width: 420px;
+}
+
+.app-table th,
+.app-table td {
+  vertical-align: middle;
+}
+
+.app-table th {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .app-table-shell {
+    scrollbar-width: thin;
+  }
+
+  .app-table th,
+  .app-table td {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
 @media print {
   /* 1. Hide browser header/footer elements like URLs, dates, and page titles */
   @page {

@@ -82,8 +82,8 @@ export default function InventoryTable({ data, onAdjustClick, onDeleteClick }) {
       )}
 
       {/* Main Table */}
-      <div className="overflow-x-auto border border-slate-200 rounded-lg bg-white">
-        <table className="w-full text-left border-collapse text-xs text-slate-700">
+      <div className="app-table-shell border border-slate-200 rounded-lg bg-white">
+        <table className="app-table text-left text-xs text-slate-700">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-900 font-bold">
               <th className="w-10 p-3">

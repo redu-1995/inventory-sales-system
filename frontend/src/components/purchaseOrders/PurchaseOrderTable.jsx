@@ -45,8 +45,8 @@ export default function PurchaseOrderTable({
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden w-full">
-      <div className="w-full overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+      <div className="app-table-shell">
+        <table className="app-table text-left">
           <thead className="bg-slate-50/90 border-b border-slate-200 text-[11px] font-semibold uppercase text-slate-500 tracking-wider">
             <tr>
               <th className="px-3 py-3 w-[36px]">

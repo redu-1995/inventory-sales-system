@@ -9,8 +9,8 @@ export default function CustomerTable({
  
 }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left border-collapse">
+    <div className="app-table-shell">
+      <table className="app-table text-left">
         <thead>
           <tr className="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 text-xs font-semibold uppercase tracking-wider">
             <th className="p-4 w-10">

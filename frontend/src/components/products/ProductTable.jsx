@@ -19,8 +19,8 @@ export default function ProductTable({
   };
 
   return (
-    <div className="w-full overflow-hidden">
-      <table className="w-full divide-y divide-gray-200 text-left text-sm">
+    <div className="app-table-shell">
+      <table className="app-table divide-y divide-gray-200 text-left text-sm">
         <thead className="bg-gray-50 text-xs text-gray-600 uppercase font-semibold">
           <tr>
             <th className="p-3 w-12 text-center">
