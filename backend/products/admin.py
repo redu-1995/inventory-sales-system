@@ -26,22 +26,28 @@ class SupplierAdmin(ImportExportModelAdmin):
 # --------------------------------------------------
 # 3. Product Import/Export Resource
 # --------------------------------------------------
+
 class ProductResource(resources.ModelResource):
+
     category = fields.Field(
-        column_name='category',
+        column_name='category_name',
         attribute='category',
-        widget=ForeignKeyWidget(Category, field='name')  # Lookup Category by name
+        widget=ForeignKeyWidget(Category, field='name')
     )
+
     supplier = fields.Field(
-        column_name='supplier',
+        column_name='supplier_company_name',
         attribute='supplier',
-        widget=ForeignKeyWidget(Supplier, field='company_name')  # Lookup Supplier by company_name
+        widget=ForeignKeyWidget(Supplier, field='company_name')
     )
 
     class Meta:
         model = Product
+
+        # Use SKU to identify products during import
+        import_id_fields = ('sku',)
+
         fields = (
-            'id',
             'name',
             'sku',
             'barcode',
@@ -49,29 +55,41 @@ class ProductResource(resources.ModelResource):
             'cost_price',
             'selling_price',
             'status',
+            'is_archived',
             'category',
             'supplier',
         )
-        export_order = (
-            'id',
-            'name',
-            'sku',
-            'barcode',
-            'description',
-            'cost_price',
-            'selling_price',
-            'status',
-            'category',
-            'supplier',
-        )
+
+        export_order = fields
+
+        skip_unchanged = False
+        report_skipped = True
 
 
 # --------------------------------------------------
 # 4. Product Admin
 # --------------------------------------------------
+
 @admin.register(Product)
 class ProductAdmin(ImportExportModelAdmin):
     resource_classes = [ProductResource]
-    list_display = ('id', 'name', 'sku', 'cost_price', 'selling_price', 'category', 'supplier', 'status')
+
+    list_display = (
+        'id',
+        'name',
+        'sku',
+        'cost_price',
+        'selling_price',
+        'category',
+        'supplier',
+        'status',
+    )
+
     search_fields = ('name', 'sku', 'barcode')
-    list_filter = ('category', 'supplier', 'status', 'is_archived')
+
+    list_filter = (
+        'category',
+        'supplier',
+        'status',
+        'is_archived',
+    )

@@ -1,0 +1,5980 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "users",
+    "model": "role"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "users",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "products",
+    "model": "category"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "products",
+    "model": "product"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "products",
+    "model": "supplier"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "inventory"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "purchaseorder"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "purchaseorderitem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "inventory",
+    "model": "stockmovement"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "customers",
+    "model": "customer"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sales",
+    "model": "payment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sales",
+    "model": "sale"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sales",
+    "model": "saleitem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "purchase_orders",
+    "model": "purchaseorder"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "purchase_orders",
+    "model": "purchaseorderitem"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "notifications",
+    "model": "notification"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "f130hn828dajh8erxef44nf3o65lx284",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0NYoGXbo3ffQIBlpWrapLQn499Nkx70OjOZN4S4bzXsraxhYhgB4fLLUszPMh-CH3G-Lyov87ZOSR2JOm1Tt4XL63q2f4MaW4URqBjsUKP1mCUV6gYicdEapmQscdQ4eBLX9ckXzeK8WGH0fUZhph4-X8rtN7c:1wkjSs:aVfIQ3_Oy9yBsI38xg4WNAe7Qi2WlCWIaVDhpvuidzg",
+    "expire_date": "2026-07-31T14:22:58.989Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ktwjn0xpas1w9fretdi0fk9yq7thgvyt",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0NYoGXbo3ffQIBlpWrapLQn499Nkx70OjOZN4S4bzXsraxhYhgB4fLLUszPMh-CH3G-Lyov87ZOSR2JOm1Tt4XL63q2f4MaW4URqBjsUKP1mCUV6gYicdEapmQscdQ4eBLX9ckXzeK8WGH0fUZhph4-X8rtN7c:1wfG5d:1eyfRvqV9Ma52XHXn6fkyUfwFlkVBU0IDz__dbkvRi0",
+    "expire_date": "2026-07-16T12:00:21.809Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "pjd84pifobtwd0yc5qjj9pfw4vjrmfm5",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0NYoGXbo3ffQIBlpWrapLQn499Nkx70OjOZN4S4bzXsraxhYhgB4fLLUszPMh-CH3G-Lyov87ZOSR2JOm1Tt4XL63q2f4MaW4URqBjsUKP1mCUV6gYicdEapmQscdQ4eBLX9ckXzeK8WGH0fUZhph4-X8rtN7c:1wkHYa:r5gz81dv9bKe2rzNGJ35pEeJlrZzwYEGJJu3J2qRKJ8",
+    "expire_date": "2026-07-30T08:35:00.594Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qg6azfxsqssuzsllwixgftdc02ain1oc",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0NYoGXbo3ffQIBlpWrapLQn499Nkx70OjOZN4S4bzXsraxhYhgB4fLLUszPMh-CH3G-Lyov87ZOSR2JOm1Tt4XL63q2f4MaW4URqBjsUKP1mCUV6gYicdEapmQscdQ4eBLX9ckXzeK8WGH0fUZhph4-X8rtN7c:1wmBDl:O4pMjUfR-0sx_krsL6WAvaLVcsh_NBSSy4eHxW_DfRY",
+    "expire_date": "2026-08-04T14:13:21.632Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wsew6yjq8e75bhx2dkzatjy3jpyq54xd",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0NYoGXbo3ffQIBlpWrapLQn499Nkx70OjOZN4S4bzXsraxhYhgB4fLLUszPMh-CH3G-Lyov87ZOSR2JOm1Tt4XL63q2f4MaW4URqBjsUKP1mCUV6gYicdEapmQscdQ4eBLX9ckXzeK8WGH0fUZhph4-X8rtN7c:1wnGT1:zVbJfDzqofzKYYkC2EkJSoRSbnb-MQPk_e1N5pTGms8",
+    "expire_date": "2026-08-07T14:01:35.445Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yilffb4ek2s2yqka7ptbvdcjutceuuuv",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQAP-yZ0NYoGXbo3ffQIBlpWrapLQn499Nkx70OjOZN4S4bzXsraxhYhgB4fLLUszPMh-CH3G-Lyov87ZOSR2JOm1Tt4XL63q2f4MaW4URqBjsUKP1mCUV6gYicdEapmQscdQ4eBLX9ckXzeK8WGH0fUZhph4-X8rtN7c:1wmAy6:J5f1YyTIcP_Ssy9chILfQSuBGgUsosCAbIe9wPdX3I8",
+    "expire_date": "2026-08-04T13:57:10.195Z"
+  }
+},
+{
+  "model": "users.role",
+  "pk": 1,
+  "fields": {
+    "name": "Admin",
+    "description": "System Administrator",
+    "created_at": "2026-07-02T12:13:35.819Z"
+  }
+},
+{
+  "model": "users.role",
+  "pk": 2,
+  "fields": {
+    "name": "Manager",
+    "description": "Inventory Manager",
+    "created_at": "2026-07-02T12:13:35.962Z"
+  }
+},
+{
+  "model": "users.role",
+  "pk": 3,
+  "fields": {
+    "name": "Cashier",
+    "description": "Sales Cashier",
+    "created_at": "2026-07-02T12:13:46.018Z"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 1,
+  "fields": {
+    "name": "Electronics",
+    "description": "Gadgets, devices, and electronic accessories",
+    "created_at": "2026-07-02T12:02:50.617Z"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 2,
+  "fields": {
+    "name": "Skincare",
+    "description": "Skincare and facial products",
+    "created_at": "2026-07-02T12:08:55.516Z"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 3,
+  "fields": {
+    "name": "Hair Care",
+    "description": "Hair treatment products",
+    "created_at": "2026-07-02T12:08:55.647Z"
+  }
+},
+{
+  "model": "products.category",
+  "pk": 4,
+  "fields": {
+    "name": "Body Care",
+    "description": "Body lotions and soaps",
+    "created_at": "2026-07-02T12:08:56.282Z"
+  }
+},
+{
+  "model": "products.supplier",
+  "pk": 1,
+  "fields": {
+    "company_name": "Global Tech Distribution",
+    "contact_person": "John Doe",
+    "phone": "+1234567890",
+    "email": "johndoe@globaltech.com",
+    "address": "123 Logistics Way, Tech City",
+    "created_at": "2026-07-02T12:06:35.816Z"
+  }
+},
+{
+  "model": "products.supplier",
+  "pk": 2,
+  "fields": {
+    "company_name": "ABC Cosmetics PLC",
+    "contact_person": "Abebe Bekele",
+    "phone": "0911000001",
+    "email": "info@abccosmetics.com",
+    "address": "Addis Ababa",
+    "created_at": "2026-07-02T12:09:30.626Z"
+  }
+},
+{
+  "model": "products.supplier",
+  "pk": 3,
+  "fields": {
+    "company_name": "Beauty Importers PLC",
+    "contact_person": "Meron Alemu",
+    "phone": "0911000002",
+    "email": "sales@beautyimport.com",
+    "address": "Bole, Addis Ababa",
+    "created_at": "2026-07-02T12:09:38.643Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 1,
+  "fields": {
+    "category": 2,
+    "supplier": 2,
+    "name": "Vitamin C Serum",
+    "sku": "SKU-001",
+    "barcode": "100001",
+    "description": "Brightening facial serum",
+    "cost_price": "250.00",
+    "selling_price": "400.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-02T12:09:59.229Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 3,
+  "fields": {
+    "category": 4,
+    "supplier": 3,
+    "name": "Lux Soap",
+    "sku": "SKU-003",
+    "barcode": "100003",
+    "description": "Beauty soap",
+    "cost_price": "35.00",
+    "selling_price": "55.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-02T12:09:59.823Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 4,
+  "fields": {
+    "category": 4,
+    "supplier": 3,
+    "name": "Nivea Lotion 200ml",
+    "sku": "SKU-004",
+    "barcode": "100004",
+    "description": "Body lotion",
+    "cost_price": "180.00",
+    "selling_price": "280.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-02T12:10:00.124Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 5,
+  "fields": {
+    "category": 3,
+    "supplier": 2,
+    "name": "Hair Shampoo",
+    "sku": "SKU-005",
+    "barcode": "100005",
+    "description": "Anti-dandruff shampoo",
+    "cost_price": "150.00",
+    "selling_price": "240.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-02T12:10:00.391Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 6,
+  "fields": {
+    "category": 3,
+    "supplier": 3,
+    "name": "Hair Conditioner",
+    "sku": "SKU-006",
+    "barcode": "100006",
+    "description": "Smooth hair conditioner",
+    "cost_price": "160.00",
+    "selling_price": "250.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-02T12:10:00.717Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 7,
+  "fields": {
+    "category": 2,
+    "supplier": 1,
+    "name": "Vitamin C Serum",
+    "sku": "SKU-007",
+    "barcode": null,
+    "description": "87-key wireless mechanical keyboard with RGB backlighting and hot-swappable switches.",
+    "cost_price": "250.00",
+    "selling_price": "400.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-03T13:50:10.361Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 11,
+  "fields": {
+    "category": 4,
+    "supplier": null,
+    "name": "Nivea Lotion 200ml",
+    "sku": "SKU-010",
+    "barcode": "",
+    "description": "",
+    "cost_price": "180.00",
+    "selling_price": "280.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-04T09:31:17.049Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 13,
+  "fields": {
+    "category": 2,
+    "supplier": 3,
+    "name": "Face Wash",
+    "sku": "SKU-018",
+    "barcode": null,
+    "description": "",
+    "cost_price": "119.98",
+    "selling_price": "200.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-04T09:34:00.901Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 17,
+  "fields": {
+    "category": 1,
+    "supplier": 1,
+    "name": "Laptop",
+    "sku": "SKU-019",
+    "barcode": null,
+    "description": null,
+    "cost_price": "40000.00",
+    "selling_price": "50000.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T11:55:14.659Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 18,
+  "fields": {
+    "category": 1,
+    "supplier": null,
+    "name": "Wireless Mouse",
+    "sku": "SKU-020",
+    "barcode": null,
+    "description": null,
+    "cost_price": "12.50",
+    "selling_price": "2500.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.399Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 19,
+  "fields": {
+    "category": 1,
+    "supplier": null,
+    "name": "Mechanical Keyboard",
+    "sku": "SKU-021",
+    "barcode": null,
+    "description": null,
+    "cost_price": "45.00",
+    "selling_price": "85.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.410Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 20,
+  "fields": {
+    "category": 2,
+    "supplier": null,
+    "name": "Hydrating Facial Toner",
+    "sku": "SKU-022",
+    "barcode": null,
+    "description": null,
+    "cost_price": "8.00",
+    "selling_price": "18.50",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.418Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 21,
+  "fields": {
+    "category": 2,
+    "supplier": null,
+    "name": "Sunscreen SPF 50",
+    "sku": "SKU-023",
+    "barcode": null,
+    "description": null,
+    "cost_price": "10.20",
+    "selling_price": "22.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.427Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 22,
+  "fields": {
+    "category": 3,
+    "supplier": null,
+    "name": "Argan Hair Oil",
+    "sku": "SKU-024",
+    "barcode": null,
+    "description": null,
+    "cost_price": "7.50",
+    "selling_price": "16.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.435Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 23,
+  "fields": {
+    "category": 3,
+    "supplier": null,
+    "name": "Deep Conditioning Mask",
+    "sku": "SKU-025",
+    "barcode": null,
+    "description": null,
+    "cost_price": "9.00",
+    "selling_price": "20.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.443Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 24,
+  "fields": {
+    "category": 4,
+    "supplier": null,
+    "name": "Exfoliating Body Scrub",
+    "sku": "SKU-026",
+    "barcode": null,
+    "description": null,
+    "cost_price": "6.00",
+    "selling_price": "14.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.450Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 25,
+  "fields": {
+    "category": 4,
+    "supplier": null,
+    "name": "Shea Butter Hand Cream",
+    "sku": "SKU-027",
+    "barcode": null,
+    "description": null,
+    "cost_price": "3.50",
+    "selling_price": "9.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.458Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 26,
+  "fields": {
+    "category": 1,
+    "supplier": null,
+    "name": "Bluetooth Headphones",
+    "sku": "SKU-028",
+    "barcode": null,
+    "description": null,
+    "cost_price": "35.00",
+    "selling_price": "75.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:20:55.467Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 27,
+  "fields": {
+    "category": 1,
+    "supplier": null,
+    "name": "Smart Watch Series X",
+    "sku": "SKU-029",
+    "barcode": null,
+    "description": null,
+    "cost_price": "120.00",
+    "selling_price": "220.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:27:53.138Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 30,
+  "fields": {
+    "category": 2,
+    "supplier": null,
+    "name": "Gentle Gel Cleanser",
+    "sku": "SKU-032",
+    "barcode": null,
+    "description": null,
+    "cost_price": "6.50",
+    "selling_price": "15.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:27:53.161Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 31,
+  "fields": {
+    "category": 3,
+    "supplier": null,
+    "name": "Keratin Hair Repair Serum",
+    "sku": "SKU-033",
+    "barcode": null,
+    "description": null,
+    "cost_price": "11.00",
+    "selling_price": "26.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:27:53.168Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 33,
+  "fields": {
+    "category": 4,
+    "supplier": null,
+    "name": "Eucalyptus Body Wash",
+    "sku": "SKU-035",
+    "barcode": null,
+    "description": null,
+    "cost_price": "4.80",
+    "selling_price": "11.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:27:53.180Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 35,
+  "fields": {
+    "category": 1,
+    "supplier": null,
+    "name": "Noise Cancelling Earbuds",
+    "sku": "SKU-037",
+    "barcode": null,
+    "description": null,
+    "cost_price": "40.00",
+    "selling_price": "89.00",
+    "image": "",
+    "status": true,
+    "is_archived": false,
+    "created_at": "2026-07-21T14:27:53.191Z",
+    "updated_at": "2026-08-10T14:31:42.258Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 36,
+  "fields": {
+    "category": 2,
+    "supplier": null,
+    "name": "Hyaluronic Acid Serum",
+    "sku": "SKU-038",
+    "barcode": null,
+    "description": null,
+    "cost_price": "100.00",
+    "selling_price": "210.00",
+    "image": "",
+    "status": false,
+    "is_archived": true,
+    "created_at": "2026-07-21T14:27:53.196Z",
+    "updated_at": "2026-08-17T06:02:38.029Z"
+  }
+},
+{
+  "model": "products.product",
+  "pk": 37,
+  "fields": {
+    "category": 3,
+    "supplier": 2,
+    "name": "AfroChick Shampoo",
+    "sku": "SKU-030",
+    "barcode": null,
+    "description": null,
+    "cost_price": "600.00",
+    "selling_price": "1200.00",
+    "image": "products/factory_oe2Ejfa.png",
+    "status": true,
+    "is_archived": true,
+    "created_at": "2026-08-03T14:09:06.700Z",
+    "updated_at": "2026-08-10T14:32:08.810Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "quantity": 77,
+    "reorder_level": 10,
+    "updated_at": "2026-07-31T12:16:57.673Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 3,
+  "fields": {
+    "product": 3,
+    "quantity": 30,
+    "reorder_level": 10,
+    "updated_at": "2026-07-22T11:53:18.381Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 4,
+  "fields": {
+    "product": 4,
+    "quantity": 7,
+    "reorder_level": 10,
+    "updated_at": "2026-08-04T14:07:28.930Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 5,
+  "fields": {
+    "product": 5,
+    "quantity": 40,
+    "reorder_level": 10,
+    "updated_at": "2026-07-21T14:12:26.573Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 6,
+  "fields": {
+    "product": 6,
+    "quantity": 17,
+    "reorder_level": 10,
+    "updated_at": "2026-07-22T13:07:36.764Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 7,
+  "fields": {
+    "product": 7,
+    "quantity": 2,
+    "reorder_level": 10,
+    "updated_at": "2026-07-27T09:43:55.134Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 10,
+  "fields": {
+    "product": 11,
+    "quantity": 34,
+    "reorder_level": 10,
+    "updated_at": "2026-07-29T14:34:06.971Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 12,
+  "fields": {
+    "product": 13,
+    "quantity": 75,
+    "reorder_level": 10,
+    "updated_at": "2026-08-04T12:57:37.074Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 14,
+  "fields": {
+    "product": 17,
+    "quantity": 0,
+    "reorder_level": 10,
+    "updated_at": "2026-07-30T09:28:22.534Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 15,
+  "fields": {
+    "product": 18,
+    "quantity": 27,
+    "reorder_level": 15,
+    "updated_at": "2026-07-31T11:57:33.608Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 16,
+  "fields": {
+    "product": 19,
+    "quantity": 48,
+    "reorder_level": 8,
+    "updated_at": "2026-08-04T14:09:44.183Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 17,
+  "fields": {
+    "product": 20,
+    "quantity": 28,
+    "reorder_level": 10,
+    "updated_at": "2026-08-10T14:34:38.290Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 18,
+  "fields": {
+    "product": 21,
+    "quantity": 5,
+    "reorder_level": 12,
+    "updated_at": "2026-08-11T14:30:20.842Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 19,
+  "fields": {
+    "product": 22,
+    "quantity": 59,
+    "reorder_level": 10,
+    "updated_at": "2026-08-17T05:42:24.217Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 20,
+  "fields": {
+    "product": 23,
+    "quantity": 12,
+    "reorder_level": 8,
+    "updated_at": "2026-08-11T14:22:53.157Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 21,
+  "fields": {
+    "product": 24,
+    "quantity": 8,
+    "reorder_level": 10,
+    "updated_at": "2026-08-04T14:06:22.918Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 22,
+  "fields": {
+    "product": 25,
+    "quantity": 41,
+    "reorder_level": 20,
+    "updated_at": "2026-08-17T09:01:20.004Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 23,
+  "fields": {
+    "product": 26,
+    "quantity": 7,
+    "reorder_level": 5,
+    "updated_at": "2026-07-29T09:04:29.660Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 24,
+  "fields": {
+    "product": 27,
+    "quantity": 13,
+    "reorder_level": 5,
+    "updated_at": "2026-08-04T14:00:11.039Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 27,
+  "fields": {
+    "product": 30,
+    "quantity": 49,
+    "reorder_level": 15,
+    "updated_at": "2026-07-29T09:04:29.668Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 28,
+  "fields": {
+    "product": 31,
+    "quantity": 7,
+    "reorder_level": 10,
+    "updated_at": "2026-07-28T07:58:08.656Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 30,
+  "fields": {
+    "product": 33,
+    "quantity": 25,
+    "reorder_level": 12,
+    "updated_at": "2026-08-06T11:33:41.463Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 32,
+  "fields": {
+    "product": 35,
+    "quantity": 8,
+    "reorder_level": 5,
+    "updated_at": "2026-08-06T12:46:02.257Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 33,
+  "fields": {
+    "product": 36,
+    "quantity": 0,
+    "reorder_level": 10,
+    "updated_at": "2026-08-17T06:02:31.255Z"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 34,
+  "fields": {
+    "product": 37,
+    "quantity": 70,
+    "reorder_level": 10,
+    "updated_at": "2026-08-06T12:46:44.597Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 1,
+  "fields": {
+    "full_name": "John Doe",
+    "phone": "0911223344",
+    "email": "john@example.com",
+    "address": "Bole, Addis Ababa",
+    "status": "ACTIVE",
+    "notes": null,
+    "created_at": "2026-07-02T12:51:04.936Z",
+    "updated_at": "2026-07-29T06:54:05.185Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 2,
+  "fields": {
+    "full_name": "Sara Mohammed",
+    "phone": "0911334455",
+    "email": "sara12@example.com",
+    "address": "CMC, Addis Ababa",
+    "status": "INACTIVE",
+    "notes": null,
+    "created_at": "2026-07-02T12:51:05.121Z",
+    "updated_at": "2026-08-17T10:16:51.788Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 3,
+  "fields": {
+    "full_name": "Abel Tesfaye",
+    "phone": "0911445569",
+    "email": "abel@example.com",
+    "address": "Piassa, Addis Ababa",
+    "status": "INACTIVE",
+    "notes": null,
+    "created_at": "2026-07-02T12:51:06.569Z",
+    "updated_at": "2026-08-17T05:39:04.740Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 4,
+  "fields": {
+    "full_name": "Rediet Abreham",
+    "phone": "0947330616",
+    "email": "nara1415karol@gmail.com",
+    "address": "",
+    "status": "INACTIVE",
+    "notes": "",
+    "created_at": "2026-07-29T07:54:44.178Z",
+    "updated_at": "2026-07-29T13:57:00.647Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 6,
+  "fields": {
+    "full_name": "Test Customer",
+    "phone": null,
+    "email": null,
+    "address": null,
+    "status": "ACTIVE",
+    "notes": null,
+    "created_at": "2026-08-04T13:44:17.339Z",
+    "updated_at": "2026-08-04T13:44:17.339Z"
+  }
+},
+{
+  "model": "customers.customer",
+  "pk": 7,
+  "fields": {
+    "full_name": "Bereket Taye",
+    "phone": "0944576877",
+    "email": "",
+    "address": "",
+    "status": "ACTIVE",
+    "notes": null,
+    "created_at": "2026-08-04T14:02:26.014Z",
+    "updated_at": "2026-08-17T05:29:11.180Z"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 1,
+  "fields": {
+    "sale": 1,
+    "product": 1,
+    "quantity": 2,
+    "unit_price": "400.00",
+    "subtotal": "800.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 2,
+  "fields": {
+    "sale": 1,
+    "product": 3,
+    "quantity": 1,
+    "unit_price": "55.00",
+    "subtotal": "55.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 3,
+  "fields": {
+    "sale": 2,
+    "product": 36,
+    "quantity": 1,
+    "unit_price": "210.00",
+    "subtotal": "210.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 4,
+  "fields": {
+    "sale": 3,
+    "product": 31,
+    "quantity": 1,
+    "unit_price": "26.00",
+    "subtotal": "26.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 5,
+  "fields": {
+    "sale": 4,
+    "product": 33,
+    "quantity": 1,
+    "unit_price": "11.00",
+    "subtotal": "11.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 6,
+  "fields": {
+    "sale": 5,
+    "product": 35,
+    "quantity": 1,
+    "unit_price": "89.99",
+    "subtotal": "89.99"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 7,
+  "fields": {
+    "sale": 6,
+    "product": 23,
+    "quantity": 1,
+    "unit_price": "20.00",
+    "subtotal": "20.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 8,
+  "fields": {
+    "sale": 7,
+    "product": 19,
+    "quantity": 1,
+    "unit_price": "85.00",
+    "subtotal": "85.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 9,
+  "fields": {
+    "sale": 8,
+    "product": 27,
+    "quantity": 1,
+    "unit_price": "220.00",
+    "subtotal": "220.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 10,
+  "fields": {
+    "sale": 9,
+    "product": 25,
+    "quantity": 1,
+    "unit_price": "9.00",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 11,
+  "fields": {
+    "sale": 10,
+    "product": 20,
+    "quantity": 2,
+    "unit_price": "18.50",
+    "subtotal": "18.50"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 12,
+  "fields": {
+    "sale": 11,
+    "product": 36,
+    "quantity": 19,
+    "unit_price": "210.00",
+    "subtotal": "3990.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 13,
+  "fields": {
+    "sale": 12,
+    "product": 21,
+    "quantity": 2,
+    "unit_price": "22.00",
+    "subtotal": "44.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 14,
+  "fields": {
+    "sale": 13,
+    "product": 24,
+    "quantity": 15,
+    "unit_price": "14.00",
+    "subtotal": "210.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 15,
+  "fields": {
+    "sale": 14,
+    "product": 24,
+    "quantity": 1,
+    "unit_price": "14.00",
+    "subtotal": "14.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 16,
+  "fields": {
+    "sale": 14,
+    "product": 26,
+    "quantity": 1,
+    "unit_price": "75.00",
+    "subtotal": "75.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 17,
+  "fields": {
+    "sale": 14,
+    "product": 30,
+    "quantity": 1,
+    "unit_price": "15.00",
+    "subtotal": "15.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 18,
+  "fields": {
+    "sale": 15,
+    "product": 23,
+    "quantity": 7,
+    "unit_price": "20.00",
+    "subtotal": "140.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 19,
+  "fields": {
+    "sale": 16,
+    "product": 17,
+    "quantity": 12,
+    "unit_price": "50000.00",
+    "subtotal": "600000.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 20,
+  "fields": {
+    "sale": 17,
+    "product": 18,
+    "quantity": 15,
+    "unit_price": "25.00",
+    "subtotal": "375.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 21,
+  "fields": {
+    "sale": 18,
+    "product": 18,
+    "quantity": 5,
+    "unit_price": "2500.00",
+    "subtotal": "12500.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 22,
+  "fields": {
+    "sale": 19,
+    "product": 23,
+    "quantity": 12,
+    "unit_price": "20.00",
+    "subtotal": "240.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 23,
+  "fields": {
+    "sale": 20,
+    "product": 25,
+    "quantity": 17,
+    "unit_price": "9.00",
+    "subtotal": "153.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 24,
+  "fields": {
+    "sale": 21,
+    "product": 27,
+    "quantity": 1,
+    "unit_price": "220.00",
+    "subtotal": "220.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 25,
+  "fields": {
+    "sale": 22,
+    "product": 4,
+    "quantity": 1,
+    "unit_price": "280.00",
+    "subtotal": "280.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 26,
+  "fields": {
+    "sale": 23,
+    "product": 33,
+    "quantity": 14,
+    "unit_price": "11.00",
+    "subtotal": "154.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 27,
+  "fields": {
+    "sale": 24,
+    "product": 20,
+    "quantity": 1,
+    "unit_price": "18.50",
+    "subtotal": "18.50"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 28,
+  "fields": {
+    "sale": 25,
+    "product": 21,
+    "quantity": 1,
+    "unit_price": "22.00",
+    "subtotal": "22.00"
+  }
+},
+{
+  "model": "sales.saleitem",
+  "pk": 29,
+  "fields": {
+    "sale": 26,
+    "product": 25,
+    "quantity": 1,
+    "unit_price": "9.00",
+    "subtotal": "9.00"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 1,
+  "fields": {
+    "sale": 1,
+    "amount": "855.00",
+    "payment_method": "Cash",
+    "payment_date": "2026-07-02T12:53:01.144Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 2,
+  "fields": {
+    "sale": 6,
+    "amount": "20.00",
+    "payment_method": "card",
+    "payment_date": "2026-07-28T08:19:19.239Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 3,
+  "fields": {
+    "sale": 7,
+    "amount": "212.50",
+    "payment_method": "bank_transfer",
+    "payment_date": "2026-07-28T08:26:25.984Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 4,
+  "fields": {
+    "sale": 8,
+    "amount": "249.00",
+    "payment_method": "bank_transfer",
+    "payment_date": "2026-07-28T08:27:10.838Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 5,
+  "fields": {
+    "sale": 12,
+    "amount": "55.00",
+    "payment_method": "cash",
+    "payment_date": "2026-07-28T08:56:58.469Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 6,
+  "fields": {
+    "sale": 13,
+    "amount": "241.50",
+    "payment_method": "cash",
+    "payment_date": "2026-07-28T09:04:33.503Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 7,
+  "fields": {
+    "sale": 9,
+    "amount": "100.00",
+    "payment_method": "Cash",
+    "payment_date": "2026-07-28T11:51:48.085Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 8,
+  "fields": {
+    "sale": 5,
+    "amount": "20.00",
+    "payment_method": "Cash",
+    "payment_date": "2026-07-28T12:03:27.484Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 9,
+  "fields": {
+    "sale": 15,
+    "amount": "161.00",
+    "payment_method": "cash",
+    "payment_date": "2026-07-30T08:27:06.751Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 10,
+  "fields": {
+    "sale": 16,
+    "amount": "690000.00",
+    "payment_method": "card",
+    "payment_date": "2026-07-30T09:28:22.536Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 11,
+  "fields": {
+    "sale": 17,
+    "amount": "6000.00",
+    "payment_method": "card",
+    "payment_date": "2026-07-31T11:54:15.514Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 12,
+  "fields": {
+    "sale": 9,
+    "amount": "47.00",
+    "payment_method": "Cash",
+    "payment_date": "2026-07-31T11:56:47.675Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 13,
+  "fields": {
+    "sale": 18,
+    "amount": "14375.00",
+    "payment_method": "cash",
+    "payment_date": "2026-07-31T11:57:33.618Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 14,
+  "fields": {
+    "sale": 19,
+    "amount": "276.00",
+    "payment_method": "cash",
+    "payment_date": "2026-08-04T12:49:12.782Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 15,
+  "fields": {
+    "sale": 20,
+    "amount": "175.00",
+    "payment_method": "Cash",
+    "payment_date": "2026-08-04T13:35:36.202Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 16,
+  "fields": {
+    "sale": 21,
+    "amount": "253.00",
+    "payment_method": "cash",
+    "payment_date": "2026-08-04T14:00:11.041Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 17,
+  "fields": {
+    "sale": 22,
+    "amount": "322.00",
+    "payment_method": "bank_transfer",
+    "payment_date": "2026-08-04T14:07:28.932Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 18,
+  "fields": {
+    "sale": 20,
+    "amount": "0.94",
+    "payment_method": "Cash",
+    "payment_date": "2026-08-06T11:06:22.551Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 19,
+  "fields": {
+    "sale": 5,
+    "amount": "69.99",
+    "payment_method": "Cash",
+    "payment_date": "2026-08-06T11:07:22.598Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 20,
+  "fields": {
+    "sale": 23,
+    "amount": "177.10",
+    "payment_method": "cash",
+    "payment_date": "2026-08-06T11:33:41.464Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 21,
+  "fields": {
+    "sale": 24,
+    "amount": "21.27",
+    "payment_method": "cash",
+    "payment_date": "2026-08-10T14:34:38.293Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 22,
+  "fields": {
+    "sale": 25,
+    "amount": "25.30",
+    "payment_method": "bank_transfer",
+    "payment_date": "2026-08-11T14:30:20.845Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 23,
+  "fields": {
+    "sale": 4,
+    "amount": "11.00",
+    "payment_method": "Cash",
+    "payment_date": "2026-08-17T09:00:00.760Z"
+  }
+},
+{
+  "model": "sales.payment",
+  "pk": 24,
+  "fields": {
+    "sale": 26,
+    "amount": "10.35",
+    "payment_method": "Cash",
+    "payment_date": "2026-08-17T09:01:37.794Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 1,
+  "fields": {
+    "purchase_order": 1,
+    "product": 17,
+    "quantity": 1,
+    "cost_price": "200000.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 2,
+  "fields": {
+    "purchase_order": 2,
+    "product": 23,
+    "quantity": 1,
+    "cost_price": "300.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 3,
+  "fields": {
+    "purchase_order": 2,
+    "product": 11,
+    "quantity": 4,
+    "cost_price": "300.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 5,
+  "fields": {
+    "purchase_order": 4,
+    "product": 23,
+    "quantity": 5,
+    "cost_price": "300.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 6,
+  "fields": {
+    "purchase_order": 1,
+    "product": 26,
+    "quantity": 1,
+    "cost_price": "3000.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 7,
+  "fields": {
+    "purchase_order": 5,
+    "product": 25,
+    "quantity": 5,
+    "cost_price": "300.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 11,
+  "fields": {
+    "purchase_order": 7,
+    "product": 1,
+    "quantity": 20,
+    "cost_price": "120.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 12,
+  "fields": {
+    "purchase_order": 7,
+    "product": 1,
+    "quantity": 15,
+    "cost_price": "85.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 13,
+  "fields": {
+    "purchase_order": 8,
+    "product": 1,
+    "quantity": 50,
+    "cost_price": "300.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 14,
+  "fields": {
+    "purchase_order": 8,
+    "product": 1,
+    "quantity": 30,
+    "cost_price": "250.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 15,
+  "fields": {
+    "purchase_order": 9,
+    "product": 7,
+    "quantity": 2,
+    "cost_price": "18500.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 16,
+  "fields": {
+    "purchase_order": 10,
+    "product": 1,
+    "quantity": 500,
+    "cost_price": "12.50"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 17,
+  "fields": {
+    "purchase_order": 11,
+    "product": 1,
+    "quantity": 3,
+    "cost_price": "850.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 18,
+  "fields": {
+    "purchase_order": 12,
+    "product": 1,
+    "quantity": 1,
+    "cost_price": "250.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 19,
+  "fields": {
+    "purchase_order": 13,
+    "product": 1,
+    "quantity": 1,
+    "cost_price": "250.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 20,
+  "fields": {
+    "purchase_order": 14,
+    "product": 17,
+    "quantity": 9,
+    "cost_price": "40000.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 21,
+  "fields": {
+    "purchase_order": 15,
+    "product": 17,
+    "quantity": 9,
+    "cost_price": "40000.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 22,
+  "fields": {
+    "purchase_order": 16,
+    "product": 19,
+    "quantity": 1,
+    "cost_price": "450.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 23,
+  "fields": {
+    "purchase_order": 17,
+    "product": 19,
+    "quantity": 1,
+    "cost_price": "450.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 24,
+  "fields": {
+    "purchase_order": 18,
+    "product": 18,
+    "quantity": 1,
+    "cost_price": "12.50"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 25,
+  "fields": {
+    "purchase_order": 18,
+    "product": 19,
+    "quantity": 1,
+    "cost_price": "45.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 26,
+  "fields": {
+    "purchase_order": 19,
+    "product": 18,
+    "quantity": 1,
+    "cost_price": "12.50"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 27,
+  "fields": {
+    "purchase_order": 19,
+    "product": 19,
+    "quantity": 1,
+    "cost_price": "45.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 28,
+  "fields": {
+    "purchase_order": 20,
+    "product": 20,
+    "quantity": 1,
+    "cost_price": "8.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 29,
+  "fields": {
+    "purchase_order": 21,
+    "product": 11,
+    "quantity": 1,
+    "cost_price": "180.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 30,
+  "fields": {
+    "purchase_order": 22,
+    "product": 11,
+    "quantity": 25,
+    "cost_price": "180.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 31,
+  "fields": {
+    "purchase_order": 23,
+    "product": 23,
+    "quantity": 9,
+    "cost_price": "9.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 32,
+  "fields": {
+    "purchase_order": 24,
+    "product": 23,
+    "quantity": 9,
+    "cost_price": "9.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 33,
+  "fields": {
+    "purchase_order": 25,
+    "product": 1,
+    "quantity": 17,
+    "cost_price": "250.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 34,
+  "fields": {
+    "purchase_order": 26,
+    "product": 1,
+    "quantity": 17,
+    "cost_price": "250.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 35,
+  "fields": {
+    "purchase_order": 27,
+    "product": 21,
+    "quantity": 1,
+    "cost_price": "10.20"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 36,
+  "fields": {
+    "purchase_order": 28,
+    "product": 21,
+    "quantity": 1,
+    "cost_price": "10.20"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 37,
+  "fields": {
+    "purchase_order": 29,
+    "product": 19,
+    "quantity": 17,
+    "cost_price": "45.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 38,
+  "fields": {
+    "purchase_order": 30,
+    "product": 19,
+    "quantity": 17,
+    "cost_price": "45.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 39,
+  "fields": {
+    "purchase_order": 31,
+    "product": 22,
+    "quantity": 12,
+    "cost_price": "7.50"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 40,
+  "fields": {
+    "purchase_order": 32,
+    "product": 22,
+    "quantity": 12,
+    "cost_price": "7.50"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 41,
+  "fields": {
+    "purchase_order": 33,
+    "product": 23,
+    "quantity": 12,
+    "cost_price": "9.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 42,
+  "fields": {
+    "purchase_order": 34,
+    "product": 23,
+    "quantity": 12,
+    "cost_price": "9.00"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 43,
+  "fields": {
+    "purchase_order": 35,
+    "product": 22,
+    "quantity": 17,
+    "cost_price": "7.50"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorderitem",
+  "pk": 44,
+  "fields": {
+    "purchase_order": 36,
+    "product": 22,
+    "quantity": 17,
+    "cost_price": "7.50"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add role",
+    "content_type": [
+      "users",
+      "role"
+    ],
+    "codename": "add_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change role",
+    "content_type": [
+      "users",
+      "role"
+    ],
+    "codename": "change_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete role",
+    "content_type": [
+      "users",
+      "role"
+    ],
+    "codename": "delete_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view role",
+    "content_type": [
+      "users",
+      "role"
+    ],
+    "codename": "view_role"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "users",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "users",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "users",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "users",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add category",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "add_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change category",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "change_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete category",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "delete_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view category",
+    "content_type": [
+      "products",
+      "category"
+    ],
+    "codename": "view_category"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add supplier",
+    "content_type": [
+      "products",
+      "supplier"
+    ],
+    "codename": "add_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change supplier",
+    "content_type": [
+      "products",
+      "supplier"
+    ],
+    "codename": "change_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete supplier",
+    "content_type": [
+      "products",
+      "supplier"
+    ],
+    "codename": "delete_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view supplier",
+    "content_type": [
+      "products",
+      "supplier"
+    ],
+    "codename": "view_supplier"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add product",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "add_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change product",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "change_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete product",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "delete_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view product",
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "codename": "view_product"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add purchase order item",
+    "content_type": [
+      "inventory",
+      "purchaseorderitem"
+    ],
+    "codename": "add_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change purchase order item",
+    "content_type": [
+      "inventory",
+      "purchaseorderitem"
+    ],
+    "codename": "change_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete purchase order item",
+    "content_type": [
+      "inventory",
+      "purchaseorderitem"
+    ],
+    "codename": "delete_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view purchase order item",
+    "content_type": [
+      "inventory",
+      "purchaseorderitem"
+    ],
+    "codename": "view_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add stock movement",
+    "content_type": [
+      "inventory",
+      "stockmovement"
+    ],
+    "codename": "add_stockmovement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change stock movement",
+    "content_type": [
+      "inventory",
+      "stockmovement"
+    ],
+    "codename": "change_stockmovement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete stock movement",
+    "content_type": [
+      "inventory",
+      "stockmovement"
+    ],
+    "codename": "delete_stockmovement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view stock movement",
+    "content_type": [
+      "inventory",
+      "stockmovement"
+    ],
+    "codename": "view_stockmovement"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add inventory",
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "codename": "add_inventory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change inventory",
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "codename": "change_inventory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete inventory",
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "codename": "delete_inventory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view inventory",
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "codename": "view_inventory"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add purchase order",
+    "content_type": [
+      "inventory",
+      "purchaseorder"
+    ],
+    "codename": "add_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change purchase order",
+    "content_type": [
+      "inventory",
+      "purchaseorder"
+    ],
+    "codename": "change_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete purchase order",
+    "content_type": [
+      "inventory",
+      "purchaseorder"
+    ],
+    "codename": "delete_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view purchase order",
+    "content_type": [
+      "inventory",
+      "purchaseorder"
+    ],
+    "codename": "view_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add customer",
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "codename": "add_customer"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change customer",
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "codename": "change_customer"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete customer",
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "codename": "delete_customer"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view customer",
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "codename": "view_customer"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add payment",
+    "content_type": [
+      "sales",
+      "payment"
+    ],
+    "codename": "add_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change payment",
+    "content_type": [
+      "sales",
+      "payment"
+    ],
+    "codename": "change_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete payment",
+    "content_type": [
+      "sales",
+      "payment"
+    ],
+    "codename": "delete_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view payment",
+    "content_type": [
+      "sales",
+      "payment"
+    ],
+    "codename": "view_payment"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add sale item",
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "codename": "add_saleitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change sale item",
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "codename": "change_saleitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete sale item",
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "codename": "delete_saleitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view sale item",
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "codename": "view_saleitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add sale",
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "codename": "add_sale"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change sale",
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "codename": "change_sale"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete sale",
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "codename": "delete_sale"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view sale",
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "codename": "view_sale"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add purchase order",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "codename": "add_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change purchase order",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "codename": "change_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete purchase order",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "codename": "delete_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view purchase order",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "codename": "view_purchaseorder"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add purchase order item",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorderitem"
+    ],
+    "codename": "add_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change purchase order item",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorderitem"
+    ],
+    "codename": "change_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete purchase order item",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorderitem"
+    ],
+    "codename": "delete_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view purchase order item",
+    "content_type": [
+      "purchase_orders",
+      "purchaseorderitem"
+    ],
+    "codename": "view_purchaseorderitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add notification",
+    "content_type": [
+      "notifications",
+      "notification"
+    ],
+    "codename": "add_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change notification",
+    "content_type": [
+      "notifications",
+      "notification"
+    ],
+    "codename": "change_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete notification",
+    "content_type": [
+      "notifications",
+      "notification"
+    ],
+    "codename": "delete_notification"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view notification",
+    "content_type": [
+      "notifications",
+      "notification"
+    ],
+    "codename": "view_notification"
+  }
+},
+{
+  "model": "users.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$8SC6XN5I2b5rAUOUWnigRk$wmsxQ+WVONs9rt4zUL3S8yXTKXVsG1/jlYSuv0P+cfM=",
+    "last_login": "2026-08-06T14:18:28.294Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-07-02T12:00:12.246Z",
+    "role": null,
+    "phone": null,
+    "status": "active",
+    "created_at": "2026-07-02T12:00:12.961Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$yzy7dgVrfeYfyPYvlTZ8rx$gQ6zMhdSRb0g7lPajgD4fx9wXjREQvRTddivE5dTetc=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "manager",
+    "first_name": "Abebe",
+    "last_name": "Bekele",
+    "email": "manager@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-02T12:14:49.772Z",
+    "role": 2,
+    "phone": "0911000001",
+    "status": "active",
+    "created_at": "2026-07-02T12:14:50.460Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$ukmIPo92AloeIlPgLc2BGq$VdLmZGohRR9STmk0an8mqtx1cc6zGvHEmf9bHmzvoU8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "cashier",
+    "first_name": "Meron",
+    "last_name": "Alemu",
+    "email": "cashier@example.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-07-02T12:14:52Z",
+    "role": 3,
+    "phone": "0911000002",
+    "status": "active",
+    "created_at": "2026-07-02T12:14:52.896Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 50,
+    "user": [
+      "manager"
+    ],
+    "created_at": "2026-07-02T12:40:50.102Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 2,
+  "fields": {
+    "product": 4,
+    "movement_type": "IN",
+    "quantity": 8,
+    "user": [
+      "manager"
+    ],
+    "created_at": "2026-07-02T12:40:50.247Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 3,
+  "fields": {
+    "product": 6,
+    "movement_type": "OUT",
+    "quantity": 10,
+    "user": [
+      "manager"
+    ],
+    "created_at": "2026-07-02T12:40:50.624Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 5,
+  "fields": {
+    "product": 1,
+    "movement_type": "OUT",
+    "quantity": 2,
+    "user": [
+      "cashier"
+    ],
+    "created_at": "2026-07-02T12:53:38.026Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 6,
+  "fields": {
+    "product": 3,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "cashier"
+    ],
+    "created_at": "2026-07-02T12:53:38.903Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 7,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 25,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-06T11:59:07.721Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 9,
+  "fields": {
+    "product": 7,
+    "movement_type": "IN",
+    "quantity": 4,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-11T07:27:20.415Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 10,
+  "fields": {
+    "product": 7,
+    "movement_type": "IN",
+    "quantity": 3,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-11T07:29:41.989Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 11,
+  "fields": {
+    "product": 1,
+    "movement_type": "OUT",
+    "quantity": 3,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-11T07:40:00.916Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 15,
+  "fields": {
+    "product": 3,
+    "movement_type": "ADJUST",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-11T09:48:11.462Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 16,
+  "fields": {
+    "product": 1,
+    "movement_type": "ADJUST",
+    "quantity": 4,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-14T11:42:03.338Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 17,
+  "fields": {
+    "product": 1,
+    "movement_type": "ADJUST",
+    "quantity": 67,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-15T09:13:27.855Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 18,
+  "fields": {
+    "product": 6,
+    "movement_type": "ADJUST",
+    "quantity": 6,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-15T09:14:30.746Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 19,
+  "fields": {
+    "product": 13,
+    "movement_type": "ADJUST",
+    "quantity": 10,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-21T12:05:38.289Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 20,
+  "fields": {
+    "product": 3,
+    "movement_type": "OUT",
+    "quantity": 120,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-22T11:53:18.391Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 21,
+  "fields": {
+    "product": 6,
+    "movement_type": "IN",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-22T13:05:24.446Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 22,
+  "fields": {
+    "product": 6,
+    "movement_type": "IN",
+    "quantity": 2,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-22T13:07:36.767Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 23,
+  "fields": {
+    "product": 7,
+    "movement_type": "IN",
+    "quantity": 55,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:06:13.505Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 24,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:37:45.383Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 25,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 20,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:40:17.252Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 26,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 15,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:40:17.261Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 27,
+  "fields": {
+    "product": 17,
+    "movement_type": "IN",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:41:07.219Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 28,
+  "fields": {
+    "product": 17,
+    "movement_type": "IN",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:42:05.513Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 29,
+  "fields": {
+    "product": 17,
+    "movement_type": "ADJUST",
+    "quantity": 0,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:42:35.889Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 30,
+  "fields": {
+    "product": 7,
+    "movement_type": "IN",
+    "quantity": 2,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-27T09:43:55.994Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 31,
+  "fields": {
+    "product": 36,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T07:55:13.187Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 32,
+  "fields": {
+    "product": 31,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T07:58:08.658Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 33,
+  "fields": {
+    "product": 33,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:11:24.594Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 34,
+  "fields": {
+    "product": 35,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:14:39.524Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 35,
+  "fields": {
+    "product": 23,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:19:19.237Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 36,
+  "fields": {
+    "product": 19,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:26:25.982Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 37,
+  "fields": {
+    "product": 27,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:27:10.837Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 38,
+  "fields": {
+    "product": 25,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:41:36.624Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 39,
+  "fields": {
+    "product": 20,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:42:23.478Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 40,
+  "fields": {
+    "product": 36,
+    "movement_type": "OUT",
+    "quantity": 19,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:45:44.008Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 41,
+  "fields": {
+    "product": 21,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T08:56:58.468Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 42,
+  "fields": {
+    "product": 24,
+    "movement_type": "OUT",
+    "quantity": 15,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-28T09:04:33.503Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 43,
+  "fields": {
+    "product": 24,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T09:04:29.652Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 44,
+  "fields": {
+    "product": 26,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T09:04:29.661Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 45,
+  "fields": {
+    "product": 30,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T09:04:29.669Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 46,
+  "fields": {
+    "product": 17,
+    "movement_type": "IN",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T09:07:07.620Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 47,
+  "fields": {
+    "product": 17,
+    "movement_type": "ADJUST",
+    "quantity": 35,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T11:06:25.176Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 48,
+  "fields": {
+    "product": 19,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T11:12:10.892Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 49,
+  "fields": {
+    "product": 11,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T14:08:57.189Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 50,
+  "fields": {
+    "product": 11,
+    "movement_type": "IN",
+    "quantity": 25,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T14:34:06.973Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 51,
+  "fields": {
+    "product": 18,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T14:48:07.882Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 52,
+  "fields": {
+    "product": 19,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T14:48:07.885Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 53,
+  "fields": {
+    "product": 18,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T14:48:23.092Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 54,
+  "fields": {
+    "product": 19,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-29T14:48:23.099Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 55,
+  "fields": {
+    "product": 23,
+    "movement_type": "IN",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-30T08:22:55.342Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 56,
+  "fields": {
+    "product": 23,
+    "movement_type": "IN",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-30T08:23:10.573Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 57,
+  "fields": {
+    "product": 23,
+    "movement_type": "OUT",
+    "quantity": 7,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-30T08:27:06.748Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 58,
+  "fields": {
+    "product": 17,
+    "movement_type": "OUT",
+    "quantity": 12,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-30T09:28:22.536Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 59,
+  "fields": {
+    "product": 18,
+    "movement_type": "OUT",
+    "quantity": 15,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-31T11:54:15.512Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 60,
+  "fields": {
+    "product": 18,
+    "movement_type": "OUT",
+    "quantity": 5,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-31T11:57:33.614Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 61,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 17,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-31T12:16:51.574Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 62,
+  "fields": {
+    "product": 1,
+    "movement_type": "IN",
+    "quantity": 17,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-07-31T12:16:57.680Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 63,
+  "fields": {
+    "product": 23,
+    "movement_type": "OUT",
+    "quantity": 12,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T12:49:12.781Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 64,
+  "fields": {
+    "product": 13,
+    "movement_type": "IN",
+    "quantity": 70,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T12:57:37.075Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 65,
+  "fields": {
+    "product": 24,
+    "movement_type": "ADJUST",
+    "quantity": 9,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T13:34:02.156Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 66,
+  "fields": {
+    "product": 25,
+    "movement_type": "OUT",
+    "quantity": 17,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T13:35:03.624Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 67,
+  "fields": {
+    "product": 27,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:00:11.040Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 68,
+  "fields": {
+    "product": 37,
+    "movement_type": "IN",
+    "quantity": 70,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:03:29.906Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 69,
+  "fields": {
+    "product": 24,
+    "movement_type": "ADJUST",
+    "quantity": 8,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:06:22.920Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 70,
+  "fields": {
+    "product": 4,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:07:28.931Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 71,
+  "fields": {
+    "product": 19,
+    "movement_type": "IN",
+    "quantity": 17,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:09:39.630Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 72,
+  "fields": {
+    "product": 19,
+    "movement_type": "IN",
+    "quantity": 17,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:09:44.185Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 73,
+  "fields": {
+    "product": 21,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:09:45.452Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 74,
+  "fields": {
+    "product": 21,
+    "movement_type": "IN",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-04T14:36:27.464Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 75,
+  "fields": {
+    "product": 33,
+    "movement_type": "OUT",
+    "quantity": 14,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-06T11:33:41.464Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 76,
+  "fields": {
+    "product": 22,
+    "movement_type": "IN",
+    "quantity": 12,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-10T14:34:12.761Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 77,
+  "fields": {
+    "product": 20,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-10T14:34:38.292Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 78,
+  "fields": {
+    "product": 22,
+    "movement_type": "IN",
+    "quantity": 12,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-10T14:52:25.006Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 79,
+  "fields": {
+    "product": 23,
+    "movement_type": "IN",
+    "quantity": 12,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-11T14:22:53.158Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 80,
+  "fields": {
+    "product": 21,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-11T14:30:20.844Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 81,
+  "fields": {
+    "product": 22,
+    "movement_type": "IN",
+    "quantity": 17,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-17T05:42:24.227Z"
+  }
+},
+{
+  "model": "inventory.stockmovement",
+  "pk": 82,
+  "fields": {
+    "product": 25,
+    "movement_type": "OUT",
+    "quantity": 1,
+    "user": [
+      "admin"
+    ],
+    "created_at": "2026-08-17T09:01:20.004Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 1,
+  "fields": {
+    "invoice_number": "INV-001",
+    "customer": 1,
+    "user": [
+      "cashier"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "855.00",
+    "payment_method": "Cash",
+    "status": "PAID",
+    "sale_date": "2026-07-02T12:51:26Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 2,
+  "fields": {
+    "invoice_number": null,
+    "customer": 1,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "210.00",
+    "payment_method": "cash",
+    "status": "PARTIAL",
+    "sale_date": "2026-07-28T07:55:13.165Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 3,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "26.00",
+    "payment_method": "cash",
+    "status": "UNPAID",
+    "sale_date": "2026-07-28T07:58:08.647Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 4,
+  "fields": {
+    "invoice_number": null,
+    "customer": 3,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "11.00",
+    "payment_method": "bank_transfer",
+    "status": "PAID",
+    "sale_date": "2026-07-28T08:11:24.581Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 5,
+  "fields": {
+    "invoice_number": null,
+    "customer": 3,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "89.99",
+    "payment_method": "card",
+    "status": "PAID",
+    "sale_date": "2026-07-28T08:14:39.512Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 6,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "20.00",
+    "payment_method": "card",
+    "status": "PAID",
+    "sale_date": "2026-07-28T08:19:19.226Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 7,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "212.50",
+    "payment_method": "bank_transfer",
+    "status": "PAID",
+    "sale_date": "2026-07-28T08:26:25.963Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 8,
+  "fields": {
+    "invoice_number": null,
+    "customer": 1,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "249.00",
+    "payment_method": "bank_transfer",
+    "status": "PAID",
+    "sale_date": "2026-07-28T08:27:10.826Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 9,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "147.00",
+    "payment_method": "bank_transfer",
+    "status": "PAID",
+    "sale_date": "2026-07-31T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 10,
+  "fields": {
+    "invoice_number": null,
+    "customer": 1,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "45.50",
+    "payment_method": "cash",
+    "status": "UNPAID",
+    "sale_date": "2026-07-28T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 11,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "4588.50",
+    "payment_method": "bank_transfer",
+    "status": "UNPAID",
+    "sale_date": "2026-07-28T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 12,
+  "fields": {
+    "invoice_number": null,
+    "customer": 1,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "0.00",
+    "discount_amount": "0.00",
+    "total_amount": "44.00",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-05T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 13,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "31.50",
+    "discount_amount": "0.00",
+    "total_amount": "241.50",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-05T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 14,
+  "fields": {
+    "invoice_number": null,
+    "customer": 4,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "31.50",
+    "discount_amount": "14.00",
+    "total_amount": "121.50",
+    "payment_method": "cash",
+    "status": "PARTIAL",
+    "sale_date": "2026-07-27T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 15,
+  "fields": {
+    "invoice_number": null,
+    "customer": 4,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "21.00",
+    "discount_amount": "0.00",
+    "total_amount": "161.00",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-07-30T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 16,
+  "fields": {
+    "invoice_number": null,
+    "customer": 3,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "90000.00",
+    "discount_amount": "0.00",
+    "total_amount": "690000.00",
+    "payment_method": "card",
+    "status": "PAID",
+    "sale_date": "2026-07-30T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 17,
+  "fields": {
+    "invoice_number": null,
+    "customer": 4,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "5625.00",
+    "discount_amount": "0.00",
+    "total_amount": "6000.00",
+    "payment_method": "card",
+    "status": "PAID",
+    "sale_date": "2026-07-31T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 18,
+  "fields": {
+    "invoice_number": null,
+    "customer": 3,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "1875.00",
+    "discount_amount": "0.00",
+    "total_amount": "14375.00",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-07-31T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 19,
+  "fields": {
+    "invoice_number": null,
+    "customer": 1,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "36.00",
+    "discount_amount": "0.00",
+    "total_amount": "276.00",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-04T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 20,
+  "fields": {
+    "invoice_number": null,
+    "customer": 2,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "22.95",
+    "discount_amount": "0.00",
+    "total_amount": "175.95",
+    "payment_method": "cash",
+    "status": "PARTIAL",
+    "sale_date": "2026-08-04T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 21,
+  "fields": {
+    "invoice_number": null,
+    "customer": 6,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "33.00",
+    "discount_amount": "0.00",
+    "total_amount": "253.00",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-04T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 22,
+  "fields": {
+    "invoice_number": null,
+    "customer": 7,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "42.00",
+    "discount_amount": "0.00",
+    "total_amount": "322.00",
+    "payment_method": "bank_transfer",
+    "status": "PAID",
+    "sale_date": "2026-08-04T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 23,
+  "fields": {
+    "invoice_number": null,
+    "customer": 7,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "23.10",
+    "discount_amount": "0.00",
+    "total_amount": "177.10",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-06T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 24,
+  "fields": {
+    "invoice_number": null,
+    "customer": 6,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "2.77",
+    "discount_amount": "0.00",
+    "total_amount": "21.27",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-10T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 25,
+  "fields": {
+    "invoice_number": null,
+    "customer": 7,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "3.30",
+    "discount_amount": "0.00",
+    "total_amount": "25.30",
+    "payment_method": "bank_transfer",
+    "status": "PAID",
+    "sale_date": "2026-08-11T00:00:00Z"
+  }
+},
+{
+  "model": "sales.sale",
+  "pk": 26,
+  "fields": {
+    "invoice_number": null,
+    "customer": 7,
+    "user": [
+      "admin"
+    ],
+    "tax_amount": "1.35",
+    "discount_amount": "0.00",
+    "total_amount": "10.35",
+    "payment_method": "cash",
+    "status": "PAID",
+    "sale_date": "2026-08-17T00:00:00Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 1,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "203000.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-31",
+    "notes": "",
+    "order_date": "2026-07-24T14:25:22.926Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 2,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "1500.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-29",
+    "notes": "",
+    "order_date": "2026-07-24T14:47:53.487Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 4,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "1500.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-29",
+    "notes": "",
+    "order_date": "2026-07-24T14:55:59.223Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 5,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "2900.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-08",
+    "notes": "",
+    "order_date": "2026-07-25T07:02:14.714Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 7,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "3675.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-30",
+    "notes": "Standard monthly shelf restock.",
+    "order_date": "2026-07-25T09:04:47.329Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 8,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "22500.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-27",
+    "notes": "Bulk import batch received.",
+    "order_date": "2026-07-25T09:04:47.539Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 9,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "37000.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-26",
+    "notes": "Urgent hardware replacement.",
+    "order_date": "2026-07-25T09:04:47.617Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 10,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "6250.00",
+    "status": "CANCELLED",
+    "expected_delivery": "2026-07-25",
+    "notes": "Out of stock.",
+    "order_date": "2026-07-25T09:04:47.688Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 11,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "2550.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-22",
+    "notes": "Office supplies restock.",
+    "order_date": "2026-07-25T09:04:47.803Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 12,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "250.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-30",
+    "notes": "",
+    "order_date": "2026-07-27T09:11:08.038Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 13,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "250.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-30",
+    "notes": "",
+    "order_date": "2026-07-27T09:11:08.125Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 14,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "360000.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-06",
+    "notes": null,
+    "order_date": "2026-07-27T09:41:02.705Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 15,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "360000.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-06",
+    "notes": "",
+    "order_date": "2026-07-27T09:41:02.888Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 16,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "450.00",
+    "status": "CANCELLED",
+    "expected_delivery": "2026-07-31",
+    "notes": null,
+    "order_date": "2026-07-29T11:11:47.259Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 17,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "450.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-07-31",
+    "notes": null,
+    "order_date": "2026-07-29T11:11:47.422Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 18,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "57.50",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-06",
+    "notes": null,
+    "order_date": "2026-07-29T13:54:54.293Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 19,
+  "fields": {
+    "supplier": 1,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "57.50",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-06",
+    "notes": null,
+    "order_date": "2026-07-29T13:54:54.354Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 20,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "8.00",
+    "status": "CANCELLED",
+    "expected_delivery": "2026-07-07",
+    "notes": null,
+    "order_date": "2026-07-29T14:07:55.493Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 21,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "180.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-07",
+    "notes": null,
+    "order_date": "2026-07-29T14:08:44.381Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 22,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "4500.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-07",
+    "notes": null,
+    "order_date": "2026-07-29T14:10:15.897Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 23,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "81.00",
+    "status": "RECEIVED",
+    "expected_delivery": null,
+    "notes": null,
+    "order_date": "2026-07-30T08:20:41.851Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 24,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "81.00",
+    "status": "RECEIVED",
+    "expected_delivery": null,
+    "notes": null,
+    "order_date": "2026-07-30T08:20:41.925Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 25,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "4250.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-01",
+    "notes": null,
+    "order_date": "2026-07-31T12:16:39.574Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 26,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "4250.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-01",
+    "notes": null,
+    "order_date": "2026-07-31T12:16:39.701Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 27,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "10.20",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-12",
+    "notes": null,
+    "order_date": "2026-08-04T13:46:12.993Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 28,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "10.20",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-12",
+    "notes": null,
+    "order_date": "2026-08-04T13:46:13.050Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 29,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "765.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-19",
+    "notes": null,
+    "order_date": "2026-08-04T14:07:59.019Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 30,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "765.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-19",
+    "notes": null,
+    "order_date": "2026-08-04T14:07:59.098Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 31,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "90.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-13",
+    "notes": null,
+    "order_date": "2026-08-10T14:34:01.489Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 32,
+  "fields": {
+    "supplier": 2,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "90.00",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-13",
+    "notes": null,
+    "order_date": "2026-08-10T14:34:01.609Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 33,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "108.00",
+    "status": "CANCELLED",
+    "expected_delivery": null,
+    "notes": null,
+    "order_date": "2026-08-11T14:22:07.800Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 34,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "108.00",
+    "status": "RECEIVED",
+    "expected_delivery": null,
+    "notes": null,
+    "order_date": "2026-08-11T14:22:07.860Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 35,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "127.50",
+    "status": "CANCELLED",
+    "expected_delivery": "2026-08-13",
+    "notes": null,
+    "order_date": "2026-08-15T06:51:45.866Z"
+  }
+},
+{
+  "model": "purchase_orders.purchaseorder",
+  "pk": 36,
+  "fields": {
+    "supplier": 3,
+    "user": [
+      "admin"
+    ],
+    "total_amount": "127.50",
+    "status": "RECEIVED",
+    "expected_delivery": "2026-08-13",
+    "notes": null,
+    "order_date": "2026-08-15T06:51:45.976Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 1,
+  "fields": {
+    "user": null,
+    "title": "New Sale #101",
+    "message": "A new sale of $150.00 was completed.",
+    "notification_type": "SALE",
+    "link": "/sales?search=101",
+    "is_read": true,
+    "created_at": "2026-08-04T13:00:36.306Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 2,
+  "fields": {
+    "user": null,
+    "title": "New Customer Added",
+    "message": "Customer Test Customer was registered.",
+    "notification_type": "CUSTOMER",
+    "link": "/customers?search=Test Customer",
+    "is_read": true,
+    "created_at": "2026-08-04T13:44:17.382Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 3,
+  "fields": {
+    "user": null,
+    "title": "New Sale Completed",
+    "message": "Sale #21 completed. Total: 0.00 ETB",
+    "notification_type": "SALE",
+    "link": "/sales?search=21",
+    "is_read": true,
+    "created_at": "2026-08-04T14:00:11.037Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 4,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Test Customer paid 253.00 ETB on Sale #21.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=21",
+    "is_read": true,
+    "created_at": "2026-08-04T14:00:11.041Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 5,
+  "fields": {
+    "user": null,
+    "title": "New Customer Added",
+    "message": "Customer Bereket Taye was registered.",
+    "notification_type": "CUSTOMER",
+    "link": "/customers?search=Bereket Taye",
+    "is_read": true,
+    "created_at": "2026-08-04T14:02:26.087Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 6,
+  "fields": {
+    "user": null,
+    "title": "New Sale Completed",
+    "message": "Sale #22 completed. Total: 0.00 ETB",
+    "notification_type": "SALE",
+    "link": "/sales?search=22",
+    "is_read": true,
+    "created_at": "2026-08-04T14:07:28.925Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 7,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Bereket Taye paid 322.00 ETB on Sale #22.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=22",
+    "is_read": true,
+    "created_at": "2026-08-04T14:07:28.933Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 8,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #30 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=30",
+    "is_read": true,
+    "created_at": "2026-08-04T14:09:39.632Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 9,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #29 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=29",
+    "is_read": true,
+    "created_at": "2026-08-04T14:09:44.188Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 10,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #28 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=28",
+    "is_read": true,
+    "created_at": "2026-08-04T14:09:45.454Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 11,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #27 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=27",
+    "is_read": true,
+    "created_at": "2026-08-04T14:36:27.467Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 12,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Sara Mohammed paid 0.94 ETB on Sale #20.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=20",
+    "is_read": true,
+    "created_at": "2026-08-06T11:06:22.555Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 13,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Abel Tesfaye paid 69.99 ETB on Sale #5.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=5",
+    "is_read": true,
+    "created_at": "2026-08-06T11:07:22.602Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 14,
+  "fields": {
+    "user": null,
+    "title": "New Sale Completed",
+    "message": "Sale #23 completed. Total: 0.00 ETB",
+    "notification_type": "SALE",
+    "link": "/sales?search=23",
+    "is_read": true,
+    "created_at": "2026-08-06T11:33:41.458Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 15,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Bereket Taye paid 177.10 ETB on Sale #23.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=23",
+    "is_read": true,
+    "created_at": "2026-08-06T11:33:41.465Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 16,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #32 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=32",
+    "is_read": true,
+    "created_at": "2026-08-10T14:34:12.765Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 17,
+  "fields": {
+    "user": null,
+    "title": "New Sale Completed",
+    "message": "Sale #24 completed. Total: 0.00 ETB",
+    "notification_type": "SALE",
+    "link": "/sales?search=24",
+    "is_read": true,
+    "created_at": "2026-08-10T14:34:38.283Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 18,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Test Customer paid 21.27 ETB on Sale #24.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=24",
+    "is_read": true,
+    "created_at": "2026-08-10T14:34:38.294Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 19,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #31 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=31",
+    "is_read": true,
+    "created_at": "2026-08-10T14:52:25.012Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 20,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #34 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=34",
+    "is_read": true,
+    "created_at": "2026-08-11T14:22:53.161Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 21,
+  "fields": {
+    "user": null,
+    "title": "New Sale Completed",
+    "message": "Sale #25 completed. Total: 0.00 ETB",
+    "notification_type": "SALE",
+    "link": "/sales?search=25",
+    "is_read": true,
+    "created_at": "2026-08-11T14:30:20.834Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 22,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Bereket Taye paid 25.30 ETB on Sale #25.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=25",
+    "is_read": true,
+    "created_at": "2026-08-11T14:30:20.846Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 23,
+  "fields": {
+    "user": null,
+    "title": "Purchase Order Received",
+    "message": "PO #36 has been received and added to inventory.",
+    "notification_type": "PURCHASE_ORDER",
+    "link": "/purchase-orders?search=36",
+    "is_read": false,
+    "created_at": "2026-08-17T05:42:24.230Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 24,
+  "fields": {
+    "user": null,
+    "title": "Out of Stock Alert",
+    "message": "Hyaluronic Acid Serum is completely out of stock.",
+    "notification_type": "OUT_OF_STOCK",
+    "link": "/inventory?search=Hyaluronic Acid Serum",
+    "is_read": false,
+    "created_at": "2026-08-17T06:02:31.251Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 25,
+  "fields": {
+    "user": null,
+    "title": "Out of Stock Alert",
+    "message": "Hyaluronic Acid Serum is completely out of stock.",
+    "notification_type": "OUT_OF_STOCK",
+    "link": "/inventory?search=Hyaluronic Acid Serum",
+    "is_read": false,
+    "created_at": "2026-08-17T06:02:38.047Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 26,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Abel Tesfaye paid 11.00 ETB on Sale #4.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=4",
+    "is_read": true,
+    "created_at": "2026-08-17T09:00:00.764Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 27,
+  "fields": {
+    "user": null,
+    "title": "New Sale Completed",
+    "message": "Sale #26 completed. Total: 0.00 ETB",
+    "notification_type": "SALE",
+    "link": "/sales?search=26",
+    "is_read": true,
+    "created_at": "2026-08-17T09:01:19.998Z"
+  }
+},
+{
+  "model": "notifications.notification",
+  "pk": 28,
+  "fields": {
+    "user": null,
+    "title": "Payment Received",
+    "message": "Bereket Taye paid 10.35 ETB on Sale #26.",
+    "notification_type": "PAYMENT",
+    "link": "/sales?search=26",
+    "is_read": true,
+    "created_at": "2026-08-17T09:01:37.802Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-07-02T12:25:05.891Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "users",
+      "user"
+    ],
+    "object_id": "3",
+    "object_repr": "cashier",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-07-03T13:33:50.787Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "object_id": "2",
+    "object_repr": "Face Wash",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-07-03T13:46:33.638Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "object_id": "2",
+    "object_repr": "Face Wash",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-07-03T13:51:05.853Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "object_id": "7",
+    "object_repr": "Wireless Mechanical Keyboard K8 Stock: 45",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-07-17T14:23:23.185Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "object_id": "12",
+    "object_repr": "Face Wash Stock: 0",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Quantity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-07-21T14:23:05.659Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "products",
+      "product"
+    ],
+    "object_id": "13",
+    "object_repr": "Face Wash",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Supplier\", \"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-07-21T14:23:46.746Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "inventory",
+      "inventory"
+    ],
+    "object_id": "12",
+    "object_repr": "Face Wash Stock: 5",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Quantity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-07-24T14:25:22.939Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "1",
+    "object_repr": "PO #1 - Global Tech Distribution",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"purchase order item\", \"object\": \"Laptop x1\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-07-24T14:47:53.500Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "2",
+    "object_repr": "PO #2 - ABC Cosmetics PLC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"purchase order item\", \"object\": \"Deep Conditioning Mask x1\"}}, {\"added\": {\"name\": \"purchase order item\", \"object\": \"Nivea Lotion 200ml x4\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-07-25T06:44:05.307Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "4",
+    "object_repr": "PO #4 - Beauty Importers PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"purchase order item\", \"object\": \"Deep Conditioning Mask x5\", \"fields\": [\"Quantity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-07-25T06:46:32.939Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "3",
+    "object_repr": "PO #3 - Beauty Importers PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"purchase order item\", \"object\": \"Deep Conditioning Mask x2\", \"fields\": [\"Quantity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-07-25T06:54:04.781Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "2",
+    "object_repr": "PO #2 - ABC Cosmetics PLC",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2026-07-25T06:59:14.178Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "1",
+    "object_repr": "PO #1 - Global Tech Distribution",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2026-07-25T06:59:14.561Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "1",
+    "object_repr": "PO #1 - Global Tech Distribution",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2026-07-25T07:00:25.368Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "1",
+    "object_repr": "PO #1 - Global Tech Distribution",
+    "action_flag": 2,
+    "change_message": "[{\"added\": {\"name\": \"purchase order item\", \"object\": \"Bluetooth Headphones x1\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2026-07-25T07:01:05.200Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "2",
+    "object_repr": "PO #2 - ABC Cosmetics PLC",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2026-07-25T07:36:14.449Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "6",
+    "object_repr": "PO #6 - ABC Cosmetics PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2026-07-25T07:36:42.861Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "5",
+    "object_repr": "PO #5 - ABC Cosmetics PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2026-07-25T07:39:19.824Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "3",
+    "object_repr": "PO #3 - Beauty Importers PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2026-07-25T08:00:33.156Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "4",
+    "object_repr": "PO #4 - Beauty Importers PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2026-07-25T08:55:18.439Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "2",
+    "object_repr": "PO #2 - ABC Cosmetics PLC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2026-07-27T09:09:24.929Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "inventory",
+      "stockmovement"
+    ],
+    "object_id": "23",
+    "object_repr": "StockMovement object (23)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Movement type\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2026-07-27T09:39:15.106Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "9",
+    "object_repr": "PO #9 - Global Tech Distribution",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2026-07-27T09:41:35.965Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "15",
+    "object_repr": "PO #15 - Global Tech Distribution",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2026-07-27T09:43:43.637Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "purchase_orders",
+      "purchaseorder"
+    ],
+    "object_id": "9",
+    "object_repr": "PO #9 - Global Tech Distribution",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"purchase order item\", \"object\": \"Vitamin C Serum x2\", \"fields\": [\"Product\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2026-07-28T08:15:30.380Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "object_id": "5",
+    "object_repr": "Sale #5 - Abel Tesfaye",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2026-07-28T08:43:12.145Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "object_id": "11",
+    "object_repr": "Hydrating Facial Toner x 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Quantity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2026-07-28T08:43:37.396Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "object_id": "11",
+    "object_repr": "Hydrating Facial Toner x 2",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2026-07-28T08:44:40.245Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "object_id": "9",
+    "object_repr": "Sale #9 - Sara Mohammed",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Total amount\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2026-07-28T08:58:20.928Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "object_id": "13",
+    "object_repr": "Sunscreen SPF 50 x 2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Quantity\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2026-07-28T09:03:57.303Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "saleitem"
+    ],
+    "object_id": "13",
+    "object_repr": "Sunscreen SPF 50 x 2",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2026-07-29T10:45:01.636Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "object_id": "4",
+    "object_repr": "Rediet Abreham (094 733 0616)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Phone\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2026-07-29T13:57:00.651Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "customers",
+      "customer"
+    ],
+    "object_id": "4",
+    "object_repr": "Rediet Abreham (0947330616)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Phone\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2026-08-04T12:48:04.717Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sales",
+      "sale"
+    ],
+    "object_id": "1",
+    "object_repr": "Sale #1 - John Doe",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Invoice number\"]}}]"
+  }
+}
+]
